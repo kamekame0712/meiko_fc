@@ -12,7 +12,11 @@ class Index extends MY_Controller
 
 	public function index()
 	{
-echo '明光！';
+		$this->load->view('front/index');
 	}
+
+
+
+
 
 }

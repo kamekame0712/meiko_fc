@@ -1,9 +1,9 @@
 $('#apply_credit').change( function() {
 	if( $(this).prop('checked') ) {
-		alert('check');
+		$('#register_credit').slideDown();
 	}
 	else {
-		alert('uncheck');
+		$('#register_credit').slideUp();
 	}
 });
 

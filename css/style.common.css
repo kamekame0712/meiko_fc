@@ -12,7 +12,8 @@
 /* #region 全体 */
 html {
 	background-color: #FFFFFF;
-	font-size: 62.5%;
+    font-size: 62.5%;
+    overflow-y: scroll;
 }
 
 body {
@@ -71,7 +72,13 @@ h1.title span {
     font-size: 2.0rem;
 }
 
+input {
+    font-size: 1.6rem !important;
+}
 
+input::placeholder {
+    color: #75DBFF !important;
+}
 
 
 
@@ -82,6 +89,10 @@ h1.title span {
 
     h1.title span {
         font-size: 1.5rem;
+    }
+
+    input {
+        font-size: 1.4rem !important;
     }
 }
 /* #endregion メイン */

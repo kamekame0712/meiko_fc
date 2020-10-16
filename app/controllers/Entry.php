@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Index extends MY_Controller
+class Entry extends MY_Controller
 {
 	public function __construct()
 	{
@@ -16,36 +16,24 @@ class Index extends MY_Controller
 
 	public function index()
 	{
-		// ログイン済みチェック
-		if( !$this->chk_logged_in() ) {
-			$this->login();
-			return;
-		}
+		$view_data = array(
+			'CONF'	=> $this->conf
+		);
 
-		redirect('order');
-		return;
+		$this->load->view('front/entry/index', $view_data);
 	}
 
-	public function login()
+	public function confirm()
 	{
-		// ログイン済みチェック
-		if( $this->chk_logged_in() ) {
-			redirect('order');
-			return;
-		}
+		$post_data = $this->input->post();
 
-		$this->load->view('front/login');
+
+
+echo '<pre>';
+print_r($post_data);
+echo '</pre>';
+
 	}
-
-
-
-
-
-
-
-
-
-
 
 
 

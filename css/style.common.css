@@ -1,11 +1,7 @@
 /**************************************/
 /*                                    */
-/* bootstrapのcontainer幅             */
-/* ブラウザの幅が                     */
-/*   lg : 1,200px以上 → 1,170px      */
-/*   md :   992px以上 →   970px      */
-/*   sm :   768px以上 →   750px      */
-/*   xs :   768px未満 → ブラウザの幅 */
+/*  明光ロゴの青： #157BCA            */
+/*  明光ロゴの黄： #FCF537            */
 /*                                    */
 /**************************************/
 
@@ -41,35 +37,18 @@ body,
 }
 /* #endregion 全体 */
 
-/* #region footer */
-footer {
-    margin: auto 0 0;
-    padding: 20px 0 50px;
-    border-top: 1px solid #C0C0C0;
-}
-
-footer .copyright {
-    font-size: 1.2rem;
-    text-align: right;
-}
-/* #endregion footer */
-
-/* #region メイン */
-h1.title {
-    font-size: 2.8rem;
+/* #region 共通 */
+.lead-title {
+    font-size: 2.3rem;
     font-weight: bold;
-	text-align: center;
-	padding: 10px 0;
-    margin: 0 auto 20px;
+	text-align: left;
+	padding: 0 0 0 15px;
+    margin: 0 auto 10px;
     width: 100%;
 	color: #157BCA;
 	border-left: solid 7px #157BCA;
 	background: -webkit-repeating-linear-gradient(-45deg, #FFFCA3, #FFFCA3 3px,#FCF537 3px, #FCF537 7px);
 	background: repeating-linear-gradient(-45deg, #FFFCA3, #FFFCA3 3px,#FCF537 3px, #FCF537 7px);
-}
-
-h1.title span {
-    font-size: 2.0rem;
 }
 
 input {
@@ -80,19 +59,224 @@ input::placeholder {
     color: #75DBFF !important;
 }
 
-
-
 @media screen and (max-width : 768px) {
-    h1.title {
-        font-size: 1.8rem;
-    }
-
-    h1.title span {
-        font-size: 1.5rem;
-    }
-
     input {
         font-size: 1.4rem !important;
     }
 }
-/* #endregion メイン */
+/* #endregion 共通 */
+
+/* #region header */
+.header {
+    margin: 10px 0;
+    position: relative;
+}
+
+.header .header-logo {
+    display: block;
+    position: absolute;
+    top: 4px;
+    left: 0;
+}
+
+.header .site-title-small,
+.header .site-title-large {
+    text-align: center;
+    color: #157BCA;
+    font-weight: bold;
+}
+
+.header .site-title-small {
+    font-size: 2.2rem;
+}
+
+.header .site-title-large {
+    font-size: 3.2rem;
+}
+
+hr.header-bottom {
+    height: 1px;
+    width: 100%;
+    margin: 0 0 20px;
+    background-color: #157BCA;
+    background: linear-gradient(to right, #FCF537 0%, #FCF537 10%, #157BCA 30%, #157BCA 70%, #FCF537 90%, #FCF537 100%);
+}
+
+@media screen and (max-width : 768px) {
+    .header .header-logo {
+        position: relative;
+        margin: 0 auto 10px;
+        max-width: 150px;
+    }
+
+    .header .site-title-small {
+        font-size: 1.8rem;
+    }
+    
+    .header .site-title-large {
+        font-size: 2.5rem;
+    }
+}
+/* #endregion header */
+
+/* #region footer */
+footer {
+    margin: auto 0 0;
+    padding: 15px 0;
+    border-top: 1px solid #C0C0C0;
+    font-size: 1.5rem;
+}
+
+footer .emphasis {
+    background: linear-gradient(transparent 60%, #FCF537 60%);
+    width: auto;
+}
+
+footer .emphasis a {
+    font-size: 2.2rem;
+    font-weight: bold;
+    text-decoration: underline;
+    color: #FFAD47;
+    display: inline-block;
+    margin: 0 5px;
+}
+
+footer .address {
+    margin: 5px 0 0 20px;
+    font-size: 1.2rem;
+}
+
+footer .copyright {
+    font-size: 1.2rem;
+    text-align: right;
+}
+
+@media screen and (max-width : 768px) {
+    footer {
+        font-size: 1.3rem;
+    }
+    
+    footer .emphasis a {
+        font-size: 1.8rem;
+    }
+
+    footer .address {
+        margin: 10px 0;
+    }
+}
+/* #endregion footer */
+
+/* #region ログイン */
+.login {
+    border-radius: 10px;
+    padding: 10px 20px 20px 20px;
+    margin: 50px auto 0;
+    width: 90%;
+    max-width: 320px;
+    background: #FFFFFF;
+    position: relative;
+    padding-bottom: 80px;
+    box-shadow: 0px 8px 16px -2px rgba(10,10,10,0.1), 4px 4px 5px 3px rgba(29,28,28,0.2);
+}
+
+.login .title {
+    color: #157BCA;
+    font-size: 2.2rem;
+    font-weight: bold;
+    text-align: left;
+    margin: 10px 0 30px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.login input.input-item {
+    display: block;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    border: 1px solid #DDDDDD;
+    transition: border-width 0.2s ease;
+    border-radius: 4px;
+    color: #ccc;
+}
+
+.login input.input-item + i.fa {
+    color: #FFFFFF;
+    font-size: 1em;
+    position: absolute;
+    margin-top: -40px;
+    opacity: 0;
+    left: 0;
+    transition: all 0.1s ease-in;
+}
+
+.login input.input-item:focus {
+    outline: none;
+    color: #444444;
+    border-color: #157BCA;
+    border-left-width: 35px;
+}
+
+.login input.input-item:focus + i.fa {
+    opacity: 1;
+    left: 30px;
+    transition: all 0.25s ease-out;
+}
+
+.login .comment {
+    font-size: 1.4rem;
+    margin-bottom: 0;
+}
+
+.login .btn-submit {
+    width: 100%;
+    height: 100%;
+    padding: 10px 10px;
+    background-color: #157BCA;
+    color: #FCF537;
+    display: block;
+    border: none;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 2.0rem;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    max-height: 60px;
+    border: 0px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 10px 10px;
+    transform: rotateZ(0deg);
+    transition: all 0.1s ease-out;
+    border-bottom-width: 7px;
+}
+
+.login .btn-submit:hover {
+    opacity: 0.8;
+}
+
+@media screen and (max-width : 768px) {
+    .login {
+        margin: 20px auto;
+    }
+}
+/* #endregion ログイン */
+
+/* #region 登録 */
+.favor {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #157BCA;
+    margin: 0;
+    padding-left: 2em;
+    text-indent: -2em;
+}
+/* #endregion 登録 */
+
+/* #region 発注 */
+
+
+
+
+
+/* #endregion 発注 */

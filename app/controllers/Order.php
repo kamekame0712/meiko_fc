@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Index extends MY_Controller
+class Order extends MY_Controller
 {
 	public function __construct()
 	{
@@ -20,20 +20,9 @@ class Index extends MY_Controller
 			'CONF'	=> $this->conf
 		);
 
-		$this->load->view('front/index', $view_data);
+		$this->load->view('front/order/index', $view_data);
 	}
 
-	public function confirm()
-	{
-		$post_data = $this->input->post();
-
-
-
-echo '<pre>';
-print_r($post_data);
-echo '</pre>';
-
-	}
 
 
 

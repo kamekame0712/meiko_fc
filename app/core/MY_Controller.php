@@ -23,34 +23,12 @@ class MY_Controller extends CI_Controller
 	// ログイン済みチェック（管理画面）
 	protected function chk_logged_in()
 	{
-		if( $this->session->userdata('admin_id') == FALSE ) {
+		if( $this->session->userdata('customer_id') == FALSE ) {
 			return FALSE;
 		}
 		else {
 			return TRUE;
 		}
-	}
-
-	// ファイルアップロード
-	protected function do_upload($config, $field_name='filename')
-	{
-		$this->load->library('upload');
-		$this->upload->initialize($config);
-
-		$ret = array(
-			'status'	=> TRUE,
-			'data'		=> array(),
-			'msg'		=> ''
-		);
-		if( !$this->upload->do_upload($field_name) ) {
-			$ret['status'] = FALSE;
-			$ret['msg'] = $this->upload->display_errors('<p class="text-danger">', '</p>');
-		}
-		else {
-			$ret['data'] = $this->upload->data();
-		}
-
-		return $ret;
 	}
 
 	// Ajax出力

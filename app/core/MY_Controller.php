@@ -20,10 +20,21 @@ class MY_Controller extends CI_Controller
 	/*    各コントローラー共通の関数         */
 	/*                                       */
 	/*****************************************/
-	// ログイン済みチェック（管理画面）
+	// ログイン済みチェック（フロント）
 	protected function chk_logged_in()
 	{
 		if( $this->session->userdata('classroom_id') == FALSE ) {
+			return FALSE;
+		}
+		else {
+			return TRUE;
+		}
+	}
+
+	// ログイン済みチェック（管理画面）
+	protected function chk_logged_in_admin()
+	{
+		if( $this->session->userdata('admin_id') == FALSE ) {
 			return FALSE;
 		}
 		else {

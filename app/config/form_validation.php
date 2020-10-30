@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $config = array(
 
 	// ログイン（管理画面）
-	'login' => array(
+	'login_admin' => array(
 		array(
 			'field' => 'email',
 			'label' => 'メールアドレス',

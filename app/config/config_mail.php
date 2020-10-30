@@ -7,7 +7,7 @@ $config['mail'] = array(
 	// 管理画面から管理者へ
 	'management_to_admin' => array(
 		'from'		=> 'info@chuoh-kyouiku.co.jp',
-		'from_name'	=> '明光',
+		'from_name'	=> '明光FC専用受注管理',
 	),
 
 );

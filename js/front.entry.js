@@ -32,12 +32,31 @@ $(document).on('keyup', '#tel01, #tel02, #tel03', function() {
 	}
 });
 
-$(document).on('keyup', '#contact_name, #email, #password_hidden', function() {
-	if( $('#contact_name').val() != '' && $('#email').val() != '' && $('#password_hidden').val() != '' ) {
+$(document).on('keyup', '#contact_name, #email, #password_hidden, #password_show', function() {
+	if( $('#contact_name').val() != '' && $('#email').val() != '' && $('#password_hidden').val() != '' && $('#password_show').val() != '' ) {
 		$('#required_item2').slideDown();
 	}
 	else {
 		$('#required_item2').slideUp();
+	}
+});
+
+$('#password_hidden').keyup( function() {
+	$('#password_show').val($(this).val());
+});
+
+$('#password_show').keyup( function() {
+	$('#password_hidden').val($(this).val());
+});
+
+$('#chk_pw').change( function() {
+	if( $(this).prop('checked') ) {
+		$('#password_hidden').hide();
+		$('#password_show').show();
+	}
+	else {
+		$('#password_show').hide();
+		$('#password_hidden').show();
 	}
 });
 

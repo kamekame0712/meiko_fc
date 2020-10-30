@@ -37,6 +37,12 @@ body,
 }
 /* #endregion 全体 */
 
+/* #region bootstrap上書き */
+.btn {
+    font-size: 1.6rem;
+}
+/* #endregion bootstrap上書き */
+
 /* #region 共通 */
 .lead-title {
     font-size: 2.3rem;
@@ -49,20 +55,6 @@ body,
 	border-left: solid 7px #157BCA;
 	background: -webkit-repeating-linear-gradient(-45deg, #FFFCA3, #FFFCA3 3px,#FCF537 3px, #FCF537 7px);
 	background: repeating-linear-gradient(-45deg, #FFFCA3, #FFFCA3 3px,#FCF537 3px, #FCF537 7px);
-}
-
-input {
-    font-size: 1.6rem !important;
-}
-
-input::placeholder {
-    color: #75DBFF !important;
-}
-
-@media screen and (max-width : 768px) {
-    input {
-        font-size: 1.4rem !important;
-    }
 }
 /* #endregion 共通 */
 
@@ -135,7 +127,7 @@ footer .emphasis {
 footer .emphasis a {
     font-size: 2.2rem;
     font-weight: bold;
-    text-decoration: underline;
+    text-decoration: none;
     color: #FFAD47;
     display: inline-block;
     margin: 0 5px;
@@ -271,12 +263,157 @@ footer .copyright {
     padding-left: 2em;
     text-indent: -2em;
 }
+
+.entry-input {
+    font-size: 1.6rem !important;
+}
+
+.entry-input::placeholder {
+    color: #75DBFF !important;
+}
+
+@media screen and (max-width : 768px) {
+    .entry-input {
+        font-size: 1.4rem !important;
+    }
+}
 /* #endregion 登録 */
 
 /* #region 発注 */
+.tbl-order {
+    margin: 10px 0 50px;
+    table-layout: fixed;
+}
 
+.tbl-order thead tr th {
+    text-align: center;
+}
 
+.tbl-order thead tr th:nth-child(1) {
+    width: 140px;
+}
 
+.tbl-order thead tr th:nth-child(2) {
+    width: 150px;
+}
 
+.tbl-order thead tr th:nth-child(3) {
+    width: auto;
+    min-width: 300px;
+}
 
+.tbl-order thead tr th:nth-child(4) {
+    width: 100px;
+}
+
+.tbl-order thead tr th:nth-child(5) {
+    width: 80px;
+}
+
+.tbl-order thead tr th:nth-child(6) {
+    width: 100px;
+}
+
+.tbl-order tbody tr td:nth-child(4) {
+    text-align: right;
+}
+
+.tbl-order tbody tr td:nth-child(5) {
+    padding: 3px 0.75rem;
+}
+
+.tbl-order tbody tr td:nth-child(6) {
+    text-align: right;
+}
+
+.tbl-order tbody tr:last-child td {
+    border-top: 4px double #444444;
+}
+
+.tbl-order .input-num {
+    width: 100%;
+    text-align: right;
+}
+
+dl.others {
+    margin: 0;
+    padding: 0;
+}
+
+dl.others::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+dl.others dt {
+    float: left;
+    width: 120px;
+    font-weight: normal;
+}
+
+dl.others dd {
+    padding-left: 120px;
+}
+
+.select-other {
+    width: 100%;
+    max-width: 200px;
+}
+
+.textarea-other {
+    width: 100%;
+    max-width: 450px;
+    height: 100px;
+}
+
+/* #region 商品選択 */
+.choose-product-window {
+    padding: 0 20px;
+}
+
+.conditions {
+    font-size: 1.4rem;
+}
+
+.conditions label {
+    margin: 0;
+}
+
+.conditions p {
+	margin-bottom: 20px;
+}
+
+.conditions dl {
+	margin: 0 0 5px 0;
+	padding: 0;
+}
+
+.conditions dl::after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.conditions dl dt {
+	font-weight: normal;
+	width: 110px;
+	float: left;
+	padding: 5px 0 5px 10px;
+}
+
+.conditions dl dd {
+	border-bottom: 1px solid #C0C0C0;
+	padding: 5px 10px 5px 110px;
+}
+
+.conditions dl dd input[type="text"] {
+	width: 300px;
+}
+
+.product-list {
+    margin-top: 30px;
+}
+
+/* #endregion 商品選択 */
 /* #endregion 発注 */

@@ -23,7 +23,15 @@ class Order extends MY_Controller
 		$this->load->view('front/order/index', $view_data);
 	}
 
+	public function choose_product()
+	{
 
 
 
+		$view_data = array(
+			'CONF'	=> $this->conf
+		);
+
+		$this->load->view('front/order/choose_product', $view_data);
+	}
 }

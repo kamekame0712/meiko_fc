@@ -7,7 +7,7 @@
 		<div class="container">
 			<p class="lead-title">お客様情報登録</p>
 
-			<?php echo form_open('index/confirm'); ?>
+			<?php echo form_open('entry/confirm'); ?>
 				<div class="col-md-8 offset-md-2">
 					<p class="favor">１．お電話番号を入力してください。</p>
 				</div>
@@ -19,7 +19,7 @@
 							'name'	=> 'tel01',
 							'id'	=> 'tel01',
 							'value'	=> set_value('tel01', ''),
-							'class'	=> 'form-control',
+							'class'	=> 'form-control entry-input',
 							'placeholder'	=> '082'
 						)); ?>
 					</div>－
@@ -28,7 +28,7 @@
 							'name'	=> 'tel02',
 							'id'	=> 'tel02',
 							'value'	=> set_value('tel02', ''),
-							'class'	=> 'form-control',
+							'class'	=> 'form-control entry-input',
 							'placeholder'	=> '227'
 						)); ?>
 					</div>－
@@ -37,7 +37,7 @@
 							'name'	=> 'tel03',
 							'id'	=> 'tel03',
 							'value'	=> set_value('tel03', ''),
-							'class'	=> 'form-control',
+							'class'	=> 'form-control entry-input',
 							'placeholder'	=> '3999'
 						)); ?>
 						<?php echo form_error('tel01'); ?>
@@ -63,7 +63,7 @@
 								'name'	=> 'contact_name',
 								'id'	=> 'contact_name',
 								'value'	=> set_value('contact_name', ''),
-								'class'	=> 'form-control',
+								'class'	=> 'form-control entry-input',
 								'placeholder'	=> '中央太郎'
 							)); ?>
 							<?php echo form_error('contact_name'); ?>
@@ -77,7 +77,7 @@
 								'name'	=> 'email',
 								'id'	=> 'email',
 								'value'	=> set_value('email', ''),
-								'class'	=> 'form-control',
+								'class'	=> 'form-control entry-input',
 								'placeholder'	=> 'info@chuoh-kyouiku.co.jp'
 							)); ?>
 							<?php echo form_error('email'); ?>
@@ -92,16 +92,25 @@
 								'id'	=> 'password_hidden',
 								'value'	=> set_value('password_hidden', ''),
 								'type'	=> 'password',
-								'class'	=> 'form-control'
+								'class'	=> 'form-control entry-input'
+							)); ?>
+
+
+							<?php echo form_input(array(
+								'name'	=> 'password_show',
+								'id'	=> 'password_show',
+								'value'	=> set_value('password_show', ''),
+								'class'	=> 'form-control entry-input',
+								'style'	=> 'display:none;'
 							)); ?>
 							<?php echo form_error('password_hidden'); ?>
 						</div>
 						<div class="col-md-3">
 							<?php echo form_checkbox(array(
-								'name'	=> 'show_password',
-								'id'	=> 'show_password'
+								'name'	=> 'chk_pw',
+								'id'	=> 'chk_pw'
 							)); ?>
-							<?php echo form_label('パスワードを表示する', 'show_password'); ?>
+							<?php echo form_label('パスワードを表示する', 'chk_pw'); ?>
 						</div>
 					</div> <!-- end of .form-group row -->
 				</div> <!-- end of #required_item1 -->
@@ -153,7 +162,7 @@
 								<?php echo form_input(array(
 									'name'	=> 'corporation_name',
 									'value'	=> set_value('corporation_name', ''),
-									'class'	=> 'form-control',
+									'class'	=> 'form-control entry-input',
 									'placeholder'	=> '中央教育研究所株式会社'
 								)); ?>
 								<?php echo form_error('corporation_name'); ?>
@@ -166,7 +175,7 @@
 								<?php echo form_input(array(
 									'name'	=> 'corporation_zip1',
 									'value'	=> set_value('corporation_zip1', ''),
-									'class'	=> 'form-control',
+									'class'	=> 'form-control entry-input',
 									'placeholder'	=> '730'
 								)); ?>
 							</div>－
@@ -174,7 +183,7 @@
 								<?php echo form_input(array(
 									'name'	=> 'corporation_zip2',
 									'value'	=> set_value('corporation_zip2', ''),
-									'class'	=> 'form-control',
+									'class'	=> 'form-control entry-input',
 									'placeholder'	=> '0013'
 								)); ?>
 								<?php echo form_error('corporation_zip1'); ?>
@@ -195,7 +204,7 @@
 								<?php echo form_input(array(
 									'name'	=> 'corporation_addr1',
 									'value'	=> set_value('corporation_addr1', ''),
-									'class'	=> 'form-control',
+									'class'	=> 'form-control entry-input',
 									'placeholder'	=> '広島市中区八丁堀15-6'
 								)); ?>
 								<?php echo form_error('corporation_addr1'); ?>
@@ -208,7 +217,7 @@
 								<?php echo form_input(array(
 									'name'	=> 'corporation_addr2',
 									'value'	=> set_value('corporation_addr2', ''),
-									'class'	=> 'form-control',
+									'class'	=> 'form-control entry-input',
 									'placeholder'	=> '広島ちゅうぎんビル3階'
 								)); ?>
 								<?php echo form_error('corporation_addr2'); ?>
@@ -221,7 +230,7 @@
 								<?php echo form_input(array(
 									'name'	=> 'corporation_tel01',
 									'value'	=> set_value('corporation_tel01', ''),
-									'class'	=> 'form-control',
+									'class'	=> 'form-control entry-input',
 									'placeholder'	=> '082'
 								)); ?>
 							</div>－
@@ -229,7 +238,7 @@
 								<?php echo form_input(array(
 									'name'	=> 'corporation_tel02',
 									'value'	=> set_value('corporation_tel02', ''),
-									'class'	=> 'form-control',
+									'class'	=> 'form-control entry-input',
 									'placeholder'	=> '227'
 								)); ?>
 							</div>－
@@ -237,7 +246,7 @@
 								<?php echo form_input(array(
 									'name'	=> 'corporation_tel03',
 									'value'	=> set_value('corporation_tel03', ''),
-									'class'	=> 'form-control',
+									'class'	=> 'form-control entry-input',
 									'placeholder'	=> '3999'
 								)); ?>
 								<?php echo form_error('corporation_tel01'); ?>
@@ -250,7 +259,7 @@
 								<?php echo form_input(array(
 									'name'	=> 'corporation_executive',
 									'value'	=> set_value('corporation_executive', ''),
-									'class'	=> 'form-control',
+									'class'	=> 'form-control entry-input',
 									'placeholder'	=> '中央花子'
 								)); ?>
 								<?php echo form_error('corporation_executive'); ?>

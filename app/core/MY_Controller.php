@@ -23,7 +23,7 @@ class MY_Controller extends CI_Controller
 	// ログイン済みチェック（管理画面）
 	protected function chk_logged_in()
 	{
-		if( $this->session->userdata('customer_id') == FALSE ) {
+		if( $this->session->userdata('classroom_id') == FALSE ) {
 			return FALSE;
 		}
 		else {

@@ -164,7 +164,7 @@ footer .copyright {
     padding: 10px 20px 20px 20px;
     margin: 50px auto 0;
     width: 90%;
-    max-width: 320px;
+    max-width: 350px;
     background: #FFFFFF;
     position: relative;
     padding-bottom: 80px;
@@ -213,6 +213,12 @@ footer .copyright {
     opacity: 1;
     left: 30px;
     transition: all 0.25s ease-out;
+}
+
+.login .login-error {
+    color: red;
+    margin: 0;
+    line-height: 1.9rem;
 }
 
 .login .comment {
@@ -280,6 +286,11 @@ footer .copyright {
 /* #endregion 登録 */
 
 /* #region 発注 */
+.order-buttons {
+    clear: both;
+    min-height: 40px;
+}
+
 .tbl-order {
     margin: 10px 0 50px;
     table-layout: fixed;
@@ -290,7 +301,7 @@ footer .copyright {
 }
 
 .tbl-order thead tr th:nth-child(1) {
-    width: 140px;
+    width: 50px;
 }
 
 .tbl-order thead tr th:nth-child(2) {
@@ -312,6 +323,10 @@ footer .copyright {
 
 .tbl-order thead tr th:nth-child(6) {
     width: 100px;
+}
+
+.tbl-order tbody tr td:nth-child(1) {
+    text-align: center;
 }
 
 .tbl-order tbody tr td:nth-child(4) {
@@ -372,8 +387,26 @@ dl.others dd {
     padding: 0 20px;
 }
 
+.hide-conditions {
+    display: inline-block;
+    margin-left: 30px;
+    font-size: 1.7rem;
+    font-weight: normal;
+    color: red;
+    text-decoration: none;
+}
+
+.hide-conditions:hover {
+    text-decoration: none;
+    color: #157BCA;
+}
+
 .conditions {
     font-size: 1.4rem;
+}
+
+.conditions .col-2 {
+    padding: 0 7px !important;
 }
 
 .conditions label {
@@ -397,14 +430,14 @@ dl.others dd {
 
 .conditions dl dt {
 	font-weight: normal;
-	width: 110px;
+	width: 90px;
 	float: left;
 	padding: 5px 0 5px 10px;
 }
 
 .conditions dl dd {
 	border-bottom: 1px solid #C0C0C0;
-	padding: 5px 10px 5px 110px;
+	padding: 5px 10px 5px 90px;
 }
 
 .conditions dl dd input[type="text"] {
@@ -413,6 +446,64 @@ dl.others dd {
 
 .product-list {
     margin-top: 30px;
+}
+
+.product-list table th,
+.product-list table td {
+    padding: 0.27rem;
+}
+
+.product-list table td .btn-choose {
+    background-color: #FFFFFF;
+    color: #157BCA;
+    border: 1px solid #157BCA;
+    border-radius: 2px;
+    font-size: 1.3rem;
+    margin-left: 10px;
+}
+
+.product-list table td .btn-choose:hover {
+    background-color: #157BCA;
+    color: #FFFFFF;
+}
+
+.pagination {
+    margin: 0 0 20px;
+    float: right;
+}
+
+.pagination ul {
+	display: inline-block;
+	margin: 0 20px 0 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+.pagination ul li {
+	display: inline-block;
+	background-color: #E0E0E0;
+	font-weight: normal;
+	padding: 0 8px;
+	cursor: pointer;
+}
+
+.pagination ul li:hover {
+	opacity: 0.6;
+}
+
+.pagination ul li.current-page {
+	background-color: #808080;
+	color: #FFFFFF;
+	cursor: default;
+}
+
+.pagination ul li.current-page:hover {
+	opacity: 1.0;
+}
+
+.pagination ul li.not-anchor {
+	opacity: 0.6;
+	cursor: default;
 }
 
 /* #endregion 商品選択 */

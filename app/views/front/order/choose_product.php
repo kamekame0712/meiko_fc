@@ -2,11 +2,34 @@
 
 <body>
 	<div class="choose-product-window">
-		<p class="lead-title">商品選択</p>
+		<p class="lead-title">
+			商品選択
+			<?php if( $FLG_HIDE == '1' ): ?>
+				<a href="javascript:void(0);" class="hide-conditions" id="hide_conditions" onclick="hide_conditions();"><i class="fas fa-angle-double-up"></i>&nbsp;検索条件を隠す</a>
+			<?php else: ?>
+				<a href="javascript:void(0);" class="hide-conditions" id="hide_conditions" onclick="hide_conditions();"><i class="fas fa-angle-double-down"></i>&nbsp;検索条件を表示する</a>
+			<?php endif; ?>
+		</p>
 
-		<?php echo form_open('order/choose_product'); ?>
+		<?php echo form_open('order/choose_product', array('id' => 'frm_choose_product')); ?>
+			<?php echo form_input(array(
+				'name'	=> 'flg_hide',
+				'id'	=> 'flg_hide',
+				'value'	=> set_value('flg_hide', '1'),
+				'type'	=> 'hidden'
+			)); ?>
+
 			<div class="conditions">
-				<div class="container-fluid" id="product_conditions">
+				<?php
+					if( $FLG_HIDE == '1' ) {
+						$display = 'block';
+					}
+					else {
+						$display = 'none';
+					}
+				?>
+
+				<div class="container-fluid" id="product_conditions" style="display:<?= $display ?>">
 					<div class="row">
 						<div class="col-9">
 							<p>
@@ -25,14 +48,25 @@
 					</div> <!-- end of .row -->
 
 					<dl>
-						<dt>教材名または<br>教材コード</dt>
+						<dt>教材名</dt>
 						<dd>
 							<?php echo form_input(array(
 								'name'	=> 'cond_keyword',
 								'id'	=> 'cond_keyword',
 								'value'	=> set_value('cond_keyword', '' )
 							)); ?><br>
-							※『教材名』・『教材コード』は一部だけでも検索できます。<br />
+							※『教材名』は一部だけでも検索できます。<br />
+						</dd>
+
+						<dt>対象</dt>
+						<dd>
+							<?php echo form_checkbox(array(
+								'name'	=> 'recommend',
+								'id'	=> 'recommend',
+								'value'	=> '1',
+								'checked'	=> set_checkbox('recommend', '1', TRUE)
+							)); ?>
+							<?php echo form_label('明光本部推奨教材のみ表示する', 'recommend'); ?>
 						</dd>
 
 						<dt>学年</dt>
@@ -41,6 +75,7 @@
 								'name'	=> 'all_elementary',
 								'id'	=> 'all_elementary',
 								'value'	=> '01',
+								'checked'	=> set_checkbox('all_elementary', '01', FALSE),
 								'style'	=> 'margin-left:-2rem;'
 							)); ?>
 							<?php echo form_label('小学生', 'all_elementary'); ?>
@@ -48,12 +83,12 @@
 							<div class="container-fluid" style="padding:0;">
 								<div class="row">
 									<?php foreach( $CONF['grade_e'] as $key => $val ): ?>
-										<div class="col-3">
+										<div class="col-2">
 											<?php echo form_checkbox(array(
 												'name'	=> 'grade_e[]',
 												'id'	=> 'grade_e_' . $key,
 												'value'	=> $key,
-												'checked'	=> set_checkbox('grade_e[]', $key)
+												'checked'	=> set_checkbox('grade_e[]', $key, FALSE)
 											)); ?>
 											<?php echo form_label($val, 'grade_e_' . $key); ?>
 										</div>
@@ -65,6 +100,7 @@
 								'name'	=> 'all_junior',
 								'id'	=> 'all_junior',
 								'value'	=> '02',
+								'checked'	=> set_checkbox('all_junior', '02', FALSE),
 								'style'	=> 'margin-left:-2rem;'
 							)); ?>
 							<?php echo form_label('中学生', 'all_junior'); ?>
@@ -72,12 +108,12 @@
 							<div class="container-fluid" style="padding:0;">
 								<div class="row">
 									<?php foreach( $CONF['grade_j'] as $key => $val ): ?>
-										<div class="col-3">
+										<div class="col-2">
 											<?php echo form_checkbox(array(
 												'name'	=> 'grade_j[]',
 												'id'	=> 'grade_j_' . $key,
 												'value'	=> $key,
-												'checked'	=> set_checkbox('grade_j[]', $key)
+												'checked'	=> set_checkbox('grade_j[]', $key, FALSE)
 											)); ?>
 											<?php echo form_label($val, 'grade_j_' . $key); ?>
 										</div>
@@ -89,6 +125,7 @@
 								'name'	=> 'all_high',
 								'id'	=> 'all_high',
 								'value'	=> '03',
+								'checked'	=> set_checkbox('all_high', '03', FALSE),
 								'style'	=> 'margin-left:-2rem;'
 							)); ?>
 							<?php echo form_label('高校生', 'all_high'); ?>
@@ -96,12 +133,12 @@
 							<div class="container-fluid" style="padding:0;">
 								<div class="row">
 									<?php foreach( $CONF['grade_h'] as $key => $val ): ?>
-										<div class="col-3">
+										<div class="col-2">
 											<?php echo form_checkbox(array(
 												'name'	=> 'grade_h[]',
 												'id'	=> 'grade_h_' . $key,
 												'value'	=> $key,
-												'checked'	=> set_checkbox('grade_h[]', $key)
+												'checked'	=> set_checkbox('grade_h[]', $key, FALSE)
 											)); ?>
 											<?php echo form_label($val, 'grade_h_' . $key); ?>
 										</div>
@@ -115,12 +152,12 @@
 							<div class="container-fluid" style="padding:0;">
 								<div class="row">
 									<?php foreach( $CONF['subject'] as $key => $val ): ?>
-										<div class="col-3">
+										<div class="col-2">
 											<?php echo form_checkbox(array(
 												'name'	=> 'subject[]',
 												'id'	=> 'subject_' . $key,
 												'value'	=> $key,
-												'checked'	=> set_checkbox('subject[]', $key)
+												'checked'	=> set_checkbox('subject[]', $key, FALSE)
 											)); ?>
 											<?php echo form_label($val, 'subject_' . $key); ?>
 										</div>
@@ -134,12 +171,12 @@
 							<div class="container-fluid" style="padding:0;">
 								<div class="row">
 									<?php foreach( $CONF['period'] as $key => $val ): ?>
-										<div class="col-3">
+										<div class="col-2">
 											<?php echo form_checkbox(array(
 												'name'	=> 'period[]',
 												'id'	=> 'period_' . $key,
 												'value'	=> $key,
-												'checked'	=> set_checkbox('period[]', $key)
+												'checked'	=> set_checkbox('period[]', $key, FALSE)
 											)); ?>
 											<?php echo form_label($val, 'period_' . $key); ?>
 										</div>
@@ -153,12 +190,12 @@
 							<div class="container-fluid" style="padding:0;">
 								<div class="row">
 									<?php foreach( $CONF['publisher'] as $key => $val ): ?>
-										<div class="col-3">
+										<div class="col-2">
 											<?php echo form_checkbox(array(
 												'name'	=> 'publisher[]',
 												'id'	=> 'publisher_' . $key,
 												'value'	=> $key,
-												'checked'	=> set_checkbox('publisher[]', $key)
+												'checked'	=> set_checkbox('publisher[]', $key, FALSE)
 											)); ?>
 											<?php echo form_label($val, 'publisher_' . $key); ?>
 										</div>
@@ -180,46 +217,42 @@
 			</div> <!-- end of .conditions -->
 		<?php echo form_close(); ?>
 
-		<div class="product-list">
-			該当数：2件
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th>&nbsp;</th>
-						<th>教材コード</th>
-						<th>出版社</th>
-						<th>教材名</th>
-						<th>価格</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-							<?php echo form_checkbox(array(
-								'name'	=> 'chk_p1'
-							)); ?>
-						</td>
-						<td>CNK11001801</td>
-						<td>EN</td>
-						<td>標準新演習　小５英語</td>
-						<td>\1,628</td>
-					</tr>
-					<tr>
-						<td>
-							<?php echo form_checkbox(array(
-								'name'	=> 'chk_p1'
-							)); ?>
-						</td>
-						<td>CNK11001802</td>
-						<td>EN</td>
-						<td>標準新演習　小６英語</td>
-						<td>\1,628</td>
-					</tr>
-				</tbody>
-			</table>
-		</div> <!-- end of .product-list -->
+		<?php if( !empty($APPLICABLE) ): ?>
+			<div class="product-list">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>&nbsp;</th>
+							<th>出版社</th>
+							<th>教材名</th>
+							<th>価格</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach( $APPLICABLE as $val ): ?>
+							<tr>
+								<td>
+									<?php echo form_button(array(
+										'name'		=> 'btn_choose',
+										'content'	=> '選択',
+										'class'		=> 'btn-choose',
+										'onclick'	=> 'choose(\'' . $val['product_id'] . '\');'
+									)); ?>
+								</td>
+								<td><?= $CONF['publisher'][$val['publisher']] ?></td>
+								<td><?= $val['name'] ?></td>
+								<td>\<?= number_format($val['sales_price']) ?></td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+
+				<div class="pagination"><?= $PAGINATION ?><?= $SHOWING ?></div>
+			</div> <!-- end of .product-list -->
+		<?php endif; ?>
 	</div> <!-- end of .choose-product-window -->
 
+	<?php $this->load->view('inc/_foot'); ?>
 	<script src="<?= site_url('js/choose_product.js') ?>?var=<?= CACHES_CLEAR_VERSION ?>"></script>
 </body>
 </html>

@@ -5,7 +5,7 @@
 		<?php $this->load->view('inc/header'); ?>
 
 		<div class="container">
-			<?php echo form_open('login/do_login'); ?>
+			<?php echo form_open('index/do_login'); ?>
 				<div class="login">
 					<p class="title">ログイン</p>
 
@@ -15,7 +15,6 @@
 						'class'	=> 'input-item',
 						'placeholder'	=> 'メールアドレス'
 					)); ?>
-					<?= form_error('email') ?>
 					<i class="fa fa-envelope"></i>
 
 					<?php echo form_input(array(
@@ -24,8 +23,9 @@
 						'class'	=> 'input-item',
 						'placeholder'	=> 'パスワード'
 					)); ?>
-					<?= form_error('password') ?>
 					<i class="fa fa-key"></i>
+
+					<?php echo validation_errors(); ?>
 
 					<p class="mt-5 comment">まだ登録がお済みでない方は<a href="<?= site_url('entry') ?>">こちら</a></p>
 					<p class="mb-2 comment">パスワードをお忘れの方は<a href="#">こちら</a></p>

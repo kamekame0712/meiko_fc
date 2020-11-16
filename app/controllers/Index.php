@@ -7,11 +7,14 @@ class Index extends MY_Controller
 		parent::__construct();
 
 		// モデルロード
-//		$this->load->model('m_admin');
+		$this->load->model('m_classroom');
 
 		// 設定ファイルロード
 		$this->config->load('config_disp', TRUE, TRUE);
 		$this->conf = $this->config->item('disp', 'config_disp');
+
+		// バリデーションエラー設定
+		$this->form_validation->set_error_delimiters('<p class="login-error">', '</p>');
 	}
 
 	public function index()
@@ -37,16 +40,39 @@ class Index extends MY_Controller
 		$this->load->view('front/login');
 	}
 
+	public function do_login()
+	{
+		// ログイン済みチェック
+		if( $this->chk_logged_in() ) {
+			redirect('order');
+			return;
+		}
 
+		if( $this->form_validation->run('login') == FALSE ) {
+			$this->load->view('front/login');
+			return;
+		}
 
+		$post_data = $this->input->post();
+		$email = isset($post_data['email']) ? $post_data['email'] : '';
+		$classroom_data = $this->m_classroom->get_one(array('email' => $email));
 
+		if( !empty($classroom_data) ) {
+			$this->session->set_userdata('classroom_id', $classroom_data['classroom_id']);
+			$this->session->set_userdata('classroom_name', $classroom_data['name']);
 
+			redirect('order');
+		}
+		else {
+			$this->login();
+		}
+	}
 
+	public function logout()
+	{
+		$this->session->unset_userdata('classroom_id');
+		$this->session->unset_userdata('classroom_name');
 
-
-
-
-
-
-
+		redirect('index');
+	}
 }

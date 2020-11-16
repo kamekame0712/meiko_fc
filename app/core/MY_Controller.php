@@ -63,14 +63,14 @@ class MY_Controller extends CI_Controller
 	public function possible_login()
 	{
 		// モデルロード
-		$this->load->model('m_juku');
+		$this->load->model('m_classroom');
 
-		$login_id = isset($_POST['login_id']) ? $_POST['login_id'] : '';
+		$email = isset($_POST['email']) ? $_POST['email'] : '';
 		$password = isset($_POST['password']) ? $_POST['password'] : '';
 
-		$login_flg = $this->m_juku->possible_login($login_id, $password);
+		$login_flg = $this->m_classroom->possible_login($email, $password);
 		if( $login_flg == FALSE ) {
-			$this->form_validation->set_message('possible_login', '入力内容に誤りがあります。');
+			$this->form_validation->set_message('possible_login', 'ご入力の内容ではログインできません。');
 			return FALSE;
 		}
 

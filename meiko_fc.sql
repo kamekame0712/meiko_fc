@@ -39,9 +39,11 @@ CREATE TABLE `t_classroom` (
   `parent_id` int(7) NOT NULL COMMENT '親教室のclassroom_id（親自身はclassroom_idと同じ）',
   `email` varchar(256) DEFAULT NULL COMMENT 'メールアドレス',
   `password` varchar(256) NOT NULL COMMENT 'パスワード',
+  `gmo_member_id` varchar(64) DEFAULT NULL COMMENT 'GMO登録ID',
   `regist_time` datetime NOT NULL COMMENT '登録日',
   `update_time` datetime NOT NULL COMMENT '更新日',
   `status` varchar(1) DEFAULT '0' COMMENT '状態 0:通常 9:削除済',
 
   PRIMARY KEY (classroom_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+

@@ -73,6 +73,30 @@ class Index extends MY_Controller
 		$this->session->unset_userdata('classroom_id');
 		$this->session->unset_userdata('classroom_name');
 
+		if( $this->input->cookie('order_complete') ) {
+			delete_cookie('order_complete');
+		}
+
+		if( $this->input->cookie('product_list') ) {
+			delete_cookie('product_list');
+		}
+
+		if( $this->input->cookie('payment_method') ) {
+			delete_cookie('payment_method');
+		}
+
+		if( $this->input->cookie('delivery_date') ) {
+			delete_cookie('delivery_date');
+		}
+
+		if( $this->input->cookie('delivery_time') ) {
+			delete_cookie('delivery_time');
+		}
+
+		if( $this->input->cookie('note') ) {
+			delete_cookie('note');
+		}
+
 		redirect('index');
 	}
 }

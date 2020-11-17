@@ -12,9 +12,6 @@ class Order extends MY_Controller
 		// 設定ファイルロード
 		$this->config->load('config_disp', TRUE, TRUE);
 		$this->conf = $this->config->item('disp', 'config_disp');
-
-		// ヘルパーロード
-		$this->load->helper('cookie');
 	}
 
 	public function index()
@@ -31,8 +28,6 @@ class Order extends MY_Controller
 		}
 
 		$post_data = $this->input->post();
-
-//$post_data['product_id'] = 60;
 
 		// 商品
 		if( $this->input->cookie('product_list') ) {
@@ -193,6 +188,24 @@ class Order extends MY_Controller
 		}
 */
 
+		if( !empty($post_data) ) {
+			redirect('order');
+		}
+
+		// クレジットカード有効期限
+		$yy = array();
+		$wk_year = intval(date('y'));
+		for( $i = 0; $i < 15; $i++ ) {
+			$year = sprintf('%02d', $wk_year + $i);
+			$yy[$year] = $year;
+		}
+
+		$mm = array();
+		for( $i = 1; $i <= 12; $i++ ) {
+			$month = sprintf('%02d', $i);
+			$mm[$month] = $month;
+		}
+
 		$view_data = array(
 			'PLIST'			=> $product_list,
 			'TOTAL_QUANTITY'=> $total_quantity,
@@ -202,10 +215,38 @@ class Order extends MY_Controller
 			'DELIVERY_TIME'	=> $delivery_time,
 			'SELECT_DATE'	=> $select_date,
 			'SELECT_TIME'	=> $select_time,
-//			'NOTE'			=> $note
+//			'NOTE'			=> $note,
+			'YY'			=> $yy,
+			'MM'			=> $mm
 		);
 
 		$this->load->view('front/order/index', $view_data);
+	}
+
+	public function confirm()
+	{
+		// ログイン済みチェック
+		if( !$this->chk_logged_in() ) {
+			redirect('index');
+			return;
+		}
+
+		// リロード対策
+		if( $this->input->cookie('order_complete') ) {
+			delete_cookie('order_complete');
+		}
+
+		$post_data = $this->input->post();
+
+
+echo '<pre>';
+print_r($post_data);
+echo '</pre>';
+
+
+
+
+
 	}
 
 	public function remove_order($product_id = '')

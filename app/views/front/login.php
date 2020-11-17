@@ -2,41 +2,48 @@
 
 <body>
 	<div id="wrapper">
-		<?php $this->load->view('inc/header'); ?>
+		<?php $this->load->view('inc/header', array('MENU' => FALSE)); ?>
 
 		<div class="container">
-			<?php echo form_open('index/do_login'); ?>
-				<div class="login">
-					<p class="title">ログイン</p>
+			<div class="for-pc">
+				<?php echo form_open('index/do_login'); ?>
+					<div class="login">
+						<p class="title">ログイン</p>
 
-					<?php echo form_input(array(
-						'name'	=> 'email',
-						'value'	=> set_value('email', ''),
-						'class'	=> 'input-item',
-						'placeholder'	=> 'メールアドレス'
-					)); ?>
-					<i class="fa fa-envelope"></i>
+						<?php echo form_input(array(
+							'name'	=> 'email',
+							'value'	=> set_value('email', ''),
+							'class'	=> 'input-item',
+							'placeholder'	=> 'メールアドレス'
+						)); ?>
+						<i class="fa fa-envelope"></i>
 
-					<?php echo form_input(array(
-						'name'	=> 'password',
-						'type'	=> 'password',
-						'class'	=> 'input-item',
-						'placeholder'	=> 'パスワード'
-					)); ?>
-					<i class="fa fa-key"></i>
+						<?php echo form_input(array(
+							'name'	=> 'password',
+							'type'	=> 'password',
+							'class'	=> 'input-item',
+							'placeholder'	=> 'パスワード'
+						)); ?>
+						<i class="fa fa-key"></i>
 
-					<?php echo validation_errors(); ?>
+						<?php echo validation_errors(); ?>
 
-					<p class="mt-5 comment">まだ登録がお済みでない方は<a href="<?= site_url('entry') ?>">こちら</a></p>
-					<p class="mb-2 comment">パスワードをお忘れの方は<a href="#">こちら</a></p>
+						<p class="mt-5 comment">まだ登録がお済みでない方は<a href="<?= site_url('entry') ?>">こちら</a></p>
+						<p class="mb-2 comment">パスワードをお忘れの方は<a href="#">こちら</a></p>
 
-					<?php echo form_submit(array(
-						'name'	=> 'btn-submit',
-						'value'	=> 'ログイン',
-						'class'	=> 'btn-submit'
-					)); ?>
-				</div> <!-- end of login-box -->
-			<?php echo form_close(); ?>
+						<?php echo form_submit(array(
+							'name'	=> 'btn-submit',
+							'value'	=> 'ログイン',
+							'class'	=> 'btn-submit'
+						)); ?>
+					</div> <!-- end of login-box -->
+				<?php echo form_close(); ?>
+			</div>
+
+			<div class="for-sp">
+				当サイトはスマホ・タブレットに対応しておりません。<br>
+				申し訳ございませんが、PCでのアクセスをお願いします。
+			</div>
 		</div> <!-- end of container -->
 
 		<?php $this->load->view('inc/_foot'); ?>

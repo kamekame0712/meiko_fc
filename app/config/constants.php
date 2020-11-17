@@ -95,6 +95,9 @@ const SITE_NAME				= '明光義塾FC専用テキスト発注';
 // CSSやJSの変更を正しく反映させるためキャッシュをクリアする必要があるときに変更
 const CACHES_CLEAR_VERSION	= '20200918_1';
 
+// GMOのオーダーIDにつける先頭文字列
+const GMO_PREFIX			= 'meikofc-';
+
 // ページネーション ページあたりのデータ件数
 const RECORD_PER_PAGE		= 20;
 

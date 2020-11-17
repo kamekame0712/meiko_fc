@@ -43,6 +43,15 @@ $('input[name^="num_"]').change( function() {
 	});
 });
 
+$('input[name="payment_method"]').change( function() {
+	if( $('input[name="payment_method"]:checked').val() == '2' ) {
+		$('#credit').slideDown();
+	}
+	else {
+		$('#credit').slideUp();
+	}
+});
+
 function do_submit()
 {
 	var q = 0;
@@ -67,6 +76,50 @@ function do_submit()
 		return false;
 	}
 
-	$('#frm_order').prop('action', SITE_URL + 'order/confirm').submit();
+	if( $('#pm2').prop('checked') ) {
+		Multipayment.init('tshop00022859');
+		Multipayment.getToken({
+			cardno: $('#number').val(),
+			expire: $('#limit_y').val() + $('#limit_m').val(),
+			securitycode: $('#security_code').val(),
+			holdername : $('#holder').val()
+		},callback_gmo);
+	}
+	else {
+		$('#frm_order').prop('action', SITE_URL + 'order/confirm').submit();
+	}
 	return true;
+}
+
+function callback_gmo(response)
+{
+	var resultCode = response.resultCode;
+
+	if( resultCode == '000' ) {
+		// カード情報はPOSTさせない
+		$('#number').val('');
+		$('#limit_y').val('');
+		$('#limit_m').val('');
+		$('#security_code').val('');
+		$('#holder').val('');
+
+		$('#gmo_token').val(response.tokenObject.token);
+		$('#gmo_maskedCardNo').val(response.tokenObject.maskedCardNo);
+		$('#frm_order').prop('action', SITE_URL + 'order/confirm').submit();
+	}
+	else if( resultCode == '100' || resultCode == '101' || resultCode == '102' ) {
+		$('#token_error').html('<p class="error-box2">カード番号に誤りがあります。</p>');
+	}
+	else if( resultCode == '110' || resultCode == '111' || resultCode == '112' || resultCode == '113' ) {
+		$('#token_error').html('<p class="error-box2">有効期限に誤りがあります。</p>');
+	}
+	else if( resultCode == '121' || resultCode == '122' ) {
+		$('#token_error').html('<p class="error-box2">セキュリティコードに誤りがあります。</p>');
+	}
+	else if( resultCode == '131' || resultCode == '132' ) {
+		$('#token_error').html('<p class="error-box2">名義人名に誤りがあります。</p>');
+	}
+	else {
+		$('#token_error').html('<p class="error-box2">クレジット決済時にエラーが発生しました。</p>');
+	}
 }

@@ -6,3 +6,4 @@
 <script>
 	var SITE_URL='<?= site_url() ?>';
 </script>
+<script src="<?= base_url('js/common.js') ?>"></script>

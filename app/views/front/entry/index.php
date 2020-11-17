@@ -2,7 +2,7 @@
 
 <body>
 	<div id="wrapper">
-		<?php $this->load->view('inc/header'); ?>
+		<?php $this->load->view('inc/header', array('MENU' => TRUE)); ?>
 
 		<div class="container">
 			<p class="lead-title">お客様情報登録</p>

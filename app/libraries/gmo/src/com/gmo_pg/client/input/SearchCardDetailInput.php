@@ -54,6 +54,10 @@ class SearchCardDetailInput extends BaseInput {
 	 * @var string 検索タイプ
 	 */
 	private $searchType;
+	/**
+	 * @var  string 可変マスク
+	 */
+	private $useFloatingMask;
 
 	/**
 	 * コンストラクタ
@@ -144,6 +148,14 @@ class SearchCardDetailInput extends BaseInput {
 	}
 
 	/**
+	 * 可変マスク取得
+	 * @return string 可変マスク
+	 */
+	public function getUseFloatingMask(){
+	    return $this->useFloatingMask;
+	}
+
+	/**
 	 * ショップID設定
 	 *
 	 * @param string $shopID
@@ -231,6 +243,13 @@ class SearchCardDetailInput extends BaseInput {
 	public function setSearchType($searchType) {
 	    $this->searchType = $searchType;
 	}
+	/**
+	 * 可変マスク設定
+	 * @param string $useFloatingMask 登録カード連番
+	 */
+	public function setUseFloatingMask($useFloatingMask){
+	    $this->useFloatingMask = $useFloatingMask;
+	}
 
 	/**
 	 * デフォルト値設定
@@ -261,6 +280,7 @@ class SearchCardDetailInput extends BaseInput {
 		$this->setCardSeq($this->getStringValue($params, 'CardSeq', $this->getCardSeq()));
 		$this->setToken($this->getStringValue($params, 'Token', $this->getToken()));
 		$this->setSearchType($this->getStringValue($params, 'SearchType', $this->getSearchType()));
+		$this->setUseFloatingMask($this->getStringValue($params, 'useFloatingMask', $this->getUseFloatingMask()));
 
 	}
 
@@ -291,6 +311,8 @@ class SearchCardDetailInput extends BaseInput {
 		$str .= 'Token=' . $this->encodeStr($this->getToken());
 		$str .='&';
 		$str .= 'SearchType=' . $this->encodeStr($this->getSearchType());
+		$str .='&';
+		$str .= 'useFloatingMask=' . $this->encodeStr($this->getUseFloatingMask());
 
 	    return $str;
 	}

@@ -40,6 +40,7 @@ class SearchTradeMultiInput extends BaseInput {
 	 * 11：ソフトバンクケータイ支払い決済
 	 * 12：じぶん銀行決済
 	 * 13：au継続課金
+	 * 41：多通貨クレジット決済（DCC)
 	 * 30：PGプリカ
 	 * 14：JCBプリカ
 	 * 16：NET CASH
@@ -60,6 +61,11 @@ class SearchTradeMultiInput extends BaseInput {
 	 * 34：ソフトバンクまとめて支払い(Ｂ)(利用承諾)
 	 * 35：Paysle
 	 * 36：GANB
+	 * 38：Amazon Pay
+	 * 39：FamiPay
+	 * 40：エポスかんたん決済
+	 * 43：メルペイ
+	 * 45：PayPay
 
 	 *
 	 * @var string

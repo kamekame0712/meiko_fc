@@ -21,6 +21,9 @@ class M_mail extends CI_Model {
 			'send_multipart' => FALSE
 		);
 
+//		$config['wordwrap'] = FALSE;
+//		$config['charset'] = 'iso-2022-jp';
+//		$config['crlf'] = '\r\n';
 		$this->email->initialize($config);
 	}
 
@@ -41,8 +44,15 @@ class M_mail extends CI_Model {
 		$this->email->to($params['to']);
 		$this->email->reply_to($from, $from_name_enc);
 
+		// Subjectをエンコード
+//		$subject = mb_convert_encoding($params['subject'], 'ISO-2022-JP', 'UTF-8');
+//		$this->email->subject($subject);
+
+//		$this->email->subject($params['subject']);
+
 		$subject = '=?iso-2022-jp?B?' . base64_encode(mb_convert_encoding($params['subject'], 'JIS', 'UTF-8')) . '?=';
 		$this->email->subject($subject);
+
 
 		$this->email->message(mb_convert_encoding($params['message'], 'ISO-2022-JP', 'UTF-8'));
 		$ret = $this->email->send();

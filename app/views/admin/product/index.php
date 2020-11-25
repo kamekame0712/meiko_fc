@@ -1,4 +1,4 @@
-<?php $this->load->view('inc/admin/_head', array('TITLE' => 'テキスト管理 | ' . SITE_NAME)); ?>
+<?php $this->load->view('inc/admin/_head', array('TITLE' => '教材管理 | ' . SITE_NAME)); ?>
 
 <body>
 	<div id="app">
@@ -9,7 +9,7 @@
 			<div class="main-content">
 				<section class="section">
 					<div class="section-header">
-						<h1>テキスト管理</h1>
+						<h1>教材管理</h1>
 					</div>
 
 					<div class="section-body">

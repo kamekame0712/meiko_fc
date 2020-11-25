@@ -95,7 +95,7 @@ class MY_Controller extends CI_Controller
 		return TRUE;
 	}
 
-	// テキスト管理 ⇒ SMILEコード
+	// 教材管理 ⇒ SMILEコード
 	public function exists_smilecode($code_smile)
 	{
 		// モデルロード

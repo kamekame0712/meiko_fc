@@ -104,6 +104,15 @@ class EntryExecTranOutput {
 	public function getApprovalNo(){
 		return $this->execTranOutput->getApprovalNo();
 	}
+
+	/**
+	 * 3Dセキュアフラグ取得
+	 * @return string 3Dセキュアフラグ
+	 */
+	public function getSecureFlag(){
+	    return $this->execTranOutput->getSecureFlag();
+	}
+
 	/**
 	 * 支払回数取得
 	 * @return integer 支払回数
@@ -185,6 +194,13 @@ class EntryExecTranOutput {
 	}
 
 	/**
+	 * ActiveServerへのリダイレクトURL取得
+	 */
+	public  function getRedirectUrl() {
+	    return $this->execTranOutput->getRedirectUrl();
+	}
+
+	/**
 	 * 取引登録出力パラメータ設定
 	 *
 	 * @param EntryTranOutput  $entryTranOutput 取引登録出力パラメータ
@@ -252,6 +268,14 @@ class EntryExecTranOutput {
 	 */
 	public function setApprovalNo( $approvalNo ){
 		$this->execTranOutput->setApprovalNo( $approvalNo );
+	}
+
+	/**
+	 * 3Dセキュアフラグ設定
+	 * @param string $flag 3Dセキュアフラグ
+	 */
+	public function setSecureFlag( $flag ){
+	    $this->execTranOutput->setSecureFlag($flag);
 	}
 
 	/**
@@ -353,6 +377,13 @@ class EntryExecTranOutput {
 	}
 
 	/**
+	 * ActiveServerへのリダイレクトURLを設定
+	 */
+	public function setRedirectUrl($redirectUrl) {
+	    $this->execTranOutput->setRedirectUrl($redirectUrl);
+	}
+
+	/**
 	 * 取引登録エラーリスト取得
 	 * @return  array エラーリスト
 	 */
@@ -402,5 +433,12 @@ class EntryExecTranOutput {
 		return $this->execTranOutput->isTdSecure();
 	}
 
+	/**
+	 * 3Dセキュア2.0判定
+	 * @return boolean 3Dセキュア2.0実行要否フラグ(true=3Dセキュア2.0実行要)
+	 */
+	public function isTdSecure2() {
+	    return $this->execTranOutput->isTdSecure2();
+	}
 }
 ?>

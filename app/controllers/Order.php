@@ -8,13 +8,17 @@ class Order extends MY_Controller
 
 		// モデルロード
 		$this->load->model('m_product');
+		$this->load->model('m_order');
+		$this->load->model('m_order_detail');
+		$this->load->model('m_classroom');
+		$this->load->model('m_gmo');
 
 		// 設定ファイルロード
 		$this->config->load('config_disp', TRUE, TRUE);
 		$this->conf = $this->config->item('disp', 'config_disp');
 	}
 
-	public function index()
+	public function index($error_message = '')
 	{
 		// ログイン済みチェック
 		if( !$this->chk_logged_in() ) {
@@ -29,12 +33,30 @@ class Order extends MY_Controller
 
 		$post_data = $this->input->post();
 
-		// 商品
-		if( $this->input->cookie('product_list') ) {
-			$product_list = unserialize($this->input->cookie('product_list'));
+		// 教材
+		if( $this->input->cookie('product_ids') ) {
+			$product_ids = unserialize($this->input->cookie('product_ids'));
 		}
 		else {
-			$product_list = array();
+			$product_ids = array();
+		}
+
+		$product_list = array();
+		if( !empty($product_ids) ) {
+			foreach( $product_ids as $wk_product_id => $val) {
+				$wk_product_data = $this->m_product->get_one(array('product_id' => $wk_product_id));
+				if( !empty($wk_product_data) ) {
+					$product_list[$wk_product_id] = array(
+						'publisher'		=> $wk_product_data['publisher'],
+						'publisher_name'=> $this->conf['publisher'][$wk_product_data['publisher']],
+						'product_name'	=> $wk_product_data['name'],
+						'normal_price'	=> $wk_product_data['normal_price'],
+						'sales_price'	=> $wk_product_data['sales_price'],
+						'quantity'		=> $val,
+						'sub_total'		=> intval($wk_product_data['sales_price']) * intval($val)
+					);
+				}
+			}
 		}
 
 		$total_quantity = 0;
@@ -78,10 +100,15 @@ class Order extends MY_Controller
 		}
 
 		if( !empty($product_list) ) {
+			$product_ids = array();
+			foreach( $product_list as $product_id => $val ) {
+				$product_ids[$product_id] = $val['quantity'];
+			}
+
 			$cookie_save_data = array(
-				'name'	=> 'product_list',
-				'value'	=> serialize($product_list),
-				'expire'=> '3600'
+				'name'	=> 'product_ids',
+				'value'	=> serialize($product_ids),
+				'expire'=> '86400'
 			);
 			$this->input->set_cookie($cookie_save_data);
 		}
@@ -94,7 +121,7 @@ class Order extends MY_Controller
 			$cookie_save_data = array(
 				'name'	=> 'payment_method',
 				'value'	=> $payment_method,
-				'expire'=> '3600'
+				'expire'=> '86400'
 			);
 			$this->input->set_cookie($cookie_save_data);
 		}
@@ -111,7 +138,7 @@ class Order extends MY_Controller
 			$cookie_save_data = array(
 				'name'	=> 'delivery_date',
 				'value'	=> $delivery_date,
-				'expire'=> '3600'
+				'expire'=> '86400'
 			);
 			$this->input->set_cookie($cookie_save_data);
 		}
@@ -128,7 +155,7 @@ class Order extends MY_Controller
 			$cookie_save_data = array(
 				'name'	=> 'delivery_time',
 				'value'	=> $delivery_time,
-				'expire'=> '3600'
+				'expire'=> '86400'
 			);
 			$this->input->set_cookie($cookie_save_data);
 		}
@@ -157,15 +184,6 @@ class Order extends MY_Controller
 			$select_date[$target_date] = $target_date . '(' . $w[date('w', strtotime($target_date))] . ')';
 		}
 
-		$select_time = array(
-			''	=> '指定なし',
-			'1'	=> '午前',
-			'2'	=> '14～16時',
-			'3'	=> '16～18時',
-			'4'	=> '18～20時',
-			'5'	=> '19～21時'
-		);
-
 /*
 		// 備考
 		$note = '';
@@ -176,7 +194,7 @@ class Order extends MY_Controller
 				$cookie_save_data = array(
 					'name'	=> 'note',
 					'value'	=> $note,
-					'expire'=> '3600'
+					'expire'=> '86400'
 				);
 				$this->input->set_cookie($cookie_save_data);
 			}
@@ -188,8 +206,20 @@ class Order extends MY_Controller
 		}
 */
 
-		if( !empty($post_data) ) {
+		if( !empty($post_data) && $error_message == '' ) {
 			redirect('order');
+		}
+
+		// クレジットカード情報
+		$classroom_id = $this->session->userdata('classroom_id');
+		$classroom_data = $this->m_classroom->get_one(array('classroom_id' => $classroom_id));
+		$gmo_member_id = isset($classroom_data['gmo_member_id']) ? $classroom_data['gmo_member_id'] : '';
+		$card = array();
+		if( !empty($gmo_member_id) ) {
+			$card = $this->m_gmo->search_card($gmo_member_id);
+			if( !is_array($card) ) {
+				$card = array();
+			}
 		}
 
 		// クレジットカード有効期限
@@ -207,15 +237,18 @@ class Order extends MY_Controller
 		}
 
 		$view_data = array(
+			'ERROR_MESSAGE'	=> $error_message,
+			'CONF'			=> $this->conf,
 			'PLIST'			=> $product_list,
+			'SHIPPING_FEE'	=> $this->get_shipping_fee($total_cost),
 			'TOTAL_QUANTITY'=> $total_quantity,
 			'TOTAL_COST'	=> $total_cost,
 			'PAYMENT'		=> $payment_method,
 			'DELIVERY_DATE'	=> $delivery_date,
 			'DELIVERY_TIME'	=> $delivery_time,
 			'SELECT_DATE'	=> $select_date,
-			'SELECT_TIME'	=> $select_time,
 //			'NOTE'			=> $note,
+			'CARD'			=> $card,
 			'YY'			=> $yy,
 			'MM'			=> $mm
 		);
@@ -238,29 +271,325 @@ class Order extends MY_Controller
 
 		$post_data = $this->input->post();
 
+		$product_list = array();
+		if( $this->input->cookie('product_ids') ) {
+			$product_ids = unserialize($this->input->cookie('product_ids'));
 
-echo '<pre>';
-print_r($post_data);
-echo '</pre>';
+			if( !empty($product_ids) ) {
+				foreach( $product_ids as $wk_product_id => $val) {
+					if( $val != '0' ) {
+						$wk_product_data = $this->m_product->get_one(array('product_id' => $wk_product_id));
+						if( !empty($wk_product_data) ) {
+							$product_list[$wk_product_id] = array(
+								'publisher'		=> $wk_product_data['publisher'],
+								'publisher_name'=> $this->conf['publisher'][$wk_product_data['publisher']],
+								'product_name'	=> $wk_product_data['name'],
+								'normal_price'	=> $wk_product_data['normal_price'],
+								'sales_price'	=> $wk_product_data['sales_price'],
+								'quantity'		=> $val,
+								'sub_total'		=> intval($wk_product_data['sales_price']) * intval($val)
+							);
+						}
+					}
+				}
+			}
+		}
 
+		$cookie_save_data = array(
+			'name'	=> 'payment_method',
+			'value'	=> $post_data['payment_method'],
+			'expire'=> '86400'
+		);
+		$this->input->set_cookie($cookie_save_data);
 
+		$cookie_save_data = array(
+			'name'	=> 'delivery_date',
+			'value'	=> $post_data['delivery_date'],
+			'expire'=> '86400'
+		);
+		$this->input->set_cookie($cookie_save_data);
 
+		$cookie_save_data = array(
+			'name'	=> 'delivery_time',
+			'value'	=> $post_data['delivery_time'],
+			'expire'=> '86400'
+		);
+		$this->input->set_cookie($cookie_save_data);
 
+		$total_quantity = 0;
+		$total_cost = 0;
+		if( !empty($product_list) ) {
+			foreach( $product_list as $val ) {
+				$total_quantity += intval($val['quantity']);
+				$total_cost += intval($val['sub_total']);
+			}
+		}
 
+		$view_data = array(
+			'CONF'			=> $this->conf,
+			'PDATA'			=> $post_data,
+			'PLIST'			=> $product_list,
+			'SHIPPING_FEE'	=> $this->get_shipping_fee($total_cost),
+			'TOTAL_QUANTITY'=> $total_quantity,
+			'TOTAL_COST'	=> $total_cost
+		);
+
+		$this->load->view('front/order/confirm', $view_data);
+	}
+
+	public function complete()
+	{
+		// ログイン済みチェック
+		if( !$this->chk_logged_in() ) {
+			redirect('index');
+			return;
+		}
+
+		// リロード対策
+		if( $this->input->cookie('order_complete') ) {
+			redirect('order');
+		}
+		else {
+			$cookie_data = array(
+				'name'	=> 'order_complete',
+				'value'	=> '1',
+				'expire'=> '86400'
+			);
+			$this->input->set_cookie($cookie_data);
+		}
+
+		$post_data = $this->input->post();
+		$payment_method = isset($post_data['payment_method']) ? $post_data['payment_method'] : '';
+		$delivery_date = isset($post_data['delivery_date']) ? $post_data['delivery_date'] : '';
+		$delivery_time = isset($post_data['delivery_time']) ? $post_data['delivery_time'] : '';
+		$sub_total = isset($post_data['total_cost']) ? $post_data['total_cost'] : '';
+		$shipping_fee = isset($post_data['shipping_fee']) ? $post_data['shipping_fee'] : '';
+		$gmo_token = isset($post_data['gmo_token']) ? $post_data['gmo_token'] : '';
+		$chk_register = isset($post_data['chk_register']) ? $post_data['chk_register'] : '';
+		$card_type = isset($post_data['card_type']) ? $post_data['card_type'] : '';
+		$holder_name = isset($post_data['holder']) ? $post_data['holder'] : '';
+		$sequence = isset($post_data['registered_card']) ? $post_data['registered_card'] : '';
+
+		$products = array();
+		if( !empty($post_data) ) {
+			foreach( $post_data as $key => $val ) {
+				if( $val != '0' ) {
+					if( strpos($key, 'num_') === 0 ) {
+						$wk = explode('_', $key);
+						if( !empty($wk[1]) ) {
+							$wk_product = isset($post_data[$wk[1]]) ? $post_data[$wk[1]] : '';
+							$products[] = array(
+								'product_id'	=> $wk[1],
+								'quantity'		=> $val,
+								'publisher_name'=> isset($wk_product['publisher_name']) ? $wk_product['publisher_name'] : '',
+								'product_name'=> isset($wk_product['product_name']) ? $wk_product['product_name'] : '',
+								'sales_price'=> isset($wk_product['sales_price']) ? $wk_product['sales_price'] : '',
+								'sub_total'=> isset($wk_product['sub_total']) ? $wk_product['sub_total'] : ''
+							);
+						}
+					}
+				}
+			}
+		}
+
+		$this->db->trans_begin();
+
+		$now = date('Y-m-d H:i:s');
+		$classroom_id = $this->session->userdata('classroom_id');
+		$classroom_data = $this->m_classroom->get_one(array('classroom_id' => $classroom_id));
+		$card_error = FALSE;
+
+		$insert_data_order = array(
+			'classroom_id'		=> $classroom_id,
+			'payment_method'	=> $payment_method,
+			'delivery_date'		=> $delivery_date == '' ? NULL : $delivery_date,
+			'delivery_time'		=> $delivery_time,
+			'memo'				=> '',
+			'shipping_fee'		=> $shipping_fee,
+			'sub_total'			=> $sub_total,
+			'total_cost'		=> intval($shipping_fee) + intval($sub_total),
+			'regist_time'		=> $now,
+			'update_time'		=> $now,
+			'status'			=> '0'
+		);
+		$order_id = $this->m_order->insert($insert_data_order);
+
+		if( !empty($order_id) && !empty($products) ) {
+			foreach( $products as $val ) {
+				$insert_data_detail = array(
+					'order_id'			=> $order_id,
+					'product_id'		=> $val['product_id'],
+					'quantity'			=> $val['quantity'],
+					'publisher_name'	=> $val['publisher_name'],
+					'product_name'		=> $val['product_name'],
+					'sales_price'		=> $val['sales_price'],
+					'sub_total'			=> $val['sub_total'],
+					'regist_time'		=> $now,
+					'update_time'		=> $now,
+					'status'			=> '0'
+				);
+				$this->m_order_detail->insert($insert_data_detail);
+			}
+
+			// クレジットカード処理
+			if( $payment_method == '2' ) {
+				$gmo_order_id = GMO_PREFIX . $order_id;
+				$gmo_member_id = !empty($classroom_data['gmo_member_id']) ? $classroom_data['gmo_member_id'] : '';
+
+				if( $card_type == '1' ) {
+					// 取引登録
+					$ret_et_val = $this->m_gmo->entry_tran($gmo_order_id, intval($shipping_fee) + intval($sub_total));
+					if( !is_array($ret_et_val) || empty($ret_et_val['accessId']) || empty($ret_et_val['accessPass']) ) {
+						$this->db->trans_rollback();
+						$this->index($ret_et_val);
+						return;
+					}
+					else {
+						// 決済
+						$ret_ex_val = $this->m_gmo->exec_tran_registered($gmo_order_id, $ret_et_val['accessId'], $ret_et_val['accessPass'], $gmo_member_id, $sequence);
+						if( !is_array($ret_ex_val) ) {
+							$this->db->trans_rollback();
+							$this->index($ret_ex_val);
+							return;
+						}
+						else {
+							if( $chk_register == '1' && $gmo_member_id != '' && $card_error == FALSE ) {
+								if( $chk_register == '1' ) {
+									$ret_tc_val = $this->m_gmo->traded_card($gmo_order_id, $gmo_member_id, $holder_name);
+									if( !is_array($ret_tc_val) ) {
+										$card_error = TRUE;
+									}
+								}
+							}
+						}
+					}
+				}
+				else if( $card_type == '2' ) {
+					if( $chk_register == '1' ) {
+						if( $gmo_member_id == '' ) {
+							// 会員登録
+							$gmo_member_id = GMO_PREFIX . $classroom_id;
+							$ret_sm_val = $this->m_gmo->save_member($gmo_member_id);
+							if( !is_array($ret_sm_val) ) {
+								$card_error = TRUE;
+							}
+							else {
+								$update_data_classroom = array(
+									'gmo_member_id'	=> $gmo_member_id,
+									'update_time'	=> date('Y-m-d H:i:s')
+								);
+								$this->m_classroom->update(array('classroom_id' => $classroom_id), $update_data_classroom);
+							}
+						}
+					}
+
+					// 取引登録
+					$ret_et_val = $this->m_gmo->entry_tran($gmo_order_id, intval($shipping_fee) + intval($sub_total));
+					if( !is_array($ret_et_val) || empty($ret_et_val['accessId']) || empty($ret_et_val['accessPass']) ) {
+						$this->db->trans_rollback();
+						$this->index($ret_et_val);
+						return;
+					}
+					else {
+						// 決済
+						$ret_ex_val = $this->m_gmo->exec_tran_token($gmo_order_id, $ret_et_val['accessId'], $ret_et_val['accessPass'], $gmo_token);
+						if( !is_array($ret_ex_val) ) {
+							$this->db->trans_rollback();
+							$this->index($ret_ex_val);
+							return;
+						}
+						else {
+							if( $chk_register == '1' && $gmo_member_id != '' && $card_error == FALSE ) {
+								if( $chk_register == '1' ) {
+									$ret_tc_val = $this->m_gmo->traded_card($gmo_order_id, $gmo_member_id, $holder_name);
+									if( !is_array($ret_tc_val) ) {
+										$card_error = TRUE;
+									}
+								}
+							}
+						}
+					}
+				}
+				else {
+					$this->db->trans_rollback();
+					$this->index('クレジットカード決済に失敗しました。申し訳ございませんが、別のクレジットカードをご利用いただくか、その他のお支払方法をお願いします。');
+					return;
+				}
+			}
+		}
+
+		if( $this->db->trans_status() === FALSE ) {
+			$this->db->trans_rollback();
+			$this->index('発注に失敗しました。申し訳ございませんが、しばらく時間を空け、再度ご注文ください。');
+			return;
+		}
+		else {
+			$this->db->trans_commit();
+		}
+
+		if( $this->input->cookie('product_ids') ) {
+			delete_cookie('product_ids');
+		}
+
+		if( $this->input->cookie('payment_method') ) {
+			delete_cookie('payment_method');
+		}
+
+		if( $this->input->cookie('delivery_date') ) {
+			delete_cookie('delivery_date');
+		}
+
+		if( $this->input->cookie('delivery_time') ) {
+			delete_cookie('delivery_time');
+		}
+
+		if( $this->input->cookie('note') ) {
+			delete_cookie('note');
+		}
+
+		// 確認メール送信
+		// モデルロード
+		$this->load->model('m_mail');
+
+		// 設定ファイルロード
+		$this->config->load('config_mail', TRUE, TRUE);
+		$this->conf_mail = $this->config->item('mail', 'config_mail');
+
+		$mail_data = array(
+
+		);
+
+		$mail_body = $this->load->view('mail/tmpl_apply_comp_to_customer', $mail_data, TRUE);
+		$params = array(
+			'from'		=> $this->conf_mail['apply_comp_to_customer']['from'],
+			'from_name'	=> $this->conf_mail['apply_comp_to_customer']['from_name'],
+			'to'		=> $classroom_data['email'],
+			'subject'	=> 'ご注文ありがとうございます（自動送信メール）',
+			'message'	=> $mail_body
+		);
+
+		$this->m_mail->send($params);
+
+		$view_data = array(
+			'CARD_ERROR'	=> $card_error,
+			'EMAIL'			=> $email
+		);
+
+		$this->load->view('front/order/complete', $view_data);
 	}
 
 	public function remove_order($product_id = '')
 	{
 		if( $product_id != '' ) {
-			if( $this->input->cookie('product_list') ) {
-				$product_list = unserialize($this->input->cookie('product_list'));
-				if( array_key_exists($product_id, $product_list) ) {
-					unset($product_list[$product_id]);
+			if( $this->input->cookie('product_ids') ) {
+				$product_ids = unserialize($this->input->cookie('product_ids'));
+				if( array_key_exists($product_id, $product_ids) ) {
+					unset($product_ids[$product_id]);
 
 					$cookie_save_data = array(
-						'name'	=> 'product_list',
-						'value'	=> serialize($product_list),
-						'expire'=> '3600'
+						'name'	=> 'product_ids',
+						'value'	=> serialize($product_ids),
+						'expire'=> '86400'
 					);
 					$this->input->set_cookie($cookie_save_data);		
 				}
@@ -272,8 +601,21 @@ echo '</pre>';
 
 	public function remove_all_order()
 	{
-		if( $this->input->cookie('product_list') ) {
-			delete_cookie('product_list');
+		if( $this->input->cookie('product_ids') ) {
+			delete_cookie('product_ids');
+		}
+
+		redirect('order');
+	}
+
+	public function remove_card($card_sequence = 0)
+	{
+		$classroom_id = $this->session->userdata('classroom_id');
+		$classroom_data = $this->m_classroom->get_one(array('classroom_id' => $classroom_id));
+		$gmo_member_id = isset($classroom_data['gmo_member_id']) ? $classroom_data['gmo_member_id'] : '';
+
+		if( !empty($gmo_member_id) ) {
+			$this->m_gmo->delete_card($gmo_member_id, $card_sequence);
 		}
 
 		redirect('order');
@@ -306,43 +648,21 @@ echo '</pre>';
 
 			list($applicable_product, $total) = $this->m_product->get_applicable($conditions, $page);
 
-			$showing_record = ( ($page - 1) * intval(RECORD_PER_PAGE) + 1 ) . '～' . ( count($applicable_product) == intval(RECORD_PER_PAGE) ? ( $page * intval(RECORD_PER_PAGE) ) : ( $total ) ) . '（全' . $total . '件）';
-			$page_block_num = ceil($total / RECORD_PER_PAGE); // ページブロック数
+			if( !empty($applicable_product) ) {
+				$showing_record = ( ($page - 1) * intval(RECORD_PER_PAGE) + 1 ) . '～' . ( count($applicable_product) == intval(RECORD_PER_PAGE) ? ( $page * intval(RECORD_PER_PAGE) ) : ( $total ) ) . '（全' . $total . '件）';
+				$page_block_num = ceil($total / RECORD_PER_PAGE); // ページブロック数
 
-			$pagination .= '<ul>';
-			if( $page != 1 ) {
-				$pagination .= '	<li onclick="search_link(' . ($page - 1) . ')">' . '&lt;' . '</li>';
-			}
-			else {
-				$pagination .= '	<li class="not-anchor">' . '&lt;' . '</li>';
-			}
+				$pagination .= '<ul>';
+				if( $page != 1 ) {
+					$pagination .= '	<li onclick="search_link(' . ($page - 1) . ')">' . '&lt;' . '</li>';
+				}
+				else {
+					$pagination .= '	<li class="not-anchor">' . '&lt;' . '</li>';
+				}
 
-			// ページブロックの数が最大数より小さい
-			if( (MAX_BEFORE_CURRENT + MAX_AFTER_CURRENT + 1) >= $page_block_num ) {
-				for( $i = 1; $i <= $page_block_num; $i++ ) {
-					if( $page == $i ) {
-						$pagination .= '	<li class="current-page">' . ($i) . '</li>';
-					}
-					else {
-						$pagination .= '	<li onclick="search_link(' . ($i) . ')">' . ($i) . '</li>';
-					}
-				}
-			}
-			else {
-				if( $page <= MAX_BEFORE_CURRENT + 1 ) {
-					for( $i = 1; $i < MAX_BEFORE_CURRENT + MAX_AFTER_CURRENT + 1; $i++ ) {
-						if( $page == $i ) {
-							$pagination .= '	<li class="current-page">' . ($i) . '</li>';
-						}
-						else {
-							$pagination .= '	<li onclick="search_link(' . ($i) . ')">' . ($i) . '</li>';
-						}
-					}
-					$pagination .= '	<li onclick="search_link(' . ($page_block_num) . ')">...</li>';
-				}
-				else if( $page >= $page_block_num - MAX_AFTER_CURRENT ) {
-					$pagination .= '	<li onclick="search_link(1)">...</li>';
-					for( $i = $page_block_num - (MAX_BEFORE_CURRENT + MAX_AFTER_CURRENT + 1) + 1; $i <= $page_block_num; $i++ ) {
+				// ページブロックの数が最大数より小さい
+				if( (MAX_BEFORE_CURRENT + MAX_AFTER_CURRENT + 1) >= $page_block_num ) {
+					for( $i = 1; $i <= $page_block_num; $i++ ) {
 						if( $page == $i ) {
 							$pagination .= '	<li class="current-page">' . ($i) . '</li>';
 						}
@@ -352,26 +672,50 @@ echo '</pre>';
 					}
 				}
 				else {
-					$pagination .= '	<li onclick="search_link(1)">...</li>';
-					for( $i = $page - MAX_BEFORE_CURRENT; $i <= MAX_AFTER_CURRENT + $page; $i++ ) {
-						if( $page == $i ) {
-							$pagination .= '	<li class="current-page">' . ($i) . '</li>';
+					if( $page <= MAX_BEFORE_CURRENT + 1 ) {
+						for( $i = 1; $i < MAX_BEFORE_CURRENT + MAX_AFTER_CURRENT + 1; $i++ ) {
+							if( $page == $i ) {
+								$pagination .= '	<li class="current-page">' . ($i) . '</li>';
+							}
+							else {
+								$pagination .= '	<li onclick="search_link(' . ($i) . ')">' . ($i) . '</li>';
+							}
 						}
-						else {
-							$pagination .= '	<li onclick="search_link(' . ($i) . ')">' . ($i) . '</li>';
+						$pagination .= '	<li onclick="search_link(' . ($page_block_num) . ')">...</li>';
+					}
+					else if( $page >= $page_block_num - MAX_AFTER_CURRENT ) {
+						$pagination .= '	<li onclick="search_link(1)">...</li>';
+						for( $i = $page_block_num - (MAX_BEFORE_CURRENT + MAX_AFTER_CURRENT + 1) + 1; $i <= $page_block_num; $i++ ) {
+							if( $page == $i ) {
+								$pagination .= '	<li class="current-page">' . ($i) . '</li>';
+							}
+							else {
+								$pagination .= '	<li onclick="search_link(' . ($i) . ')">' . ($i) . '</li>';
+							}
 						}
 					}
-					$pagination .= '	<li onclick="search_link(' . ($page_block_num) . ')">...</li>';
+					else {
+						$pagination .= '	<li onclick="search_link(1)">...</li>';
+						for( $i = $page - MAX_BEFORE_CURRENT; $i <= MAX_AFTER_CURRENT + $page; $i++ ) {
+							if( $page == $i ) {
+								$pagination .= '	<li class="current-page">' . ($i) . '</li>';
+							}
+							else {
+								$pagination .= '	<li onclick="search_link(' . ($i) . ')">' . ($i) . '</li>';
+							}
+						}
+						$pagination .= '	<li onclick="search_link(' . ($page_block_num) . ')">...</li>';
+					}
 				}
-			}
 
-			if( $page != $page_block_num ) {
-				$pagination .= '	<li onclick="search_link(' . ($page + 1) . ')">' . '&gt;' . '</li>';
+				if( $page != $page_block_num ) {
+					$pagination .= '	<li onclick="search_link(' . ($page + 1) . ')">' . '&gt;' . '</li>';
+				}
+				else {
+					$pagination .= '	<li class="not-anchor">' . '&gt;' . '</li>';
+				}
+				$pagination .= '</ul>';
 			}
-			else {
-				$pagination .= '	<li class="not-anchor">' . '&gt;' . '</li>';
-			}
-			$pagination .= '</ul>';
 		}
 
 		$view_data = array(
@@ -383,6 +727,31 @@ echo '</pre>';
 		);
 
 		$this->load->view('front/order/choose_product', $view_data);
+	}
+
+
+
+	/*******************************************/
+	/*               private関数               */
+	/*******************************************/
+	// 送料計算
+	private function get_shipping_fee($cost = 0)
+	{
+		if( $cost >= 10000 ) {
+			$shipping_fee = 0;
+		}
+		else {
+			$classroom_id = $this->session->userdata('classroom_id');
+			$classroom_data = $this->m_classroom->get_one(array('classroom_id' => $classroom_id));
+			if( isset($classroom_data['pref']) && $classroom_data['pref'] == '01' ) {
+				$shipping_fee = 1300;
+			}
+			else {
+				$shipping_fee = 700;
+			}
+		}
+
+		return $shipping_fee;
 	}
 
 
@@ -406,26 +775,23 @@ echo '</pre>';
 			$ret_val['err_msg'] = 'パラメータエラーが発生しました。';
 		}
 		else {
-			if( !$this->input->cookie('product_list') ) {
-				$ret_val['err_msg'] = '商品が存在しません。';
+			if( !$this->input->cookie('product_ids') ) {
+				$ret_val['err_msg'] = '教材が存在しません。';
 			}
 			else {
-				$product_list = unserialize($this->input->cookie('product_list'));
-				if( !array_key_exists($product_id, $product_list) ) {
-					$ret_val['err_msg'] = '選択されていない商品です。';
+				$product_ids = unserialize($this->input->cookie('product_ids'));
+				if( !array_key_exists($product_id, $product_ids) ) {
+					$ret_val['err_msg'] = '選択されていない教材です。';
 				}
 				else {
-					$sub_total = intval($product_list[$product_id]['sales_price']) * intval($quantity);
-
-					$product_list[$product_id]['quantity'] = $quantity;
-					$product_list[$product_id]['sub_total'] = $sub_total;
+					$product_ids[$product_id] = $quantity;
 
 					$cookie_save_data = array(
-						'name'	=> 'product_list',
-						'value'	=> serialize($product_list),
-						'expire'=> '3600'
+						'name'	=> 'product_ids',
+						'value'	=> serialize($product_ids),
+						'expire'=> '86400'
 					);
-					$this->input->set_cookie($cookie_save_data);		
+					$this->input->set_cookie($cookie_save_data);
 
 					$ret_val['status'] = TRUE;
 				}

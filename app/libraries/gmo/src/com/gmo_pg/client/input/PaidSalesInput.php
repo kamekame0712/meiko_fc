@@ -30,6 +30,10 @@ class PaidSalesInput extends BaseInput {
 	 * @var string オーダーID
 	 */
 	private $orderID;
+	/**
+	 * @var string 決済確定日
+	 */
+	private $fixedAt;
 
 
 	/**
@@ -77,6 +81,13 @@ class PaidSalesInput extends BaseInput {
 	public function getOrderID() {
 		return $this->orderID;
 	}
+	/**
+	 * 決済確定日取得
+	 * @return string 決済確定日
+	 */
+	public function getFixedAt() {
+		return $this->fixedAt;
+	}
 
 	/**
 	 * ショップID設定
@@ -118,6 +129,14 @@ class PaidSalesInput extends BaseInput {
 	public function setOrderID($orderID) {
 		$this->orderID = $orderID;
 	}
+	/**
+	 * 決済確定日設定
+	 *
+	 * @param string $fixedAt
+	 */
+	public function setFixedAt($fixedAt) {
+		$this->fixedAt = $fixedAt;
+	}
 
 
 	/**
@@ -143,6 +162,7 @@ class PaidSalesInput extends BaseInput {
 		$this->setAccessID($this->getStringValue($params, 'AccessID', $this->getAccessID()));
 		$this->setAccessPass($this->getStringValue($params, 'AccessPass', $this->getAccessPass()));
 		$this->setOrderID($this->getStringValue($params, 'OrderID', $this->getOrderID()));
+		$this->setFixedAt($this->getStringValue($params, 'FixedAt', $this->getFixedAt()));
 
 	}
 
@@ -161,6 +181,8 @@ class PaidSalesInput extends BaseInput {
 		$str .= 'AccessPass=' . $this->encodeStr($this->getAccessPass());
 		$str .='&';
 		$str .= 'OrderID=' . $this->encodeStr($this->getOrderID());
+		$str .='&';
+		$str .= 'FixedAt=' . $this->encodeStr($this->getFixedAt());
 
 	    return $str;
 	}

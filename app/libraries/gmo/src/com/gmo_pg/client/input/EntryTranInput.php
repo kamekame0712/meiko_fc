@@ -57,6 +57,11 @@ class EntryTranInput extends BaseInput {
 	 */
 	private $tdTenantName;
 
+	/**
+	 * @var string 3DS2.0非対応時取り扱い
+	 */
+	private $tds2Type;
+
 
 	/**
 	 * コンストラクタ
@@ -142,6 +147,14 @@ class EntryTranInput extends BaseInput {
 	}
 
 	/**
+	 * 3DS2.0非対応時取り扱い取得
+	 * @return string 3DS2.0非対応時取り扱い
+	 */
+	public function getTds2Type() {
+	    return $this->tds2Type;
+	}
+
+	/**
 	 * 利用金額設定
 	 *
 	 * @param integer $amount
@@ -223,6 +236,15 @@ class EntryTranInput extends BaseInput {
 	}
 
 	/**
+	 * 3DS2.0非対応時取り扱い
+	 *
+	 * @param string $tds2Type
+	 */
+	public function setTds2Type($tds2Type) {
+	    $this->tds2Type = $tds2Type;
+	}
+
+	/**
 	 * デフォルト値設定
 	 */
 	public function setDefaultValues() {
@@ -253,6 +275,7 @@ class EntryTranInput extends BaseInput {
 	    $this->setTax($this->getIntegerValue($params, 'Tax', $this->getTax()));
 	    $this->setTdFlag($this->getStringValue($params, 'TdFlag', $this->getTdFlag()));
 	    $this->setTdTenantName($this->getStringValue($params, 'TdTenantName', $this->getTdTenantName()));
+	    $this->setTds2Type($this->getStringValue($params, 'Tds2Type', $this->getTds2Type()));
 	}
 
 	/**
@@ -278,6 +301,8 @@ class EntryTranInput extends BaseInput {
 	    $str .= 'TdFlag=' . $this->encodeStr($this->getTdFlag());
 	    $str .= '&';
 	    $str .= 'TdTenantName=' . $this->encodeStr($this->getTdTenantName());
+	    $str .= '&';
+	    $str .= 'Tds2Type=' . $this->encodeStr($this->getTds2Type());
 
 	    return $str;
 	}

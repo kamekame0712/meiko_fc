@@ -146,6 +146,7 @@ class SearchTradeMultiOutput extends BaseOutput {
 	 * 11：ソフトバンクケータイ支払い決済
 	 * 12：じぶん銀行決済
 	 * 13：au継続課金
+	 * 41：多通貨クレジット決済（DCC)
 	 * 30：PGプリカ
 	 * 14：JCBプリカ
 	 * 16：NET CASH
@@ -166,6 +167,11 @@ class SearchTradeMultiOutput extends BaseOutput {
 	 * 34：ソフトバンクまとめて支払い(Ｂ)(利用承諾)
 	 * 35：Paysle
 	 * 36：GANB
+	 * 38：Amazon Pay
+	 * 39：FamiPay
+	 * 40：エポスかんたん決済
+	 * 43：メルペイ
+	 * 45：PayPay
 
 	 *
 	 * @var string
@@ -297,7 +303,22 @@ class SearchTradeMultiOutput extends BaseOutput {
 	 * @var string 最終処理日時
 	 */
 	private $processLastDate;
-
+	/**
+	 * @var integer Dcc 増額金額の累積
+	 */
+	private $totalIncreaseAmount;
+	/**
+	 * @var integer Dcc 増額税送料の累積
+	 */
+	private $totalIncreaseTax;
+	/**
+	 * @var bigDecimal Dcc DCC金額
+	 */
+	private $dccAmount;
+	/**
+	 * @var string Dcc FX追跡番号(FTN)
+	 */
+	private $dccFtn;
 	/**
 	 * @var string JcbPreca 伝票番号
 	 */
@@ -622,6 +643,98 @@ class SearchTradeMultiOutput extends BaseOutput {
 	 * @var string GANB 最終仕向銀行名
 	 */
 	private $ganbLatestTransferBankName;
+	/**
+	 * @var string Amazonpay AmazonオーダーリファレンスID
+	 */
+	private $amazonOrderReferenceID;
+	/**
+	 * @var integer Amazonpay キャンセル金額
+	 */
+	private $amazonPayCancelAmount;
+	/**
+	 * @var integer Amazonpay キャンセル税送料金額
+	 */
+	private $amazonPayCancelTax;
+	/**
+	 * @var string Amazonpay AmazonビリングアグリーメントID
+	 */
+	private $amazonBillingAgreementID;
+	/**
+	 * @var string Famipay 売上No
+	 */
+	private $uriageNO;
+	/**
+	 * @var string Famipay 認証連携トークン
+	 */
+	private $authToken;
+	/**
+	 * @var string Epospay エポスかんたん決済取引ID
+	 */
+	private $eposTradeID;
+	/**
+	 * @var integer Epospay 利用クーポン額
+	 */
+	private $eposUseCouponAmount;
+	/**
+	 * @var integer Epospay 利用エポスポイント
+	 */
+	private $eposUsePoint;
+	/**
+	 * @var integer Epospay キャンセル金額の累積
+	 */
+	private $totalCancelAmount;
+	/**
+	 * @var integer Epospay キャンセル税送料金額の累積
+	 */
+	private $totalCancelTax;
+	/**
+	 * @var integer Merpay キャンセル金額の累計
+	 */
+	private $merpayCancelAmount;
+	/**
+	 * @var integer Merpay キャンセル税送料の累計
+	 */
+	private $merpayCancelTax;
+	/**
+	 * @var string Merpay メルペイ取引番号
+	 */
+	private $merpayInquiryCode;
+	/**
+	 * @var string Merpay サブスクリプションタイプ
+	 */
+	private $merpaySubscriptionType;
+	/**
+	 * @var string Merpay サブスクリプションＩＤ
+	 */
+	private $merpaySubscriptionId;
+	/**
+	 * @var string Merpay サブスクリプション現状態
+	 */
+	private $merpaySubscriptionCurrentStatus;
+	/**
+	 * @var string Merpay サブスクリプション利用承諾日時
+	 */
+	private $merpaySubscriptionStartDate;
+	/**
+	 * @var string Merpay サブスクリプション利用終了日時
+	 */
+	private $merpaySubscriptionEndDate;
+	/**
+	 * @var string Merpay 随時決済で用いたサブスクリプションＩＤ
+	 */
+	private $merpaySettlementSubscriptionId;
+	/**
+	 * @var integer Paypay キャンセル金額
+	 */
+	private $payPayCancelAmount;
+	/**
+	 * @var integer Paypay キャンセル税送料
+	 */
+	private $payPayCancelTax;
+	/**
+	 * @var string Paypay PayPayトラッキングＩＤ
+	 */
+	private $payPayTrackingID;
 
 
 	/**
@@ -722,6 +835,11 @@ class SearchTradeMultiOutput extends BaseOutput {
 
 		$this->setJibunReceiptNo($params->get('JibunReceiptNo'));
 
+		$this->setTotalIncreaseAmount($params->get('TotalIncreaseAmount'));
+		$this->setTotalIncreaseTax($params->get('TotalIncreaseTax'));
+		$this->setDccAmount($params->get('DccAmount'));
+		$this->setDccFtn($params->get('DccFtn'));
+
 		$this->setJcbPrecaSalesCode($params->get('JcbPrecaSalesCode'));
 		$this->setNetCashPayType($params->get('NetCashPayType'));
 		$this->setOrderDate($params->get('OrderDate'));
@@ -803,6 +921,29 @@ class SearchTradeMultiOutput extends BaseOutput {
 		$this->setGanbLatestTransferDate($params->get('GanbLatestTransferDate'));
 		$this->setGanbLatestTransferName($params->get('GanbLatestTransferName'));
 		$this->setGanbLatestTransferBankName($params->get('GanbLatestTransferBankName'));
+		$this->setAmazonOrderReferenceID($params->get('AmazonOrderReferenceID'));
+		$this->setAmazonPayCancelAmount($params->get('AmazonPayCancelAmount'));
+		$this->setAmazonPayCancelTax($params->get('AmazonPayCancelTax'));
+		$this->setAmazonBillingAgreementID($params->get('AmazonBillingAgreementID'));
+		$this->setUriageNO($params->get('UriageNO'));
+		$this->setAuthToken($params->get('AuthToken'));
+		$this->setEposTradeID($params->get('EposTradeID'));
+		$this->setEposUseCouponAmount($params->get('EposUseCouponAmount'));
+		$this->setEposUsePoint($params->get('EposUsePoint'));
+		$this->setTotalCancelAmount($params->get('TotalCancelAmount'));
+		$this->setTotalCancelTax($params->get('TotalCancelTax'));
+		$this->setMerpayCancelAmount($params->get('MerpayCancelAmount'));
+		$this->setMerpayCancelTax($params->get('MerpayCancelTax'));
+		$this->setMerpayInquiryCode($params->get('MerpayInquiryCode'));
+		$this->setMerpaySubscriptionType($params->get('MerpaySubscriptionType'));
+		$this->setMerpaySubscriptionId($params->get('MerpaySubscriptionId'));
+		$this->setMerpaySubscriptionCurrentStatus($params->get('MerpaySubscriptionCurrentStatus'));
+		$this->setMerpaySubscriptionStartDate($params->get('MerpaySubscriptionStartDate'));
+		$this->setMerpaySubscriptionEndDate($params->get('MerpaySubscriptionEndDate'));
+		$this->setMerpaySettlementSubscriptionId($params->get('MerpaySettlementSubscriptionId'));
+		$this->setPayPayCancelAmount($params->get('PayPayCancelAmount'));
+		$this->setPayPayCancelTax($params->get('PayPayCancelTax'));
+		$this->setPayPayTrackingID($params->get('PayPayTrackingID'));
 
 	}
 
@@ -1798,6 +1939,70 @@ class SearchTradeMultiOutput extends BaseOutput {
 	}
 
 	/**
+	 * Dcc 増額金額の累積 取得
+	 * @return integer $増額金額の累積
+	 */
+	public function getTotalIncreaseAmount(){
+		return $this->totalIncreaseAmount;
+	}
+
+	/**
+	 * Dcc 増額税送料の累積 取得
+	 * @return integer $増額税送料の累積
+	 */
+	public function getTotalIncreaseTax(){
+		return $this->totalIncreaseTax;
+	}
+
+	/**
+	 * Dcc DCC金額 取得
+	 * @return bigDecimal $DCC金額
+	 */
+	public function getDccAmount(){
+		return $this->dccAmount;
+	}
+
+	/**
+	 * Dcc FX追跡番号(FTN) 取得
+	 * @return string $FX追跡番号(FTN)
+	 */
+	public function getDccFtn(){
+		return $this->dccFtn;
+	}
+
+	/**
+	 * Dcc 増額金額の累積 設定
+	 * @param integer $totalIncreaseAmount
+	 */
+	public function setTotalIncreaseAmount($totalIncreaseAmount){
+		$this->totalIncreaseAmount = $totalIncreaseAmount;
+	}
+
+	/**
+	 * Dcc 増額税送料の累積 設定
+	 * @param integer $totalIncreaseTax
+	 */
+	public function setTotalIncreaseTax($totalIncreaseTax){
+		$this->totalIncreaseTax = $totalIncreaseTax;
+	}
+
+	/**
+	 * Dcc DCC金額 設定
+	 * @param bigDecimal $dccAmount
+	 */
+	public function setDccAmount($dccAmount){
+		$this->dccAmount = $dccAmount;
+	}
+
+	/**
+	 * Dcc FX追跡番号(FTN) 設定
+	 * @param string $dccFtn
+	 */
+	public function setDccFtn($dccFtn){
+		$this->dccFtn = $dccFtn;
+	}
+
+	/**
 	 * JcbPreca 伝票番号 取得
 	 * @return string $伝票番号
 	 */
@@ -2363,6 +2568,167 @@ class SearchTradeMultiOutput extends BaseOutput {
 	 */
 	public function getGanbLatestTransferBankName(){
 		return $this->ganbLatestTransferBankName;
+	}
+	/**
+	 * Amazonpay AmazonオーダーリファレンスID 取得
+	 * @return string $AmazonオーダーリファレンスID
+	 */
+	public function getAmazonOrderReferenceID(){
+		return $this->amazonOrderReferenceID;
+	}
+	/**
+	 * Amazonpay キャンセル金額 取得
+	 * @return integer $キャンセル金額
+	 */
+	public function getAmazonPayCancelAmount(){
+		return $this->amazonPayCancelAmount;
+	}
+	/**
+	 * Amazonpay キャンセル税送料金額 取得
+	 * @return integer $キャンセル税送料金額
+	 */
+	public function getAmazonPayCancelTax(){
+		return $this->amazonPayCancelTax;
+	}
+	/**
+	 * Amazonpay AmazonビリングアグリーメントID 取得
+	 * @return string $AmazonビリングアグリーメントID
+	 */
+	public function getAmazonBillingAgreementID(){
+		return $this->amazonBillingAgreementID;
+	}
+	/**
+	 * Famipay 売上No 取得
+	 * @return string $売上No
+	 */
+	public function getUriageNO(){
+		return $this->uriageNO;
+	}
+	/**
+	 * Famipay 認証連携トークン 取得
+	 * @return string $認証連携トークン
+	 */
+	public function getAuthToken(){
+		return $this->authToken;
+	}
+	/**
+	 * Epospay エポスかんたん決済取引ID 取得
+	 * @return string $エポスかんたん決済取引ID
+	 */
+	public function getEposTradeID(){
+		return $this->eposTradeID;
+	}
+	/**
+	 * Epospay 利用クーポン額 取得
+	 * @return integer $利用クーポン額
+	 */
+	public function getEposUseCouponAmount(){
+		return $this->eposUseCouponAmount;
+	}
+	/**
+	 * Epospay 利用エポスポイント 取得
+	 * @return integer $利用エポスポイント
+	 */
+	public function getEposUsePoint(){
+		return $this->eposUsePoint;
+	}
+	/**
+	 * Epospay キャンセル金額の累積 取得
+	 * @return integer $キャンセル金額の累積
+	 */
+	public function getTotalCancelAmount(){
+		return $this->totalCancelAmount;
+	}
+	/**
+	 * Epospay キャンセル税送料金額の累積 取得
+	 * @return integer $キャンセル税送料金額の累積
+	 */
+	public function getTotalCancelTax(){
+		return $this->totalCancelTax;
+	}
+	/**
+	 * Merpay キャンセル金額の累計 取得
+	 * @return integer $キャンセル金額の累計
+	 */
+	public function getMerpayCancelAmount(){
+		return $this->merpayCancelAmount;
+	}
+	/**
+	 * Merpay キャンセル税送料の累計 取得
+	 * @return integer $キャンセル税送料の累計
+	 */
+	public function getMerpayCancelTax(){
+		return $this->merpayCancelTax;
+	}
+	/**
+	 * Merpay メルペイ取引番号 取得
+	 * @return string $メルペイ取引番号
+	 */
+	public function getMerpayInquiryCode(){
+		return $this->merpayInquiryCode;
+	}
+	/**
+	 * Merpay サブスクリプションタイプ 取得
+	 * @return string $サブスクリプションタイプ
+	 */
+	public function getMerpaySubscriptionType(){
+		return $this->merpaySubscriptionType;
+	}
+	/**
+	 * Merpay サブスクリプションＩＤ 取得
+	 * @return string $サブスクリプションＩＤ
+	 */
+	public function getMerpaySubscriptionId(){
+		return $this->merpaySubscriptionId;
+	}
+	/**
+	 * Merpay サブスクリプション現状態 取得
+	 * @return string $サブスクリプション現状態
+	 */
+	public function getMerpaySubscriptionCurrentStatus(){
+		return $this->merpaySubscriptionCurrentStatus;
+	}
+	/**
+	 * Merpay サブスクリプション利用承諾日時 取得
+	 * @return string $サブスクリプション利用承諾日時
+	 */
+	public function getMerpaySubscriptionStartDate(){
+		return $this->merpaySubscriptionStartDate;
+	}
+	/**
+	 * Merpay サブスクリプション利用終了日時 取得
+	 * @return string $サブスクリプション利用終了日時
+	 */
+	public function getMerpaySubscriptionEndDate(){
+		return $this->merpaySubscriptionEndDate;
+	}
+	/**
+	 * Merpay 随時決済で用いたサブスクリプションＩＤ 取得
+	 * @return string $随時決済で用いたサブスクリプションＩＤ
+	 */
+	public function getMerpaySettlementSubscriptionId(){
+		return $this->merpaySettlementSubscriptionId;
+	}
+	/**
+	 * Paypay キャンセル金額 取得
+	 * @return integer $キャンセル金額
+	 */
+	public function getPayPayCancelAmount(){
+		return $this->payPayCancelAmount;
+	}
+	/**
+	 * Paypay キャンセル税送料 取得
+	 * @return integer $キャンセル税送料
+	 */
+	public function getPayPayCancelTax(){
+		return $this->payPayCancelTax;
+	}
+	/**
+	 * Paypay PayPayトラッキングＩＤ 取得
+	 * @return string $PayPayトラッキングＩＤ
+	 */
+	public function getPayPayTrackingID(){
+		return $this->payPayTrackingID;
 	}
 
 	/**
@@ -2932,6 +3298,167 @@ class SearchTradeMultiOutput extends BaseOutput {
 	public function setGanbLatestTransferBankName($ganbLatestTransferBankName){
 		$this->ganbLatestTransferBankName = $ganbLatestTransferBankName;
 	}
+	/**
+	 * Amazonpay AmazonオーダーリファレンスID 設定
+	 * @param string $amazonOrderReferenceID
+	 */
+	public function setAmazonOrderReferenceID($amazonOrderReferenceID){
+		$this->amazonOrderReferenceID = $amazonOrderReferenceID;
+	}
+	/**
+	 * Amazonpay キャンセル金額 設定
+	 * @param integer $amazonPayCancelAmount
+	 */
+	public function setAmazonPayCancelAmount($amazonPayCancelAmount){
+		$this->amazonPayCancelAmount = $amazonPayCancelAmount;
+	}
+	/**
+	 * Amazonpay キャンセル税送料金額 設定
+	 * @param integer $amazonPayCancelTax
+	 */
+	public function setAmazonPayCancelTax($amazonPayCancelTax){
+		$this->amazonPayCancelTax = $amazonPayCancelTax;
+	}
+	/**
+	 * Amazonpay AmazonビリングアグリーメントID 設定
+	 * @param string $amazonBillingAgreementID
+	 */
+	public function setAmazonBillingAgreementID($amazonBillingAgreementID){
+		$this->amazonBillingAgreementID = $amazonBillingAgreementID;
+	}
+	/**
+	 * Famipay 売上No 設定
+	 * @param string $uriageNO
+	 */
+	public function setUriageNO($uriageNO){
+		$this->uriageNO = $uriageNO;
+	}
+	/**
+	 * Famipay 認証連携トークン 設定
+	 * @param string $authToken
+	 */
+	public function setAuthToken($authToken){
+		$this->authToken = $authToken;
+	}
+	/**
+	 * Epospay エポスかんたん決済取引ID 設定
+	 * @param string $eposTradeID
+	 */
+	public function setEposTradeID($eposTradeID){
+		$this->eposTradeID = $eposTradeID;
+	}
+	/**
+	 * Epospay 利用クーポン額 設定
+	 * @param integer $eposUseCouponAmount
+	 */
+	public function setEposUseCouponAmount($eposUseCouponAmount){
+		$this->eposUseCouponAmount = $eposUseCouponAmount;
+	}
+	/**
+	 * Epospay 利用エポスポイント 設定
+	 * @param integer $eposUsePoint
+	 */
+	public function setEposUsePoint($eposUsePoint){
+		$this->eposUsePoint = $eposUsePoint;
+	}
+	/**
+	 * Epospay キャンセル金額の累積 設定
+	 * @param integer $totalCancelAmount
+	 */
+	public function setTotalCancelAmount($totalCancelAmount){
+		$this->totalCancelAmount = $totalCancelAmount;
+	}
+	/**
+	 * Epospay キャンセル税送料金額の累積 設定
+	 * @param integer $totalCancelTax
+	 */
+	public function setTotalCancelTax($totalCancelTax){
+		$this->totalCancelTax = $totalCancelTax;
+	}
+	/**
+	 * Merpay キャンセル金額の累計 設定
+	 * @param integer $merpayCancelAmount
+	 */
+	public function setMerpayCancelAmount($merpayCancelAmount){
+		$this->merpayCancelAmount = $merpayCancelAmount;
+	}
+	/**
+	 * Merpay キャンセル税送料の累計 設定
+	 * @param integer $merpayCancelTax
+	 */
+	public function setMerpayCancelTax($merpayCancelTax){
+		$this->merpayCancelTax = $merpayCancelTax;
+	}
+	/**
+	 * Merpay メルペイ取引番号 設定
+	 * @param string $merpayInquiryCode
+	 */
+	public function setMerpayInquiryCode($merpayInquiryCode){
+		$this->merpayInquiryCode = $merpayInquiryCode;
+	}
+	/**
+	 * Merpay サブスクリプションタイプ 設定
+	 * @param string $merpaySubscriptionType
+	 */
+	public function setMerpaySubscriptionType($merpaySubscriptionType){
+		$this->merpaySubscriptionType = $merpaySubscriptionType;
+	}
+	/**
+	 * Merpay サブスクリプションＩＤ 設定
+	 * @param string $merpaySubscriptionId
+	 */
+	public function setMerpaySubscriptionId($merpaySubscriptionId){
+		$this->merpaySubscriptionId = $merpaySubscriptionId;
+	}
+	/**
+	 * Merpay サブスクリプション現状態 設定
+	 * @param string $merpaySubscriptionCurrentStatus
+	 */
+	public function setMerpaySubscriptionCurrentStatus($merpaySubscriptionCurrentStatus){
+		$this->merpaySubscriptionCurrentStatus = $merpaySubscriptionCurrentStatus;
+	}
+	/**
+	 * Merpay サブスクリプション利用承諾日時 設定
+	 * @param string $merpaySubscriptionStartDate
+	 */
+	public function setMerpaySubscriptionStartDate($merpaySubscriptionStartDate){
+		$this->merpaySubscriptionStartDate = $merpaySubscriptionStartDate;
+	}
+	/**
+	 * Merpay サブスクリプション利用終了日時 設定
+	 * @param string $merpaySubscriptionEndDate
+	 */
+	public function setMerpaySubscriptionEndDate($merpaySubscriptionEndDate){
+		$this->merpaySubscriptionEndDate = $merpaySubscriptionEndDate;
+	}
+	/**
+	 * Merpay 随時決済で用いたサブスクリプションＩＤ 設定
+	 * @param string $merpaySettlementSubscriptionId
+	 */
+	public function setMerpaySettlementSubscriptionId($merpaySettlementSubscriptionId){
+		$this->merpaySettlementSubscriptionId = $merpaySettlementSubscriptionId;
+	}
+	/**
+	 * Paypay キャンセル金額 設定
+	 * @param integer $payPayCancelAmount
+	 */
+	public function setPayPayCancelAmount($payPayCancelAmount){
+		$this->payPayCancelAmount = $payPayCancelAmount;
+	}
+	/**
+	 * Paypay キャンセル税送料 設定
+	 * @param integer $payPayCancelTax
+	 */
+	public function setPayPayCancelTax($payPayCancelTax){
+		$this->payPayCancelTax = $payPayCancelTax;
+	}
+	/**
+	 * Paypay PayPayトラッキングＩＤ 設定
+	 * @param string $payPayTrackingID
+	 */
+	public function setPayPayTrackingID($payPayTrackingID){
+		$this->payPayTrackingID = $payPayTrackingID;
+	}
 
 
 	/**
@@ -3063,6 +3590,14 @@ class SearchTradeMultiOutput extends BaseOutput {
 		$str .= 'AuContinueAccountId=' . $this->getAuContinueAccountId();
 		$str .= '&';
 		$str .= 'ProcessLastDate=' . $this->getProcessLastDate();
+		$str .= '&';
+		$str .= 'TotalIncreaseAmount=' . $this->getTotalIncreaseAmount();
+		$str .= '&';
+		$str .= 'TotalIncreaseTax=' . $this->getTotalIncreaseTax();
+		$str .= '&';
+		$str .= 'DccAmount=' . $this->getDccAmount();
+		$str .= '&';
+		$str .= 'DccFtn=' . $this->getDccFtn();
 
 		$str .= '&';
 		$str .= 'JcbPrecaSalesCode=' . $this->getJcbPrecaSalesCode();
@@ -3226,6 +3761,52 @@ class SearchTradeMultiOutput extends BaseOutput {
 		$str .= 'GanbLatestTransferName=' . $this->getGanbLatestTransferName();
 		$str .= '&';
 		$str .= 'GanbLatestTransferBankName=' . $this->getGanbLatestTransferBankName();
+		$str .= '&';
+		$str .= 'AmazonOrderReferenceID=' . $this->getAmazonOrderReferenceID();
+		$str .= '&';
+		$str .= 'AmazonPayCancelAmount=' . $this->getAmazonPayCancelAmount();
+		$str .= '&';
+		$str .= 'AmazonPayCancelTax=' . $this->getAmazonPayCancelTax();
+		$str .= '&';
+		$str .= 'AmazonBillingAgreementID=' . $this->getAmazonBillingAgreementID();
+		$str .= '&';
+		$str .= 'UriageNO=' . $this->getUriageNO();
+		$str .= '&';
+		$str .= 'AuthToken=' . $this->getAuthToken();
+		$str .= '&';
+		$str .= 'EposTradeID=' . $this->getEposTradeID();
+		$str .= '&';
+		$str .= 'EposUseCouponAmount=' . $this->getEposUseCouponAmount();
+		$str .= '&';
+		$str .= 'EposUsePoint=' . $this->getEposUsePoint();
+		$str .= '&';
+		$str .= 'TotalCancelAmount=' . $this->getTotalCancelAmount();
+		$str .= '&';
+		$str .= 'TotalCancelTax=' . $this->getTotalCancelTax();
+		$str .= '&';
+		$str .= 'MerpayCancelAmount=' . $this->getMerpayCancelAmount();
+		$str .= '&';
+		$str .= 'MerpayCancelTax=' . $this->getMerpayCancelTax();
+		$str .= '&';
+		$str .= 'MerpayInquiryCode=' . $this->getMerpayInquiryCode();
+		$str .= '&';
+		$str .= 'MerpaySubscriptionType=' . $this->getMerpaySubscriptionType();
+		$str .= '&';
+		$str .= 'MerpaySubscriptionId=' . $this->getMerpaySubscriptionId();
+		$str .= '&';
+		$str .= 'MerpaySubscriptionCurrentStatus=' . $this->getMerpaySubscriptionCurrentStatus();
+		$str .= '&';
+		$str .= 'MerpaySubscriptionStartDate=' . $this->getMerpaySubscriptionStartDate();
+		$str .= '&';
+		$str .= 'MerpaySubscriptionEndDate=' . $this->getMerpaySubscriptionEndDate();
+		$str .= '&';
+		$str .= 'MerpaySettlementSubscriptionId=' . $this->getMerpaySettlementSubscriptionId();
+		$str .= '&';
+		$str .= 'PayPayCancelAmount=' . $this->getPayPayCancelAmount();
+		$str .= '&';
+		$str .= 'PayPayCancelTax=' . $this->getPayPayCancelTax();
+		$str .= '&';
+		$str .= 'PayPayTrackingID=' . $this->getPayPayTrackingID();
 
 
         if ($this->isErrorOccurred()) {

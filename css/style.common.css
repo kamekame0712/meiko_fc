@@ -42,6 +42,9 @@ body,
 .btn {
     font-size: 1.6rem;
 }
+.close span {
+    font-size: 2.5rem;
+}
 /* #endregion bootstrap上書き */
 
 /* #region 共通 */
@@ -259,7 +262,7 @@ footer .copyright {
     margin: 50px auto 0;
     width: 90%;
     max-width: 350px;
-    background: #FFFFFF;
+    background-color: #FFFFFF;
     position: relative;
     padding-bottom: 80px;
     box-shadow: 0px 8px 16px -2px rgba(10,10,10,0.1), 4px 4px 5px 3px rgba(29,28,28,0.2);
@@ -364,12 +367,61 @@ footer .copyright {
     text-indent: -2em;
 }
 
+.already-registered {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: red;
+    text-align: center;
+}
+
 .entry-input {
     font-size: 1.6rem !important;
 }
 
 .entry-input::placeholder {
     color: #75DBFF !important;
+}
+
+.registered-classroom-name {
+    font-size: 1.8rem;
+    color: red;
+    font-weight: bold;
+}
+
+table.register-confirm {
+    border-collapse: separate;
+    border-spacing: 0 5px;
+    margin: 0 auto;
+    padding: 0;
+    width: 640px;
+}
+
+table.register-confirm th {
+    position: relative;
+    width: 180px;
+    text-align: center;
+    background-color: #FCF537;
+    color: #157BCA;
+    padding: 10px 0;
+}
+
+table.register-confirm th::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    position: absolute;
+    top: calc(50% - 10px);
+    right: -20px;
+    border-top: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #FCF537;
+}
+
+table.register-confirm td {
+    padding: 10px 10px 10px 20px;
+    background-color: #E0E0E0;
 }
 
 @media screen and (max-width : 768px) {
@@ -380,17 +432,80 @@ footer .copyright {
 /* #endregion 登録 */
 
 /* #region 発注 */
+ul.breadcrumb-list {
+    overflow: hidden;
+    margin: 0 0 20px;
+    padding: 0;
+    list-style: none;
+}
+
+ul.breadcrumb-list li {
+    float: left;
+    margin: 0 10px 0 10px;
+    background-color: #DDDDDD;
+    padding: 2px 10px;
+    color: #808080;
+    position: relative;
+}
+
+ul.breadcrumb-list li::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    margin-top: -1.5em;
+    border-width: 1.5em 0 1.5em 1em;
+    border-style: solid;
+    border-color: #DDDDDD #DDDDDD #DDDDDD transparent;
+    left: -1em;
+}
+
+ul.breadcrumb-list li:first-child {
+    border-radius: 3px 0 0 3px;
+    margin-left: 0;
+}
+
+ul.breadcrumb-list li:first-child::before {
+    border: none;
+}
+
+ul.breadcrumb-list li::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    margin-top: -1.5em;
+    border-top: 1.5em solid transparent;
+    border-bottom: 1.5em solid transparent;
+    border-left: 1em solid #DDDDDD;
+    right: -1em;
+}
+
+ul.breadcrumb-list .current {
+    font-weight: bold;
+    background-color: #808080;
+    color: #FFFFFF;
+}
+
+ul.breadcrumb-list .current::after {
+    border-left-color: #808080;
+}
+
+ul.breadcrumb-list .current::before {
+    border-color: #808080 #808080 #808080 transparent;
+}
+
 .order-buttons {
     clear: both;
     min-height: 40px;
 }
 
-.tbl-order {
+.tbl-order,
+.tbl-order-confirm {
     margin: 10px 0 50px;
     table-layout: fixed;
 }
 
-.tbl-order thead tr th {
+.tbl-order thead tr th,
+.tbl-order-confirm thead tr th {
     text-align: center;
 }
 
@@ -398,24 +513,29 @@ footer .copyright {
     width: 50px;
 }
 
-.tbl-order thead tr th:nth-child(2) {
+.tbl-order thead tr th:nth-child(2),
+.tbl-order-confirm thead tr th:nth-child(1) {
     width: 150px;
 }
 
-.tbl-order thead tr th:nth-child(3) {
+.tbl-order thead tr th:nth-child(3),
+.tbl-order-confirm thead tr th:nth-child(2) {
     width: auto;
     min-width: 300px;
 }
 
-.tbl-order thead tr th:nth-child(4) {
+.tbl-order thead tr th:nth-child(4),
+.tbl-order-confirm thead tr th:nth-child(3) {
     width: 100px;
 }
 
-.tbl-order thead tr th:nth-child(5) {
+.tbl-order thead tr th:nth-child(5),
+.tbl-order-confirm thead tr th:nth-child(4) {
     width: 80px;
 }
 
-.tbl-order thead tr th:nth-child(6) {
+.tbl-order thead tr th:nth-child(6),
+.tbl-order-confirm thead tr th:nth-child(5) {
     width: 100px;
 }
 
@@ -423,7 +543,8 @@ footer .copyright {
     text-align: center;
 }
 
-.tbl-order tbody tr td:nth-child(4) {
+.tbl-order tbody tr td:nth-child(4),
+.tbl-order-confirm tbody tr td:nth-child(3) {
     text-align: right;
 }
 
@@ -431,11 +552,17 @@ footer .copyright {
     padding: 3px 0.75rem;
 }
 
-.tbl-order tbody tr td:nth-child(6) {
+.tbl-order-confirm tbody tr td:nth-child(4) {
     text-align: right;
 }
 
-.tbl-order tbody tr:last-child td {
+.tbl-order tbody tr td:nth-child(6),
+.tbl-order-confirm tbody tr td:nth-child(5) {
+    text-align: right;
+}
+
+.tbl-order tbody tr:last-child td,
+.tbl-order-confirm tbody tr:last-child td {
     border-top: 4px double #444444;
 }
 
@@ -477,6 +604,41 @@ dl.others dd {
     padding: 0 15px;
 }
 
+.tbl-card {
+    margin: 10px 0;
+    width: auto;
+}
+
+.tbl-card thead tr th {
+    text-align: center;
+}
+
+.tbl-card thead tr th:nth-child(1),
+.tbl-card thead tr th:nth-child(2) {
+    width: 50px;
+}
+
+.tbl-card thead tr th:nth-child(3) {
+    width: 180px;
+}
+
+.tbl-card thead tr th:nth-child(4) {
+    width: 140px;
+}
+
+.tbl-card thead tr th:nth-child(5) {
+    width: 160px;
+}
+
+.tbl-card tbody tr td:nth-child(1),
+.tbl-card tbody tr td:nth-child(2) {
+    text-align: center;
+}
+
+.tbl-card tbody tr td:nth-child(2) input[type="radio"] {
+    margin-top: 5px;
+}
+
 .dl-credit {
     margin: 0;
     padding: 0;
@@ -496,6 +658,11 @@ dl.others dd {
 
 .dl-credit dd {
     padding-left: 140px !important;
+}
+
+.dl-credit dd input[type="text"]::placeholder {
+    color: #808080;
+    font-weight: bold;
 }
 
 .attention-credit {
@@ -520,7 +687,7 @@ dl.others dd {
     height: 100px;
 }
 
-/* #region 商品選択 */
+/* #region 教材選択 */
 .choose-product-window {
     padding: 0 20px;
 }
@@ -644,5 +811,64 @@ dl.others dd {
 	cursor: default;
 }
 
-/* #endregion 商品選択 */
+/* #endregion 教材選択 */
+
+.complete-title {
+    text-align: center;
+    font-size: 2.3rem;
+    margin: 10px 0;
+}
+
+.complete-message {
+    text-align: center;
+}
+
+.card-error-box {
+    background-color: #FFEFEF;
+    color: #C25338;
+    border: 2px solid #D4440D;
+    margin: 0 0 20px;
+    padding: 10px;
+    text-align: center;
+}
+
+.card-error-box h2 {
+    font-size: 2.3rem;
+    margin: 0 0 10px 0;
+}
+
+.not-receive-box {
+    background-color: #FFFF80;
+    color: #CC7600;
+    border: 2px solid #E5A500;
+    margin: 20px 0;
+    padding: 10px;
+}
+
+.not-receive-box h2 {
+    font-size: 2.3rem;
+    margin: 0 0 10px 0;
+    text-align: center;
+}
+
+.not-receive-box .contact-box {
+    background-color: #FFFFFF;
+    width: 350px;
+    margin: 0 auto 20px;
+    padding: 5px 10px;
+    border: 1px solid #E5A500;
+}
+
+.not-receive-box .contact-box p {
+    text-align: center;
+    margin: 0 0 5px;
+}
+
+.not-receive-box dl {
+    margin: 0 0 0 20px;
+}
+
+.not-receive-box dl dd {
+    margin-left: 1em;
+}
 /* #endregion 発注 */

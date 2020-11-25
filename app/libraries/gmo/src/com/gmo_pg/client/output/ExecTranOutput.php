@@ -93,6 +93,11 @@ class ExecTranOutput extends BaseOutput {
 	private $md;
 
 	/**
+	 * @var string ActiveServerへのリダイレクトURL
+	 */
+	private $redirectUrl;
+
+	/**
 	 * コンストラクタ
 	 *
 	 * @param IgnoreCaseMap $params 出力パラメータ
@@ -128,6 +133,9 @@ class ExecTranOutput extends BaseOutput {
         $this->setAcsUrl($params->get('AcsUrl'));
         $this->setPaReq($params->get('PaReq'));
         $this->setMd($params->get('MD'));
+
+        // 3Dセキュア2.0設定部分
+        $this->setRedirectUrl($params->get('RedirectUrl'));
 	}
 
 	/**
@@ -256,6 +264,14 @@ class ExecTranOutput extends BaseOutput {
 	 */
 	public function getMd() {
 		return $this->md;
+	}
+
+	/**
+	 * ActiveServerへのリダイレクトURL取得
+	 * @return string ActiveServerへのリダイレクトURL
+	 */
+	public function getRedirectUrl() {
+	    return $this->redirectUrl;
 	}
 
 	/**
@@ -399,11 +415,27 @@ class ExecTranOutput extends BaseOutput {
 	}
 
 	/**
+	 * ActiveServerへのリダイレクトURL設定
+	 * @param string $id トランザクションID
+	 */
+	public function setRedirectUrl( $redirectUrl ) {
+	    $this->redirectUrl = $redirectUrl;
+	}
+
+	/**
 	 * 3Dセキュア判定
 	 * @return boolean 3Dセキュア続行要否(true=認証ページへのリダイレクトの必要あり)
 	 */
 	public function isTdSecure() {
 	    return is_null($this->getAcsUrl()) ? false : true;
+	}
+
+	/**
+	 * 3Dセキュア2.0判定
+	 * @return boolean 3Dセキュア2.0続行要否(true=認証ページへのリダイレクトの必要あり)
+	 */
+	public function isTdSecure2() {
+	    return is_null($this->getRedirectUrl()) ? false : true;
 	}
 
 	/**
@@ -445,6 +477,10 @@ class ExecTranOutput extends BaseOutput {
         $str .= 'PaReq=' . $this->getPaReq();
         $str .= '&';
         $str .= 'MD=' . $this->getMd();
+
+        // 3Dセキュア2.0
+        $str .= '&';
+        $str .= 'RedirectUrl=' . $this->getRedirectUrl();
 
         return $str;
 	}

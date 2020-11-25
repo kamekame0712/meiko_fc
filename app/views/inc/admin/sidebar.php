@@ -24,7 +24,7 @@
 
 			<li class="menu-header">マスター関連</li>
 			<li <?= $active_classroom ?>><a class="nav-link" href="<?= site_url('admin/classroom') ?>"><i class="fas fa-school"></i><span>教室管理</span></a></li>
-			<li <?= $active_product ?>><a class="nav-link" href="<?= site_url('admin/product') ?>"><i class="fas fa-book"></i><span>テキスト管理</span></a></li>
+			<li <?= $active_product ?>><a class="nav-link" href="<?= site_url('admin/product') ?>"><i class="fas fa-book"></i><span>教材管理</span></a></li>
 
 			<li class="menu-header">その他</li>
 			<li <?= $active_manage ?>><a class="nav-link" href="<?= site_url('admin/manage') ?>"><i class="fas fa-user-tie"></i><span>管理者管理</span></a></li>

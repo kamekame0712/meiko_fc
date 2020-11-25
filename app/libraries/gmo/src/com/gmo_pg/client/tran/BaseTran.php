@@ -17,8 +17,8 @@ require_once 'com/gmo_pg/client/common/ConnectUrlMap.php';
  */
 class BaseTran {
 
-	private $user = 'MODP-3.110.159';
-	private $version = '159';
+	private $user = 'MODP-3.110.168';
+	private $version = '168';
 
 	/**
 	 * @var Gmopg_Log 独自ログクラス
@@ -189,8 +189,13 @@ class BaseTran {
 		} else {
 			// ExecTran（カード系）の呼び出しである
 			if(mb_strpos($retData, "ACS=1") === false) {
-				//ACS=1ではない場合は通常のパースを行う
+				if(mb_strpos($retData, "ACS=2") === false) {
+					//ACS=1or2ではない場合は通常のパースを行う
 				$resultMap = $parser->parse($retData);
+				} else {
+					// EntryTranの呼び出し、かつ、ACS=2である場合、3DS2.0用の特殊パースを行う
+					$resultMap = $parser->execSpecialParse2($retData);
+				}
 			} else {
 				// EntryTranの呼び出し、かつ、ACS=1である場合、特殊パースを行う（3DS用URLの仕様変更のため）
 				$resultMap = $parser->execSpecialParse($retData);

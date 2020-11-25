@@ -1,9 +1,9 @@
-<?php $this->load->view('inc/_head', array('TITLE' => '商品選択/' . SITE_NAME)); ?>
+<?php $this->load->view('inc/_head', array('TITLE' => '教材選択/' . SITE_NAME)); ?>
 
 <body>
 	<div class="choose-product-window">
 		<p class="lead-title">
-			商品選択
+			教材選択
 			<?php if( $FLG_HIDE == '1' ): ?>
 				<a href="javascript:void(0);" class="hide-conditions" id="hide_conditions" onclick="hide_conditions();"><i class="fas fa-angle-double-up"></i>&nbsp;検索条件を隠す</a>
 			<?php else: ?>
@@ -217,7 +217,9 @@
 			</div> <!-- end of .conditions -->
 		<?php echo form_close(); ?>
 
-		<?php if( !empty($APPLICABLE) ): ?>
+		<?php if( is_null($APPLICABLE) ): ?>
+			ご指定の条件では該当する教材が存在しません。
+		<?php elseif( !empty($APPLICABLE) ): ?>
 			<div class="product-list">
 				<table class="table table-striped">
 					<thead>

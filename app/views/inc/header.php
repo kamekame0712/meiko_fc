@@ -2,7 +2,7 @@
 	<div class="header">
 		<img src="<?= base_url('img/common/chuoh_logo.png') ?>" class="header-logo" alt="CHUOHロゴ">
 		<h1 class="site-title-small">明光義塾フランチャイズ教室様専用</h1>
-		<h1 class="site-title-large">テキスト発注システム</h1>
+		<h1 class="site-title-large">教材発注システム</h1>
 
 		<?php if( $MENU == TRUE && !empty($this->session->userdata('classroom_name')) ): ?>
 			<div class="for-pc">
@@ -14,6 +14,7 @@
 
 					<div class="menu-dropdown" id="menu_dropdown">
 						<ul>
+							<li><a href="<?= site_url('order') ?>">発注処理</a></li>
 							<li><a href="javascript:void(0);">発注履歴</a></li>
 							<li><a href="javascript:void(0);">登録情報変更</a></li>
 							<li class="divide">&nbsp;</li>

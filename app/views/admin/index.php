@@ -42,9 +42,9 @@
 													</tr>
 													<tr>
 													<td>
-														<a href="<?= site_url('admin/product') ?>"><i class="fas fa-book"></i>&nbsp;テキスト管理</a></td>
+														<a href="<?= site_url('admin/product') ?>"><i class="fas fa-book"></i>&nbsp;教材管理</a></td>
 														<td>
-															テキストの登録、修正、削除が行えます。
+															教材の登録、修正、削除が行えます。
 														</td>
 													</tr>
 													<tr>

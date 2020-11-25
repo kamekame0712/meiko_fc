@@ -8,7 +8,7 @@ require_once ('com/gmo_pg/client/input/BaseInput.php');
  * @subpackage input
  * @see inputPackageInfo.php
  * @author GMO PaymentGateway
- * @version 1.1
+ * @version 1.0
  * @created 15-12-2014
  */
 class SearchCardReverseInput extends BaseInput {

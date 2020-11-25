@@ -39,6 +39,11 @@ class SearchCardInput extends BaseInput {
 	private $cardSeq;
 
 	/**
+	 * @var  string 可変マスク
+	 */
+	private $useFloatingMask;
+
+	/**
 	 * コンストラクタ
 	 *
 	 * @param array $params 入力パラメータ
@@ -89,6 +94,14 @@ class SearchCardInput extends BaseInput {
 		return $this->cardSeq;
 	}
 
+	/**
+	 * 可変マスク取得
+	 * @return string 可変マスク
+	 */
+	public function getUseFloatingMask(){
+	    return $this->useFloatingMask;
+	}
+
 
 	/**
 	 * サイトID設定
@@ -134,6 +147,14 @@ class SearchCardInput extends BaseInput {
 	}
 
 	/**
+	 * 可変マスク設定
+	 * @param string $useFloatingMask 登録カード連番
+	 */
+	public function setUseFloatingMask($useFloatingMask){
+	    $this->useFloatingMask = $useFloatingMask;
+	}
+
+	/**
 	 * デフォルト値設定する
 	 */
 	public function setDefaultValues() {
@@ -156,6 +177,7 @@ class SearchCardInput extends BaseInput {
         $this->setMemberId($this->getStringValue($params, 'MemberID', $this->getMemberId()));
         $this->setSeqMode($this->getStringValue($params , 'SeqMode' , $this->getSeqMode()));
         $this->setCardSeq($this->getIntegerValue($params , 'CardSeq' , $this->getCardSeq()));
+        $this->setUseFloatingMask($this->getStringValue($params , 'useFloatingMask' , $this->getUseFloatingMask()));
 
 	}
 
@@ -175,6 +197,8 @@ class SearchCardInput extends BaseInput {
 	    $str .= 'SeqMode=' . $this->encodeStr($this->getSeqMode());
 	    $str .= '&';
 	    $str .= 'CardSeq=' . $this->encodeStr($this->getCardSeq());
+	    $str .= '&';
+	    $str .= 'useFloatingMask=' . $this->encodeStr($this->getUseFloatingMask());
 
 	    return $str;
 	}

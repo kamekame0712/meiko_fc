@@ -52,6 +52,20 @@ $('input[name="payment_method"]').change( function() {
 	}
 });
 
+function change_card(flg)
+{
+	if( flg == 1 ) {
+		$('#registered').slideUp('normal', function(){
+			$('#newly').slideDown();
+		});
+	}
+	else {
+		$('#newly').slideUp('normal', function(){
+			$('#registered').slideDown();
+		});
+	}
+}
+
 function do_submit()
 {
 	var q = 0;
@@ -62,7 +76,7 @@ function do_submit()
 	});
 
 	if( flg_product == false ) {
-		swal('商品を選択してください。');
+		swal('教材を選択してください。');
 		return false;
 	}
 
@@ -77,13 +91,49 @@ function do_submit()
 	}
 
 	if( $('#pm2').prop('checked') ) {
-		Multipayment.init('tshop00022859');
-		Multipayment.getToken({
-			cardno: $('#number').val(),
-			expire: $('#limit_y').val() + $('#limit_m').val(),
-			securitycode: $('#security_code').val(),
-			holdername : $('#holder').val()
-		},callback_gmo);
+		if( $('#registered').css('display') == 'block' ) {
+			var card_no = '';
+
+			$('input[name="registered_card"]').each(function(index, element) {
+				if( $(element).prop('checked') ) {
+					card_no = $(element).data('cardno');
+				}
+			});
+
+			if( card_no == '' ) {
+				swal('お支払に使用するカードを選択してください。');
+				return false;
+			}
+			else {
+				$('#gmo_maskedCardNo').val(card_no);
+				$('#card_type').val('1');
+				$('#frm_order').prop('action', SITE_URL + 'order/confirm').submit();
+			}
+		}
+		else {
+			if( $('#number').val() == '' ) {
+				swal('カード番号は必須です。');
+				return false;
+			}
+
+			if( $('#security_code').val() == '' ) {
+				swal('セキュリティコードは必須です。');
+				return false;
+			}
+			
+			if( $('#holder').val() == '' ) {
+				swal('名義人名は必須です。');
+				return false;
+			}
+
+			Multipayment.init('tshop00022859');
+			Multipayment.getToken({
+				cardno: $('#number').val(),
+				expire: $('#limit_y').val() + $('#limit_m').val(),
+				securitycode: $('#security_code').val(),
+				holdername : $('#holder').val()
+			},callback_gmo);
+		}
 	}
 	else {
 		$('#frm_order').prop('action', SITE_URL + 'order/confirm').submit();
@@ -101,25 +151,26 @@ function callback_gmo(response)
 		$('#limit_y').val('');
 		$('#limit_m').val('');
 		$('#security_code').val('');
-		$('#holder').val('');
+//		$('#holder').val('');
 
 		$('#gmo_token').val(response.tokenObject.token);
 		$('#gmo_maskedCardNo').val(response.tokenObject.maskedCardNo);
+		$('#card_type').val('2');
 		$('#frm_order').prop('action', SITE_URL + 'order/confirm').submit();
 	}
 	else if( resultCode == '100' || resultCode == '101' || resultCode == '102' ) {
-		$('#token_error').html('<p class="error-box2">カード番号に誤りがあります。</p>');
+		swal('カード番号に誤りがあります。');
 	}
 	else if( resultCode == '110' || resultCode == '111' || resultCode == '112' || resultCode == '113' ) {
-		$('#token_error').html('<p class="error-box2">有効期限に誤りがあります。</p>');
+		swal('有効期限に誤りがあります。');
 	}
 	else if( resultCode == '121' || resultCode == '122' ) {
-		$('#token_error').html('<p class="error-box2">セキュリティコードに誤りがあります。</p>');
+		swal('セキュリティコードに誤りがあります。');
 	}
 	else if( resultCode == '131' || resultCode == '132' ) {
-		$('#token_error').html('<p class="error-box2">名義人名に誤りがあります。</p>');
+		swal('名義人名に誤りがあります。');
 	}
 	else {
-		$('#token_error').html('<p class="error-box2">クレジット決済時にエラーが発生しました。</p>');
+		swal('クレジット決済時にエラーが発生しました。');
 	}
 }

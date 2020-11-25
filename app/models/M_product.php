@@ -94,7 +94,7 @@ class M_product extends MY_Model
 		}
 
 		$query = $this->db->get();
-		$course_data = ($query->num_rows() > 0) ? $query->result_array() : array();
+		$course_data = ($query->num_rows() > 0) ? $query->result_array() : NULL;
 
 		return array($course_data, $total);
 	}

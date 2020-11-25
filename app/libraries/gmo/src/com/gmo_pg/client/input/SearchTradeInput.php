@@ -28,6 +28,16 @@ class SearchTradeInput extends BaseInput {
 	private $orderId;
 
 	/**
+	 * @var string サイト設定のマスクレベル利用有無
+	 */
+	private $useSiteMaskLevel;
+
+	/**
+	 * @var  string 可変マスク
+	 */
+	private $useFloatingMask;
+
+	/**
 	 * コンストラクタ
 	 *
 	 * @param array $params 入力パラメータ
@@ -62,6 +72,22 @@ class SearchTradeInput extends BaseInput {
 	}
 
 	/**
+	 * サイト設定のマスクレベル利用有無取得
+	 * @return string サイト設定のマスクレベル利用有無
+	 */
+	public function getUseSiteMaskLevel() {
+		return $this->useSiteMaskLevel;
+	}
+
+	/**
+	 * 可変マスク取得
+	 * @return string 可変マスク
+	 */
+	public function getUseFloatingMask(){
+	    return $this->useFloatingMask;
+	}
+
+	/**
 	 * ショップID設定
 	 *
 	 * @param string $shopId ショップID
@@ -89,6 +115,23 @@ class SearchTradeInput extends BaseInput {
 	}
 
 	/**
+	 * サイト設定のマスクレベル利用有無設定
+	 *
+	 * @param string $useSiteMaskLevel サイト設定のマスクレベル利用有無
+	 */
+	public function setUseSiteMaskLevel($useSiteMaskLevel) {
+		$this->useSiteMaskLevel = $useSiteMaskLevel;
+	}
+
+	/**
+	 * 可変マスク設定
+	 * @param string $useFloatingMask 登録カード連番
+	 */
+	public function setUseFloatingMask($useFloatingMask){
+	    $this->useFloatingMask = $useFloatingMask;
+	}
+
+	/**
 	 * デフォルト値を設定する
 	 */
 	public function setDefaultValues() {
@@ -109,7 +152,8 @@ class SearchTradeInput extends BaseInput {
 	    $this->setShopId($this->getStringValue($params, 'ShopID', $this->getShopId()));
 	    $this->setShopPass($this->getStringValue($params, 'ShopPass', $this->getShopPass()));
         $this->setOrderId($this->getStringValue($params, 'OrderID', $this->getOrderId()));
-
+        $this->setUseSiteMaskLevel($this->getStringValue($params, 'UseSiteMaskLevel', $this->getUseSiteMaskLevel()));
+        $this->setUseFloatingMask($this->getStringValue($params, '$useFloatingMask', $this->getUseFloatingMask()));
 	}
 
 	/**
@@ -124,6 +168,10 @@ class SearchTradeInput extends BaseInput {
 	    $str .= 'ShopPass=' . $this->encodeStr($this->getShopPass());
 	    $str .= '&';
 	    $str .= 'OrderID=' . $this->encodeStr($this->getOrderId());
+	    $str .= '&';
+	    $str .= 'UseSiteMaskLevel=' . $this->encodeStr($this->getUseSiteMaskLevel());
+	    $str .= '&';
+	    $str .= 'useFloatingMask=' . $this->encodeStr($this->getUseFloatingMask());
 
 	    return $str;
 	}

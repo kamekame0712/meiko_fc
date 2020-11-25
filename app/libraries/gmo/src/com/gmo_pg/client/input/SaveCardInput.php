@@ -88,6 +88,10 @@ class SaveCardInput extends BaseInput {
 	 */
 	private $srcCardSeq;
 
+	/**
+	 * @var string セキュリティーコード
+	 */
+	 private $securityCode;
 
 	/**
 	 * コンストラクタ
@@ -218,6 +222,14 @@ class SaveCardInput extends BaseInput {
 	 */
 	public function getSrcCardSeq() {
 		return $this->srcCardSeq;
+	}
+
+	/**
+	 * セキュリティーコード
+	 * @return string セキュリティーコード
+	 */
+	public function getSecurityCode() {
+		return $this->securityCode;
 	}
 
 	/**
@@ -354,6 +366,15 @@ class SaveCardInput extends BaseInput {
 	}
 
 	/**
+	 * セキュリティーコード
+	 *
+	 * @param string $securityCode セキュリティーコード
+	 */
+	public function setSecurityCode($securityCode) {
+		$this->securityCode = $securityCode;
+	}
+
+	/**
 	 * デフォルト値を設定する
 	 */
 	public function setDefaultValues() {
@@ -386,6 +407,7 @@ class SaveCardInput extends BaseInput {
         $this->setUpdateType($this->getStringValue($params , 'UpdateType' , $this->getUpdateType()));
         $this->setSrcMemberID($this->getStringValue($params , 'SrcMemberID' , $this->getSrcMemberID()));
         $this->setSrcCardSeq($this->getStringValue($params , 'SrcCardSeq' , $this->getSrcCardSeq()));
+        $this->setSecurityCode($this->getStringValue($params , 'SecurityCode' , $this->getSecurityCode()));
 	}
 
 	/**
@@ -424,6 +446,8 @@ class SaveCardInput extends BaseInput {
 	    $str .= 'SrcMemberID=' . $this->encodeStr($this->getSrcMemberID());
 	    $str .= '&';
 	    $str .= 'SrcCardSeq=' . $this->encodeStr($this->getSrcCardSeq());
+	    $str .= '&';
+	    $str .= 'SecurityCode=' . $this->encodeStr($this->getSecurityCode());
 
 	    return $str;
 	}

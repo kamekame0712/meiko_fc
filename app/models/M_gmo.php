@@ -138,8 +138,8 @@ class M_gmo extends MY_Model
 		return $this->convert_array($output);
 	}
 
-	// 決済 会員情報利用
-	public function exec_tran_with_member_id($order_id = '', $access_id = '', $access_pass = '', $member_id = '')
+	// 決済 登録済みカード使用
+	public function exec_tran_registered($order_id = '', $access_id = '', $access_pass = '', $member_id = '', $card_sequence = 0)
 	{
 		if( $order_id == '' || $access_id == '' || $access_pass == '' || $member_id == '' ) {
 			return 'パラメータエラー';
@@ -158,7 +158,7 @@ class M_gmo extends MY_Model
 		$input->setAccessPass($access_pass);
 		$input->setOrderId($order_id);
 		$input->setMethod('1');	// 1:一括
-		$input->setCardSeq(0);
+		$input->setCardSeq($card_sequence);
 
 		$exe = new ExecTran();
 		$output = $exe->exec($input);
@@ -208,9 +208,9 @@ class M_gmo extends MY_Model
 	}
 
 	// カード登録
-	public function save_card($member_id = '', $card_num = '', $card_limit = '')
+	public function save_card($member_id = '', $token = '')
 	{
-		if( $member_id == '' || $card_num == '' || $card_limit == '' ) {
+		if( $member_id == '' || $token == '' ) {
 			return 'パラメータエラー';
 		}
 
@@ -223,10 +223,45 @@ class M_gmo extends MY_Model
 		$input->setSiteId($this->site_id);
 		$input->setSitePass($this->site_pass);
 		$input->setMemberId($member_id);
-		$input->setCardNo($card_num);
-		$input->setExpire($card_limit);
+		$input->setToken($token);
 
 		$exe = new SaveCard();
+		$output = $exe->exec($input);
+
+		if( $exe->isExceptionOccured() ) { // エラー発生
+			return $this->get_exe_error($exe);
+		}
+		else {
+			if( $output->isErrorOccurred() ) { // エラー発生
+				return $this->get_output_error($output);
+			}
+		}
+
+		return $this->convert_array($output);
+	}
+
+	// 決済使用カードの登録
+	public function traded_card($order_id = '', $member_id = '', $holder_name = '')
+	{
+		if( $order_id == '' || $member_id == '' ) {
+			return 'パラメータエラー';
+		}
+
+		require_once('com/gmo_pg/client/input/TradedCardInput.php');
+		require_once('com/gmo_pg/client/tran/TradedCard.php');
+
+		$input = new TradedCardInput();
+
+		//各種パラメータを設定
+		$input->setShopId($this->shop_id);
+		$input->setShopPass($this->shop_pass);
+		$input->setOrderId($order_id);
+		$input->setSiteId($this->site_id);
+		$input->setSitePass($this->site_pass);
+		$input->setMemberId($member_id);
+		$input->setHolderName($holder_name);
+
+		$exe = new TradedCard();
 		$output = $exe->exec($input);
 
 		if( $exe->isExceptionOccured() ) { // エラー発生
@@ -278,7 +313,7 @@ class M_gmo extends MY_Model
 	}
 
 	// カード削除
-	public function delete_card($member_id = '')
+	public function delete_card($member_id = '', $card_sequence = 0)
 	{
 		if( $member_id == '' ) {
 			return 'パラメータエラー';
@@ -294,7 +329,7 @@ class M_gmo extends MY_Model
 		$input->setSitePass($this->site_pass);
 		$input->setMemberId($member_id);
 		$input->setSeqMode('0');	// 0:論理モード
-		$input->setCardSeq(0);	// カードは１枚しか登録させない
+		$input->setCardSeq($card_sequence);
 
 		$exe = new DeleteCard();
 		$output = $exe->exec($input);
@@ -341,7 +376,7 @@ class M_gmo extends MY_Model
 			}
 		}
 
-		return $this->convert_array($output);
+		return $output->getCardList();
 	}
 
 

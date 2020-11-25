@@ -231,7 +231,26 @@ class ExecFraudScreeningInput extends BaseInput {
 	 * @var string トークン
 	 */
 	private $token;
-
+	/**
+	 * @var string 会員ID
+	 */
+	private $memberID;
+	/**
+	 * @var string サイトID
+	 */
+	private $siteID;
+	/**
+	 * @var string サイトパスワード
+	 */
+	private $sitePass;
+	/**
+	 * @var string カード登録連番モード
+	 */
+	private $seqMode;
+	/**
+	 * @var string カード登録連番
+	 */
+	private $cardSeq;
 
 	/**
 	 * コンストラクタ
@@ -627,6 +646,41 @@ class ExecFraudScreeningInput extends BaseInput {
 	 */
 	public function getToken() {
 		return $this->token;
+	}
+	/**
+	 * 会員ID取得
+	 * @return string 会員ID
+	 */
+	public function getMemberID() {
+		return $this->memberID;
+	}
+	/**
+	 * サイトID取得
+	 * @return string サイトID
+	 */
+	public function getSiteID() {
+		return $this->siteID;
+	}
+	/**
+	 * サイトパスワード取得
+	 * @return string サイトパスワード
+	 */
+	public function getSitePass() {
+		return $this->sitePass;
+	}
+	/**
+	 * カード登録連番モード取得
+	 * @return string カード登録連番モード
+	 */
+	public function getSeqMode() {
+		return $this->seqMode;
+	}
+	/**
+	 * カード登録連番取得
+	 * @return string カード登録連番
+	 */
+	public function getCardSeq() {
+		return $this->cardSeq;
 	}
 
 	/**
@@ -1058,7 +1112,6 @@ class ExecFraudScreeningInput extends BaseInput {
 	public function setTelegramType($telegramType) {
 		$this->telegramType = $telegramType;
 	}
-
 	/**
 	 * トークン設定
 	 *
@@ -1066,6 +1119,46 @@ class ExecFraudScreeningInput extends BaseInput {
 	 */
 	public function setToken($token) {
 		$this->token = $token;
+	}
+	/**
+	 * 会員ID設定
+	 *
+	 * @param string $memberID
+	 */
+	public function setMemberID($memberID) {
+		$this->memberID = $memberID;
+	}
+	/**
+	 * サイトID
+	 *
+	 * @param string $siteID
+	 */
+	public function setSiteID($siteID) {
+		$this->siteID = $siteID;
+	}
+	/**
+	 * サイトパスワード
+	 *
+	 * @param string $sitePass
+	 */
+	public function setSitePass($sitePass) {
+		$this->sitePass = $sitePass;
+	}
+	/**
+	 * カード登録連番モード
+	 *
+	 * @param string $seqMode
+	 */
+	public function setSeqMode($seqMode) {
+		$this->seqMode = $seqMode;
+	}
+	/**
+	 * カード登録連番
+	 *
+	 * @param string $cardSeq
+	 */
+	public function setCardSeq($cardSeq) {
+		$this->cardSeq= $cardSeq;
 	}
 
 	/**
@@ -1140,6 +1233,11 @@ class ExecFraudScreeningInput extends BaseInput {
 		$this->setRedItemList($this->getStringValue($params, 'RedItemList', $this->getRedItemList()));
 		$this->setTelegramType($this->getStringValue($params, 'TelegramType', $this->getTelegramType()));
 		$this->setToken($this->getStringValue($params, 'Token', $this->getToken()));
+		$this->setMemberID($this->getStringValue($params, 'MemberID', $this->getMemberID()));
+		$this->setSiteID($this->getStringValue($params, 'SiteID', $this->getSiteID()));
+		$this->setSitePass($this->getStringValue($params, 'SitePass', $this->getSitePass()));
+		$this->setSeqMode($this->getStringValue($params, 'SeqMode', $this->getSeqMode()));
+		$this->setCardSeq($this->getStringValue($params, 'CardSeq', $this->getCardSeq()));
 
 	}
 
@@ -1277,6 +1375,16 @@ class ExecFraudScreeningInput extends BaseInput {
 		$str .= 'TelegramType=' . $this->encodeStr($this->getTelegramType());
 		$str .='&';
 		$str .= 'Token=' . $this->encodeStr($this->getToken());
+		$str .='&';
+		$str .= 'MemberID=' . $this->encodeStr($this->getMemberID());
+		$str .='&';
+		$str .= 'SiteID=' . $this->encodeStr($this->getSiteID());
+		$str .='&';
+		$str .= 'SitePass=' . $this->encodeStr($this->getSitePass());
+		$str .='&';
+		$str .= 'SeqMode=' . $this->encodeStr($this->getSeqMode());
+		$str .='&';
+		$str .= 'CardSeq=' . $this->encodeStr($this->getCardSeq());
 
 		return $str;
 	}

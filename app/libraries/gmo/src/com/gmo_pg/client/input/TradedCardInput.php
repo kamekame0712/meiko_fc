@@ -73,6 +73,11 @@ class TradedCardInput extends BaseInput {
 	private $cardPass;
 
 	/**
+	 * @var string サイト設定のマスクレベル利用有無
+	 */
+	private $useSiteMaskLevel;
+
+	/**
 	 * コンストラクタ
 	 *
 	 * @param array $params 入力パラメータ
@@ -111,6 +116,7 @@ class TradedCardInput extends BaseInput {
 		$this->setHolderName($this->getStringValue($params, 'HolderName', $this->getHolderName()));
 		$this->setCardName($this->getStringValue($params, 'CardName', $this->getCardName()));
 		$this->setCardPass($this->getStringValue($params, 'CardPass', $this->getCardPass()));
+		$this->setUseSiteMaskLevel($this->getStringValue($params, 'UseSiteMaskLevel', $this->getUseSiteMaskLevel()));
 	}
 
 
@@ -208,6 +214,14 @@ class TradedCardInput extends BaseInput {
 	 */
 	public function getCardPass() {
 	    return $this->cardPass;
+	}
+
+	/**
+	 * サイト設定のマスクレベル利用有無取得
+	 * @return string サイト設定のマスクレベル利用有無
+	 */
+	public function getUseSiteMaskLevel() {
+		return $this->useSiteMaskLevel;
 	}
 
 	/**
@@ -312,6 +326,14 @@ class TradedCardInput extends BaseInput {
 	}
 
 	/**
+	 * サイト設定のマスクレベル利用有無設定
+	 * @param string $useSiteMaskLevel サイト設定のマスクレベル利用有無
+	 */
+	public function setUseSiteMaskLevel($useSiteMaskLevel) {
+		$this->useSiteMaskLevel = $useSiteMaskLevel;
+	}
+
+	/**
 	 * 文字列表現
 	 * URLのパラメータ文字列の形式の文字列を生成する
 	 * @return string 接続文字列表現
@@ -341,6 +363,8 @@ class TradedCardInput extends BaseInput {
 		$str .= 'CardName=' . $this->encodeStr($this->getCardName());
 		$str .= '&';
 		$str .= 'CardPass=' . $this->encodeStr($this->getCardPass());
+	    $str .= '&';
+	    $str .= 'UseSiteMaskLevel=' . $this->encodeStr($this->getUseSiteMaskLevel());
 
 		return $str;
 	}

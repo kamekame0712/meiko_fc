@@ -130,7 +130,8 @@ class Entry extends MY_Controller
 		}
 
 		$view_data = array(
-			'COMMIT'	=> $flg_commit
+			'COMMIT'	=> $flg_commit,
+			'PARENT'	=> $flg_parent
 		);
 
 		$this->load->view('front/entry/complete', $view_data);

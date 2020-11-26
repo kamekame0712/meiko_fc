@@ -7,7 +7,9 @@
 		<div class="container">
 			<p class="lead-title">お客様情報登録</p>
 
-			<a href="<?= site_url('') ?>" class="btn btn-sm btn-secondary">ログイン画面に戻る</a>
+			<div class="text-right">
+				<a href="<?= site_url('') ?>" class="btn btn-sm btn-secondary">ログイン画面に戻る</a>
+			</div>
 
 			<?php echo form_open('entry/confirm', array('id' => 'frm_entry')); ?>
 				<?php echo form_input(array(

@@ -113,7 +113,7 @@
 				<?php endif; ?>
 			</table>
 
-			<div class="text-center my-5">
+			<div class="text-center mt-5">
 				<?php echo form_open('entry/complete', array('id' => 'frm_confirm')); ?>
 					<?php echo form_hidden($PDATA); ?>
 

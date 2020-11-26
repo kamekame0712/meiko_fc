@@ -106,3 +106,15 @@ CREATE TABLE `t_account` (
 
   PRIMARY KEY (account_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `t_forgot` (
+  `forgot_id` int(7) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `classroom_id` int(7) NOT NULL COMMENT 't_classroomのID',
+  `param` varchar(64) NOT NULL COMMENT 'パラメーター',
+  `limit_time` datetime NOT NULL COMMENT '更新期限',
+  `regist_time` datetime NOT NULL COMMENT '登録日',
+  `update_time` datetime NOT NULL COMMENT '更新日',
+  `status` varchar(1) DEFAULT '0' COMMENT '状態 0:通常 9:削除済',
+
+  PRIMARY KEY (forgot_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

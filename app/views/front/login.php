@@ -29,7 +29,7 @@
 						<?php echo validation_errors(); ?>
 
 						<p class="mt-5 comment">まだ登録がお済みでない方は<a href="<?= site_url('entry') ?>">こちら</a></p>
-						<p class="mb-2 comment">パスワードをお忘れの方は<a href="#">こちら</a></p>
+						<p class="mb-2 comment">パスワードをお忘れの方は<a href="<?= site_url('forgot') ?>">こちら</a></p>
 
 						<?php echo form_submit(array(
 							'name'	=> 'btn-submit',

@@ -5,6 +5,9 @@ class M_classroom extends MY_Model
 	// テーブル名
 	const TBL  = 't_classroom';
 
+	// パスワードに使う文字列
+	private $pass_str = '23456789abcdefghjmnqrstuvyABCDEFGHJMNQRSTUVY';
+
 	function __construct()
 	{
 		parent::__construct();
@@ -36,5 +39,10 @@ class M_classroom extends MY_Model
 	function get_hashed_pass($plane_password)
 	{
 		return password_hash($plane_password, PASSWORD_DEFAULT);
+	}
+
+	public function create_password($length = 8)
+	{
+		return substr(str_shuffle($this->pass_str), 0, $length);
 	}
 }

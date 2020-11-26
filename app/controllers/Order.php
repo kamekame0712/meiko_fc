@@ -436,7 +436,7 @@ class Order extends MY_Controller
 				$gmo_order_id = GMO_PREFIX . $order_id;
 				$gmo_member_id = !empty($classroom_data['gmo_member_id']) ? $classroom_data['gmo_member_id'] : '';
 
-				if( $card_type == '1' ) {
+				if( $card_type == '1' ) { // 登録済みカードを使用
 					// 取引登録
 					$ret_et_val = $this->m_gmo->entry_tran($gmo_order_id, intval($shipping_fee) + intval($sub_total));
 					if( !is_array($ret_et_val) || empty($ret_et_val['accessId']) || empty($ret_et_val['accessPass']) ) {
@@ -464,7 +464,7 @@ class Order extends MY_Controller
 						}
 					}
 				}
-				else if( $card_type == '2' ) {
+				else if( $card_type == '2' ) { // 新規カードを使用
 					if( $chk_register == '1' ) {
 						if( $gmo_member_id == '' ) {
 							// 会員登録
@@ -555,8 +555,23 @@ class Order extends MY_Controller
 		$this->config->load('config_mail', TRUE, TRUE);
 		$this->conf_mail = $this->config->item('mail', 'config_mail');
 
-		$mail_data = array(
+		if( $delivery_date == '' ) {
+			$show_delivery_date = '最短';
+		}
+		else {
+			$w = array('日', '月', '火', '水', '木', '金', '土');
+			$show_delivery_date = date('Y年n月j日', strtotime($delivery_date)) . '(' . $w[date('w', strtotime($delivery_date))] . ')';
+		}
 
+		$mail_data = array(
+			'JUKU_NAME'	=> $classroom_data['name'],
+			'PRODUCTS'	=> $products,
+			'SUB_TOTAL'	=> $sub_total,
+			'SHIPPING'	=> $shipping_fee,
+			'TOTAL'		=> intval($sub_total) + intval($shipping_fee),
+			'PAYMENT'	=> $this->conf['payment_method'][$payment_method],
+			'DDATE'		=> $show_delivery_date,
+			'DTIME'		=> $this->conf['delivery_time'][$delivery_time]
 		);
 
 		$mail_body = $this->load->view('mail/tmpl_apply_comp_to_customer', $mail_data, TRUE);
@@ -572,7 +587,7 @@ class Order extends MY_Controller
 
 		$view_data = array(
 			'CARD_ERROR'	=> $card_error,
-			'EMAIL'			=> $email
+			'EMAIL'			=> $classroom_data['email']
 		);
 
 		$this->load->view('front/order/complete', $view_data);

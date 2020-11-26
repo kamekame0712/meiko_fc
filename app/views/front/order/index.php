@@ -273,7 +273,7 @@
 
 							<div class="attention-credit">
 								クレジットカード決済は、クレジットカード決済代行のGMOペイメントゲートウェイ株式会社の決済代行サービスを利用しております。<br>
-								安心してお支払いをしていただくために、お客様の情報は暗号化して送信し、クレジットカード情報は当サイトでは保有せず、同社で厳重に管理しております。 
+								安心してお支払いをしていただくために、お客様の情報は暗号化して送信し、クレジットカード情報は当サイトでは保有せず、同社で厳重に管理しております。
 							</div>
 						<?php echo form_fieldset_close(); ?>
 					</dd>
@@ -314,7 +314,7 @@
 				</div>
 			<?php echo form_close(); ?>
 		</div> <!-- end of .container -->
-		
+
 		<?php $this->load->view('inc/_foot'); ?>
 		<?php $this->load->view('inc/footer'); ?>
 	</div> <!-- end of #wrapper -->

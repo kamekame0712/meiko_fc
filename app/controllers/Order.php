@@ -606,7 +606,7 @@ class Order extends MY_Controller
 						'value'	=> serialize($product_ids),
 						'expire'=> '86400'
 					);
-					$this->input->set_cookie($cookie_save_data);		
+					$this->input->set_cookie($cookie_save_data);
 				}
 			}
 		}

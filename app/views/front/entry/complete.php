@@ -40,7 +40,7 @@
 				</div>
 			<?php endif; ?>
 		</div> <!-- end of .container -->
-		
+
 		<?php $this->load->view('inc/_foot'); ?>
 		<?php $this->load->view('inc/footer'); ?>
 	</div> <!-- end of #wrapper -->

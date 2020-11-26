@@ -109,7 +109,7 @@ class Entry extends MY_Controller
 				'corporation'		=> $corporation == '1' ? '法人' : '非法人',
 				'payment_method'	=> $payment_method == '1' ? '振込' : '口座引落'
 			);
-	
+
 			$mail_body = $this->load->view('mail/tmpl_entry_to_admin', $mail_data, TRUE);
 			$params = array(
 				'from'		=> $this->conf_mail['entry_to_admin']['from'],
@@ -118,7 +118,7 @@ class Entry extends MY_Controller
 				'subject'	=> '掛け登録の希望があります',
 				'message'	=> $mail_body
 			);
-	
+
 			$this->m_mail->send($params);
 		}
 

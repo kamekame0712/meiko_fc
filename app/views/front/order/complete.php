@@ -59,7 +59,7 @@
 				<a href="<?= site_url('order') ?>" class="btn btn-success">TOPに戻る</a>
 			</div>
 		</div> <!-- end of .container -->
-		
+
 		<?php $this->load->view('inc/_foot'); ?>
 		<?php $this->load->view('inc/footer'); ?>
 	</div> <!-- end of #wrapper -->

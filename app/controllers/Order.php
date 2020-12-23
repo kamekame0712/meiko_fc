@@ -171,7 +171,7 @@ class Order extends MY_Controller
 		$select_date = array('' => '最短');
 
 		for( $i = 1; $i <= 15; $i++ ) {
-			$target_date = date('Y-m-d', strtotime('+' . $i . ' day', strtotime($base_date)));
+			$target_date = date('Y/m/d', strtotime('+' . $i . ' day', strtotime($base_date)));
 
 			$month = intval(date('n', strtotime($target_date)));
 			$day = intval(date('j', strtotime($target_date)));

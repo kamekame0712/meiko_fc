@@ -48,14 +48,14 @@
 					</div> <!-- end of .row -->
 
 					<dl>
-						<dt>教材名</dt>
+						<dt>教材名/<br>キーワード</dt>
 						<dd>
 							<?php echo form_input(array(
 								'name'	=> 'cond_keyword',
 								'id'	=> 'cond_keyword',
 								'value'	=> set_value('cond_keyword', '' )
 							)); ?><br>
-							※『教材名』は一部だけでも検索できます。<br />
+							※『教材名』『キーワード』は一部だけでも検索できます。<br />
 						</dd>
 
 						<dt>対象</dt>

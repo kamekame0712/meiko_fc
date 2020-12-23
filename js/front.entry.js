@@ -175,7 +175,7 @@ $('#frm_entry').submit( function() {
 	if( $('#required_item2').css('display') == 'block' && $('#apply_account').prop('checked') ) {
 		if( $('#corporation1').prop('checked') == false && $('#corporation2').prop('checked') == false ) {
 			swal('事業形態 を選択してください。');
-			return false;	
+			return false;
 		}
 
 		if( $('#corporation1').prop('checked') ) {
@@ -233,7 +233,7 @@ $('#frm_entry').submit( function() {
 			if( $('#corporation_tel01').val() == '' || $('#corporation_tel02').val() == '' || $('#corporation_tel03').val() == '' ) {
 				swal('代表者電話番号 は必須です。');
 				return false;
-			}			
+			}
 		}
 
 		if( $('#payment_method1').prop('checked') == false && $('#payment_method2').prop('checked') == false ) {

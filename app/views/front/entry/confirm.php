@@ -11,7 +11,7 @@
 				<p class="favor">登録内容に間違いがなければ【登録】をクリックし、登録を完了させてください。</p>
 			</div>
 
-			<table class="register-confirm">
+			<table class="confirm-table">
 				<tr>
 					<th>教室名（教室コード）</th>
 					<td><?= isset($PDATA['classroom_name']) ? $PDATA['classroom_name'] : '&nbsp;' ?>（<?= $PDATA['classroom_number'] ?>）</td>

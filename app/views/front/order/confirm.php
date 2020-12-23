@@ -80,7 +80,7 @@
 						$delivery_date = '最短';
 						if( !empty($PDATA['delivery_date']) ) {
 							$w = array('日', '月', '火', '水', '木', '金', '土');
-							$delivery_date = date('Y-m-d', strtotime($PDATA['delivery_date'])) . '(' . $w[date('w', strtotime($PDATA['delivery_date']))] . ')';
+							$delivery_date = date('Y/m/d', strtotime($PDATA['delivery_date'])) . '(' . $w[date('w', strtotime($PDATA['delivery_date']))] . ')';
 						}
 					?>
 

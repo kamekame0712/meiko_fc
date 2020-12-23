@@ -101,6 +101,9 @@ const GMO_PREFIX			= 'meikofc-';
 // ページネーション ページあたりのデータ件数
 const RECORD_PER_PAGE		= 20;
 
+// ページネーション ページあたりのデータ件数（発注履歴）
+const RECORD_PER_PAGE_HISTORY	= 10;
+
 // ページネーション カレントページ前のページ最大数
 const MAX_BEFORE_CURRENT	= 2;
 

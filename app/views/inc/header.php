@@ -15,8 +15,8 @@
 					<div class="menu-dropdown" id="menu_dropdown">
 						<ul>
 							<li><a href="<?= site_url('order') ?>">発注処理</a></li>
-							<li><a href="javascript:void(0);">発注履歴</a></li>
-							<li><a href="javascript:void(0);">登録情報変更</a></li>
+							<li><a href="<?= site_url('history') ?>">発注履歴</a></li>
+							<li><a href="<?= site_url('modify') ?>">登録情報変更</a></li>
 							<li class="divide">&nbsp;</li>
 							<li><a href="<?= site_url('index/logout') ?>">ログアウト</a></li>
 						</ul>

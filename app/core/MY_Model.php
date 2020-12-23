@@ -41,7 +41,7 @@ class MY_model extends CI_Model
 
 	/**
 	 * レコード更新
-	 * 
+	 *
 	 * @param string $where    : 更新条件の連想配列
 	 * @param string $params   : 更新情報の連想配列
 	 * @access public
@@ -106,7 +106,7 @@ class MY_model extends CI_Model
 
 	/**
 	 * レコード単一取得
-	 * 
+	 *
 	 * @param	$where		検索条件
 	 * @return				単一レコードの連想配列
 	 */
@@ -118,7 +118,7 @@ class MY_model extends CI_Model
 
 	/**
 	 * レコード件数取得
-	 * 
+	 *
 	 * @param	$params		検索条件
 	 * @param	is_status	TRUE:status='0'を条件に付加
 	 *
@@ -145,7 +145,7 @@ class MY_model extends CI_Model
 
 	/**
 	 * 最大値取得
-	 * 
+	 *
 	 * @param	$col		最大値を求めるカラム名
 	 * @param	$params		検索条件
 	 * @param	is_status	TRUE:status='0'を条件に付加
@@ -185,7 +185,7 @@ class MY_model extends CI_Model
 
 	/**
 	 * 最小値取得
-	 * 
+	 *
 	 * @param	$col		最小値を求めるカラム名
 	 * @param	$params		検索条件
 	 * @param	is_status	TRUE:status='0'を条件に付加

@@ -61,6 +61,66 @@ body,
 	background: repeating-linear-gradient(-45deg, #FFFCA3, #FFFCA3 3px,#FCF537 3px, #FCF537 7px);
 }
 
+.sub-title {
+    font-size: 2.0rem;
+    font-weight: bold;
+    padding: 0 0 0 10px;
+    margin: 10px 0;
+    border-top: 2px solid #157BCA;
+    border-bottom: 2px solid #157BCA;
+}
+
+.favor {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #157BCA;
+    margin: 0;
+    padding-left: 2em;
+    text-indent: -2em;
+}
+
+table.confirm-table {
+    border-collapse: separate;
+    border-spacing: 0 5px;
+    margin: 0 auto;
+    padding: 0;
+    width: 640px;
+}
+
+table.confirm-table th {
+    position: relative;
+    width: 180px;
+    text-align: center;
+    background-color: #FCF537;
+    color: #157BCA;
+    padding: 10px 0;
+}
+
+table.confirm-table th::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    position: absolute;
+    top: calc(50% - 10px);
+    right: -20px;
+    border-top: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #FCF537;
+}
+
+table.confirm-table td {
+    padding: 10px 10px 10px 20px;
+    background-color: #E0E0E0;
+}
+
+table.confirm-table td .attention {
+    color: #D4440D;
+    font-weight: bold;
+    margin: 0;
+}
+
 .for-pc {
     display: block;
 }
@@ -73,7 +133,7 @@ body,
     .for-pc {
         display: none;
     }
-    
+
     .for-sp {
         display: block;
     }
@@ -201,7 +261,7 @@ hr.header-bottom {
     .header .site-title-small {
         font-size: 1.8rem;
     }
-    
+
     .header .site-title-large {
         font-size: 2.5rem;
     }
@@ -244,7 +304,7 @@ footer .copyright {
     footer {
         font-size: 1.3rem;
     }
-    
+
     footer .emphasis a {
         font-size: 1.8rem;
     }
@@ -358,15 +418,6 @@ footer .copyright {
 /* #endregion ログイン */
 
 /* #region 登録 */
-.favor {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #157BCA;
-    margin: 0;
-    padding-left: 2em;
-    text-indent: -2em;
-}
-
 .already-registered {
     font-size: 1.8rem;
     font-weight: bold;
@@ -386,42 +437,6 @@ footer .copyright {
     font-size: 1.8rem;
     color: red;
     font-weight: bold;
-}
-
-table.register-confirm {
-    border-collapse: separate;
-    border-spacing: 0 5px;
-    margin: 0 auto;
-    padding: 0;
-    width: 640px;
-}
-
-table.register-confirm th {
-    position: relative;
-    width: 180px;
-    text-align: center;
-    background-color: #FCF537;
-    color: #157BCA;
-    padding: 10px 0;
-}
-
-table.register-confirm th::after {
-    content: "";
-    display: block;
-    width: 0;
-    height: 0;
-    position: absolute;
-    top: calc(50% - 10px);
-    right: -20px;
-    border-top: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 10px solid transparent;
-    border-left: 10px solid #FCF537;
-}
-
-table.register-confirm td {
-    padding: 10px 10px 10px 20px;
-    background-color: #E0E0E0;
 }
 
 .error-contact {
@@ -904,3 +919,98 @@ dl.others dd {
     margin-left: 1em;
 }
 /* #endregion 発注 */
+
+/* #region 発注履歴 */
+.history-box {
+    display: table;
+    width: 100%;
+    margin: 20px 0 0;
+}
+
+.history-box .item-box {
+    display: table-row;
+}
+
+.history-box .item-box .box-left,
+.history-box .item-box .box-right {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 10px 0;
+    border-bottom: 1px solid #808080;
+}
+
+.history-box .item-box .box-left {
+    width: 120px;
+}
+
+.history-box .item-box .box-right .order-date {
+    font-size: 2.5rem;
+    margin: 0;
+    padding: 0;
+}
+
+.history-box .item-box .box-right dl {
+    margin: 0 0 0 2rem;
+    padding: 0;
+}
+
+.history-box .item-box .box-right dl::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.history-box .item-box .box-right dl dt {
+    font-weight: normal;
+    margin: 0;
+    float: left;
+    width: 100px;
+}
+
+.history-box .item-box .box-right dl dd {
+    padding: 0 0 0 100px;
+    margin: 0;
+}
+
+.tbl-detail {
+    margin: 10px 0 0;
+    table-layout: fixed;
+}
+
+.tbl-detail thead tr th {
+    text-align: center;
+}
+
+.tbl-detail thead tr th:nth-child(1) {
+    width: 150px;
+}
+
+.tbl-detail thead tr th:nth-child(2) {
+    width: auto;
+}
+
+.tbl-detail thead tr th:nth-child(3) {
+    width: 100px;
+}
+
+.tbl-detail thead tr th:nth-child(4) {
+    width: 80px;
+}
+
+.tbl-detail thead tr th:nth-child(5) {
+    width: 100px;
+}
+
+.tbl-detail tbody tr td:nth-child(3),
+.tbl-detail tbody tr td:nth-child(4),
+.tbl-detail tbody tr td:nth-child(5) {
+    text-align: right;
+}
+
+.tbl-detail tbody tr:last-child td {
+    border-top: 4px double #444444;
+}
+
+
+
+/* #endregion 発注履歴 */

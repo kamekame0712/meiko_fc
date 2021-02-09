@@ -14,7 +14,7 @@
 			<table class="confirm-table">
 				<tr>
 					<th>教室名（教室コード）</th>
-					<td><?= isset($PDATA['classroom_name']) ? $PDATA['classroom_name'] : '&nbsp;' ?>（<?= $PDATA['classroom_number'] ?>）</td>
+					<td><?= isset($CNAME) ? $CNAME : '&nbsp;' ?>（<?= $PDATA['classroom_number'] ?>）</td>
 				</tr>
 
 				<tr>
@@ -37,80 +37,6 @@
 					<th>パスワード</th>
 					<td><?= $password ?></td>
 				</tr>
-
-				<?php if( $PDATA['flg_parent'] == '1' ): ?>
-					<tr>
-						<th>『掛け』でのお取引</th>
-						<td><?= ( isset($PDATA['apply_account']) && $PDATA['apply_account'] == '1' ) ? '登録を希望する' : '登録を希望しない' ?></td>
-					</tr>
-
-					<?php if( isset($PDATA['apply_account']) && $PDATA['apply_account'] == '1' ): ?>
-						<?php if( $PDATA['corporation'] == '1' ): ?>
-							<tr>
-								<th>事業形態</th>
-								<td>法人</td>
-							</tr>
-
-							<tr>
-								<th>法人名</th>
-								<td><?= $PDATA['corporation_name'] ?></td>
-							</tr>
-
-							<tr>
-								<th>法人住所</th>
-								<td>
-									〒<?= $PDATA['corporation_zip1'] ?>-<?= $PDATA['corporation_zip1'] ?><br>
-									<?= $CONF['pref'][$PDATA['corporation_pref']] ?><?= $PDATA['corporation_addr1'] ?><?= $PDATA['corporation_addr2'] ?>
-								</td>
-							</tr>
-
-							<tr>
-								<th>代表電話番号</th>
-								<td><?= $PDATA['corporation_tel01'] ?>-<?= $PDATA['corporation_tel02'] ?>-<?= $PDATA['corporation_tel03'] ?></td>
-							</tr>
-
-							<tr>
-								<th>代表者名</th>
-								<td><?= $PDATA['corporation_executive'] ?></td>
-							</tr>
-						<?php else: ?>
-							<tr>
-								<th>事業形態</th>
-								<td>非法人</td>
-							</tr>
-
-							<tr>
-								<th>代表者名</th>
-								<td><?= $PDATA['corporation_name'] ?></td>
-							</tr>
-
-							<tr>
-								<th>代表者自宅住所</th>
-								<td>
-									〒<?= $PDATA['corporation_zip1'] ?>-<?= $PDATA['corporation_zip1'] ?><br>
-									<?= $CONF['pref'][$PDATA['corporation_pref']] ?><?= $PDATA['corporation_addr1'] ?><?= $PDATA['corporation_addr2'] ?>
-								</td>
-							</tr>
-
-							<tr>
-								<th>代表者電話番号</th>
-								<td><?= $PDATA['corporation_tel01'] ?>-<?= $PDATA['corporation_tel02'] ?>-<?= $PDATA['corporation_tel03'] ?></td>
-							</tr>
-						<?php endif; ?>
-
-						<tr>
-							<th>お支払い方法</th>
-							<td><?= ( isset($PDATA['payment_method']) && $PDATA['payment_method'] == '1' ) ? '振込（月末締め、翌月末払い）' : '口座引落（２０日締め、翌月１３日引落）' ?></td>
-						</tr>
-
-						<?php if( isset($PDATA['payment_method']) && $PDATA['payment_method'] == '1' ): ?>
-							<tr>
-								<th>お振込み名義</th>
-								<td><?= $PDATA['transfer_name'] ?></td>
-							</tr>
-						<?php endif; ?>
-					<?php endif; ?>
-				<?php endif; ?>
 			</table>
 
 			<div class="text-center mt-5">

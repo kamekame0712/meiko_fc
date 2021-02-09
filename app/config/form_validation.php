@@ -78,4 +78,24 @@ $config = array(
 		)
 	),
 
+	// お客様情報登録
+	'entry' => array(
+		array(
+			'field' => 'classroom_number',
+			'label' => '教室コード',
+			'rules' => 'required|callback_possible_enter_classroom_number'
+		),
+
+		array(
+			'field' => 'email',
+			'label' => 'メールアドレス',
+			'rules' => 'required|valid_email|callback_exists_email_classroom'
+		),
+
+		array(
+			'field' => 'password_show',
+			'label' => 'パスワード',
+			'rules' => 'required|min_length[8]'
+		)
+	),
 );

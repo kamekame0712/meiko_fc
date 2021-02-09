@@ -522,15 +522,6 @@ footer .copyright {
     margin: 0;
 }
 
-
-
-/*
-.registered-classroom-name {
-    font-size: 1.8rem;
-    color: red;
-    font-weight: bold;
-}
-
 .error-contact {
     border: 1px solid #808080;
     padding: 10px;
@@ -543,26 +534,6 @@ footer .copyright {
     font-weight: bold;
 }
 
-.for-parent {
-    border: 2px solid #157BCA;
-    border-radius: 10px;
-    padding: 45px 30px 20px;
-    margin: 40px auto 20px;
-    position: relative;
-}
-
-.for-parent h2 {
-    display: inline-block;
-    border-radius: 10px 0 10px 0;
-    padding: 5px 30px;
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    background-color: #157BCA;
-    color: #FFFFFF;
-    font-weight: bold;
-}
-*/
 @media screen and (max-width : 768px) {
     .entry-input {
         font-size: 1.4rem !important;

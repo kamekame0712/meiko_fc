@@ -270,6 +270,57 @@ class MY_Controller extends CI_Controller
 		return TRUE;
 	}
 
+	// お客様情報登録で登録可能な教室コードか確認
+	public function possible_enter_classroom_number($classroom_number = '')
+	{
+		// モデルロード
+		$this->load->model('m_classroom');
+
+		if( empty($classroom_number) ) {
+			$this->form_validation->set_message('possible_enter_classroom_number', '%s 欄は必須です。');
+			return FALSE;
+		}
+
+		$classroom_data = $this->m_classroom->get_one(array('classroom_number' => $classroom_number));
+
+		if( empty($classroom_data) ) {
+			$this->form_validation->set_message('possible_enter_classroom_number', '入力された教室コードは存在しません。');
+			return FALSE;
+		}
+
+		if( empty($classroom_data['owner_id']) ) {
+			$this->form_validation->set_message('possible_enter_classroom_number', 'オーナー様のご利用申込みがお済みではありません。');
+			return FALSE;
+		}
+
+		if( empty($classroom_data['smile_code1']) && empty($classroom_data['smile_code2']) && empty($classroom_data['smile_code3']) ) {
+			$this->form_validation->set_message('possible_enter_classroom_number', '弊社作業中の教室です。');
+			return FALSE;
+		}
+
+		if( !empty($classroom_data['email']) ) {
+			$this->form_validation->set_message('possible_enter_classroom_number', 'すでにご登録いただいております。');
+			return FALSE;
+		}
+
+		return TRUE;
+	}
+
+	// お客様情報登録で登録可能なメールアドレスか確認
+	public function exists_email_classroom($email = '')
+	{
+		// モデルロード
+		$this->load->model('m_classroom');
+
+		$classroom_data = $this->m_classroom->get_one(array('email' => $email));
+
+		if( !empty($classroom_data) ) {
+			$this->form_validation->set_message('exists_email_classroom', '入力されたメールアドレはすでに使われています。');
+			return FALSE;
+		}
+
+		return TRUE;
+	}
 
 /*
 	// 教材管理 ⇒ SMILEコード

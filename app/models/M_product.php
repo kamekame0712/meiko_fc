@@ -16,7 +16,10 @@ class M_product extends MY_Model
 		$where_array[] = 'status = "0"';
 
 		if( !empty($conditions['keyword']) ) {
-			$where_array[] = 'name LIKE "%' . $conditions['keyword'] . '%"';
+			$keyword = str_replace('　', ' ', $conditions['keyword']);
+			foreach( explode(' ', $keyword) as $val ) {
+				$where_array[] = '( name LIKE "%' . $val . '%" OR keyword LIKE "%' . $val . '%" )';
+			}
 		}
 
 		if( $conditions['recommend'] == '1' ) {
@@ -81,11 +84,13 @@ class M_product extends MY_Model
 
 		$where = implode(' AND ', $where_array);
 
+		// データの総数取得
 		$db_total = $this->db;
 		$db_total->distinct()->from(SELF::TBL)->where($where);
 		$query_total = $db_total->get();
 		$total = $query_total->num_rows();
 
+		// データ取得
 		$this->db->distinct()->from(SELF::TBL)->where($where)->order_by('product_id ASC');
 
 		// $pageに0を入れるとページネーションなし（全てのデータを返す）

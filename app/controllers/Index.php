@@ -77,8 +77,8 @@ class Index extends MY_Controller
 			delete_cookie('order_complete');
 		}
 
-		if( $this->input->cookie('product_list') ) {
-			delete_cookie('product_list');
+		if( $this->input->cookie('product_ids') ) {
+			delete_cookie('product_ids');
 		}
 
 		if( $this->input->cookie('payment_method') ) {

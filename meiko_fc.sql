@@ -58,7 +58,7 @@ CREATE TABLE `t_order` (
   `payment_method` varchar(1) NOT NULL COMMENT '支払方法 1:掛け 2:クレジットカード 3:代引き',
   `delivery_date` date DEFAULT NULL COMMENT 'お届け日',
   `delivery_time` varchar(1) DEFAULT NULL COMMENT 'お届け時間 NULL:指定なし 1:午前 2:14～16時 3:16～18時 4:18～20時 5:19～21時',
-  `memo` text DEFAULT '' COMMENT '備考',
+  `note` text DEFAULT '' COMMENT '備考',
   `shipping_fee` int DEFAULT 0 COMMENT '送料',
   `sub_total` int DEFAULT 0 COMMENT '小計',
   `total_cost` int DEFAULT 0 COMMENT '合計金額',

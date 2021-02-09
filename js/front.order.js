@@ -120,7 +120,7 @@ function do_submit()
 				swal('セキュリティコードは必須です。');
 				return false;
 			}
-			
+
 			if( $('#holder').val() == '' ) {
 				swal('名義人名は必須です。');
 				return false;

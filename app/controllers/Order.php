@@ -11,6 +11,7 @@ class Order extends MY_Controller
 		$this->load->model('m_order');
 		$this->load->model('m_order_detail');
 		$this->load->model('m_classroom');
+		$this->load->model('m_owner');
 		$this->load->model('m_gmo');
 
 		// 設定ファイルロード
@@ -184,7 +185,6 @@ class Order extends MY_Controller
 			$select_date[$target_date] = $target_date . '(' . $w[date('w', strtotime($target_date))] . ')';
 		}
 
-/*
 		// 備考
 		$note = '';
 		if( !empty($post_data) ) {
@@ -204,7 +204,6 @@ class Order extends MY_Controller
 				$note = $this->input->cookie('note');
 			}
 		}
-*/
 
 		if( !empty($post_data) && $error_message == '' ) {
 			redirect('order');
@@ -236,10 +235,28 @@ class Order extends MY_Controller
 			$mm[$month] = $month;
 		}
 
+		// お支払方法の選択肢
+		$payment_method_list = array();
+		$owner_data = $this->m_owner->get_one(array('owner_id' => $classroom_data['owner_id']));
+		if( !empty($owner_data) ) {
+			if( $owner_data['payment_method1'] == '1' && !empty($classroom_data['smile_code1']) ) {
+				$payment_method_list['1'] = '掛け';
+			}
+
+			if( $owner_data['payment_method2'] == '1' ) {
+				$payment_method_list['2'] = 'クレジットカード';
+			}
+
+			if( $owner_data['payment_method3'] == '1' ) {
+				$payment_method_list['3'] = '代引き';
+			}
+		}
+
 		$view_data = array(
 			'ERROR_MESSAGE'	=> $error_message,
 			'CONF'			=> $this->conf,
 			'PLIST'			=> $product_list,
+			'PAYMENT_LIST'	=> $payment_method_list,
 			'SHIPPING_FEE'	=> $this->get_shipping_fee($total_cost),
 			'TOTAL_QUANTITY'=> $total_quantity,
 			'TOTAL_COST'	=> $total_cost,
@@ -247,7 +264,7 @@ class Order extends MY_Controller
 			'DELIVERY_DATE'	=> $delivery_date,
 			'DELIVERY_TIME'	=> $delivery_time,
 			'SELECT_DATE'	=> $select_date,
-//			'NOTE'			=> $note,
+			'NOTE'			=> $note,
 			'CARD'			=> $card,
 			'YY'			=> $yy,
 			'MM'			=> $mm
@@ -316,6 +333,13 @@ class Order extends MY_Controller
 		);
 		$this->input->set_cookie($cookie_save_data);
 
+		$cookie_save_data = array(
+			'name'	=> 'note',
+			'value'	=> $post_data['note'],
+			'expire'=> '86400'
+		);
+		$this->input->set_cookie($cookie_save_data);
+
 		$total_quantity = 0;
 		$total_cost = 0;
 		if( !empty($product_list) ) {
@@ -362,6 +386,7 @@ class Order extends MY_Controller
 		$payment_method = isset($post_data['payment_method']) ? $post_data['payment_method'] : '';
 		$delivery_date = isset($post_data['delivery_date']) ? $post_data['delivery_date'] : '';
 		$delivery_time = isset($post_data['delivery_time']) ? $post_data['delivery_time'] : '';
+		$note = isset($post_data['note']) ? $post_data['note'] : '';
 		$sub_total = isset($post_data['total_cost']) ? $post_data['total_cost'] : '';
 		$shipping_fee = isset($post_data['shipping_fee']) ? $post_data['shipping_fee'] : '';
 		$gmo_token = isset($post_data['gmo_token']) ? $post_data['gmo_token'] : '';
@@ -404,7 +429,7 @@ class Order extends MY_Controller
 			'payment_method'	=> $payment_method,
 			'delivery_date'		=> $delivery_date == '' ? NULL : $delivery_date,
 			'delivery_time'		=> $delivery_time,
-			'memo'				=> '',
+			'note'				=> $note,
 			'shipping_fee'		=> $shipping_fee,
 			'sub_total'			=> $sub_total,
 			'total_cost'		=> intval($shipping_fee) + intval($sub_total),
@@ -571,7 +596,8 @@ class Order extends MY_Controller
 			'TOTAL'		=> intval($sub_total) + intval($shipping_fee),
 			'PAYMENT'	=> $this->conf['payment_method'][$payment_method],
 			'DDATE'		=> $show_delivery_date,
-			'DTIME'		=> $this->conf['delivery_time'][$delivery_time]
+			'DTIME'		=> $this->conf['delivery_time'][$delivery_time],
+			'NOTE'		=> empty($note) ? '（ご記入なし）' : $note
 		);
 
 		$mail_body = $this->load->view('mail/tmpl_apply_comp_to_customer', $mail_data, TRUE);

@@ -57,22 +57,7 @@
 							（変更する場合は8文字以上を指定してください。）
 						</td>
 					</tr>
-
-					<?php if( $DATA['classroom_id'] == $DATA['parent_id'] ): ?>
-						<tr>
-							<th>『掛け』取引情報</th>
-							<td>
-								こちらでは『掛け』取引に関する情報の変更、申込等は行えません。<br>
-								中央教育研究所株式会社に直接ご連絡ください。
-							</td>
-						</tr>
-					<?php endif; ?>
 				</table>
-
-				<?php if( $DATA['classroom_id'] == $DATA['parent_id'] ): ?>
-					<p class="lead-title mt-5">支払方法設定</p>
-
-				<?php endif; ?>
 
 				<div class="text-center mt-5">
 					<?php echo form_submit(array(

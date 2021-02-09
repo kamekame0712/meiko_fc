@@ -92,12 +92,11 @@
 				<dt>お届け時間</dt>
 				<dd><?= $CONF['delivery_time'][$PDATA['delivery_time']] ?></dd>
 			</dl>
-<?php /* ?>
+
 			<dl class="others">
 				<dt>備考</dt>
 				<dd><?= nl2br($PDATA['note']) ?></dd>
 			</dl>
-<?php */ ?>
 
 			<div class="text-center mt-5 mb-5">
 				<?php echo form_open('order/complete'); ?>

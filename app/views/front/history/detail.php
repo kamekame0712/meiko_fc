@@ -8,7 +8,14 @@
 			<p class="lead-title">発注詳細</p>
 
 			<?php if( empty($DETAIL) ): ?>
-				発注詳細はありません。
+				発注詳細はありません。<br>
+
+				<?php echo form_button(array(
+					'name'		=> 'btn_back',
+					'content'	=> '戻る',
+					'class'		=> 'btn btn-primary my-5',
+					'onclick'	=> 'location.href=\'' . site_url('history') . '\''
+				)); ?>
 			<?php else: ?>
 				<p class="sub-title">発注内容</p>
 
@@ -54,14 +61,7 @@
 					</tbody>
 				</table>
 
-				<?php echo form_button(array(
-					'name'		=> 'btn_reorder',
-					'content'	=> '同じ商品を発注する',
-					'class'		=> 'btn btn-danger mb-5',
-					'onclick'	=> 'reorder(' . $DETAIL[0]['order_id'] . ');'
-				)); ?>
-
-				<p class="sub-title">その他</p>
+				<p class="sub-title mt-5">その他</p>
 
 				<dl class="others">
 					<dt>お支払方法</dt>
@@ -83,17 +83,34 @@
 				</dl>
 
 				<dl class="others">
-					<dt>お支払方法</dt>
+					<dt>お届け時間</dt>
 					<dd><?= $CONF['delivery_time'][$DETAIL[0]['delivery_time']] ?></dd>
 				</dl>
-			<?php endif; ?>
 
-			<?php echo form_button(array(
-				'name'		=> 'btn_back',
-				'content'	=> '戻る',
-				'class'		=> 'btn btn-primary my-5',
-				'onclick'	=> 'location.href=\'' . site_url('history') . '\''
-			)); ?>
+				<dl class="others">
+					<dt>備考</dt>
+					<dd><?= nl2br($DETAIL[0]['note']) ?></dd>
+				</dl>
+
+				<div class="row my-5">
+					<div class="col-6 text-center">
+						<?php echo form_button(array(
+							'name'		=> 'btn_back',
+							'content'	=> '戻る',
+							'class'		=> 'btn btn-primary',
+							'onclick'	=> 'location.href=\'' . site_url('history') . '\''
+						)); ?>
+					</div>
+					<div class="col-6 text-center">
+						<?php echo form_button(array(
+							'name'		=> 'btn_reorder',
+							'content'	=> '同じ商品を発注する',
+							'class'		=> 'btn btn-danger',
+							'onclick'	=> 'reorder(' . $DETAIL[0]['order_id'] . ');'
+						)); ?>
+					</div>
+				</div>
+			<?php endif; ?>
 		</div> <!-- end of .container -->
 
 		<?php $this->load->view('inc/_foot'); ?>

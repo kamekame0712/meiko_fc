@@ -133,6 +133,7 @@ class Application extends MY_Controller
 
 		if( !$flg_error ) {
 			if( $payment_method1 == '1' ) {
+				$_POST = array();
 				$this->account($owner_id);
 				return;
 			}

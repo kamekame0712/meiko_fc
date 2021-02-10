@@ -887,17 +887,25 @@ dl.others dd {
 }
 
 .product-list table td .btn-choose {
+    display: block;
     background-color: #FFFFFF;
     color: #157BCA;
     border: 1px solid #157BCA;
     border-radius: 2px;
     font-size: 1.3rem;
-    margin-left: 10px;
+    margin: 0 auto;
 }
 
 .product-list table td .btn-choose:hover {
     background-color: #157BCA;
     color: #FFFFFF;
+}
+
+.product-list table td .not-for-sale {
+    display: block;
+    font-size: 1.4rem;
+    text-align: center;
+    color: red;
 }
 
 .pagination {

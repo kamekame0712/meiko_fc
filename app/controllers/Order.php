@@ -785,10 +785,10 @@ class Order extends MY_Controller
 			$classroom_id = $this->session->userdata('classroom_id');
 			$classroom_data = $this->m_classroom->get_one(array('classroom_id' => $classroom_id));
 			if( isset($classroom_data['pref']) && $classroom_data['pref'] == '01' ) {
-				$shipping_fee = 1300;
+				$shipping_fee = 1320;
 			}
 			else {
-				$shipping_fee = 700;
+				$shipping_fee = 770;
 			}
 		}
 

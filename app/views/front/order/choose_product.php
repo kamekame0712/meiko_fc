@@ -234,12 +234,16 @@
 						<?php foreach( $APPLICABLE as $val ): ?>
 							<tr>
 								<td>
-									<?php echo form_button(array(
-										'name'		=> 'btn_choose',
-										'content'	=> '選択',
-										'class'		=> 'btn-choose',
-										'onclick'	=> 'choose(\'' . $val['product_id'] . '\');'
-									)); ?>
+									<?php if( $val['flg_sales'] == '1' ): ?>
+										<?php echo form_button(array(
+											'name'		=> 'btn_choose',
+											'content'	=> '選択',
+											'class'		=> 'btn-choose',
+											'onclick'	=> 'choose(\'' . $val['product_id'] . '\');'
+										)); ?>
+									<?php else: ?>
+										<span class="not-for-sale"><?= $CONF['flg_sales'][$val['flg_sales']] ?></span>
+									<?php endif; ?>
 								</td>
 								<td><?= $CONF['publisher'][$val['publisher']] ?></td>
 								<td><?= $val['name'] ?></td>

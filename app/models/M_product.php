@@ -63,7 +63,7 @@ class M_product extends MY_Model
 		$where_period = array();
 		if( !empty($conditions['period']) ) {
 			foreach( $conditions['period'] as $period ) {
-				$where_period[] = 'period = "' . $period . '"';
+				$where_period[] = 'period LIKE "%' . $period . '%"';
 			}
 		}
 

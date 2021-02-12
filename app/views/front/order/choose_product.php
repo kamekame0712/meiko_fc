@@ -245,7 +245,7 @@
 										<span class="not-for-sale"><?= $CONF['flg_sales'][$val['flg_sales']] ?></span>
 									<?php endif; ?>
 								</td>
-								<td><?= $CONF['publisher'][$val['publisher']] ?></td>
+								<td><?= isset($CONF['publisher'][$val['publisher']]) ? $CONF['publisher'][$val['publisher']] : '&nbsp;' ?></td>
 								<td><?= $val['name'] ?></td>
 								<td>\<?= number_format($val['sales_price']) ?></td>
 							</tr>

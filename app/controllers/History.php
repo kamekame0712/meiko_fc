@@ -207,15 +207,15 @@ class History extends MY_Controller
 					$ret_val['status'] = '2';
 					$err_msg = array();
 					if( $err_array[0] ) {
-						$err_msg[] = '廃刊等により、取扱いが出来なくなった商品が含まれています。';
+						$err_msg[] = '廃刊等により、取扱いが出来なくなった教材が含まれています。';
 					}
 
 					if( $err_array[1] ) {
-						$err_msg[] = '商品名の変更になった商品が含まれています。';
+						$err_msg[] = '教材名の変更になった教材が含まれています。';
 					}
 
 					if( $err_array[2] ) {
-						$err_msg[] = '販売価格の変更になった商品が含まれています。';
+						$err_msg[] = '販売価格の変更になった教材が含まれています。';
 					}
 
 					$ret_val['err_msg'] = implode('___', $err_msg);

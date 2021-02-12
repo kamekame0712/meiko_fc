@@ -23,6 +23,35 @@
 				<?php endif; ?>
 			<?php endif; ?>
 
+			<?php if( get_instruction() ): ?>
+				<div class="row justify-content-center">
+					<div class="col-md-9">
+						<div class="instruction" name="instruction">
+							<h1>
+								注意事項
+								<a href="javascript:void();"><i class="fas fa-window-close"></i></a>
+							</h1>
+
+							<section>
+								<ul>
+									<li>
+										変更できる項目は『メールアドレス』と『パスワード』のみです。<br>
+									</li>
+									<li>
+										パスワードは変更する場合のみ入力してください。<br>
+										※変更しない場合は空欄のままにしておいてください。
+									</li>
+								</ul>
+							</section>
+
+							<div class="instruction-footer">
+								※この注意事項は【メニュー】より常に非表示にすることができます。
+							</div>
+						</div> <!-- end of .instruction -->
+					</div>
+				</div> <!-- end of .row -->
+			<?php endif; ?>
+
 			<?php echo form_open('modify/complete', array('id' => 'frm_modify')); ?>
 				<p class="lead-title">登録情報変更</p>
 

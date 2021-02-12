@@ -18,6 +18,12 @@
 							<li><a href="<?= site_url('history') ?>">発注履歴</a></li>
 							<li><a href="<?= site_url('modify') ?>">登録情報変更</a></li>
 							<li class="divide">&nbsp;</li>
+							<?php if( get_instruction() ): ?>
+								<li><a href="javascript:void(0);" onclick="change_flg_instruction('<?= $this->session->userdata('classroom_id') ?>', '2');">注意事項を表示しない</a></li>
+							<?php else: ?>
+								<li><a href="javascript:void(0);" onclick="change_flg_instruction('<?= $this->session->userdata('classroom_id') ?>', '1');">注意事項を表示する</a></li>
+							<?php endif; ?>
+							<li class="divide">&nbsp;</li>
 							<li><a href="<?= site_url('index/logout') ?>">ログアウト</a></li>
 						</ul>
 					</div>

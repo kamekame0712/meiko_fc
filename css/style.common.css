@@ -121,6 +121,51 @@ table.confirm-table td .attention {
     margin: 0;
 }
 
+.instruction {
+    border: 2px solid #157BCA;
+    border-radius: 10px;
+    padding: 0;
+    margin: 30px auto;
+    width: 100%;
+}
+
+.instruction h1 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    background-color: #157BCA;
+    color: #FFFFFF;
+    padding: 5px 0 5px 20px;
+    margin: -2px 0 0;
+    border: 2px solid #157BCA;
+    border-radius: 10px 10px 0 0;
+    position: relative;
+}
+
+.instruction h1 a {
+    color: #FFFFFF;
+    display: block;
+    position: absolute;
+    top: 2px;
+    right: 10px;
+    font-size: 2.5rem;
+}
+
+.instruction section {
+    padding: 10px;
+}
+
+.instruction section ol,
+.instruction section ul {
+    margin: 0 0 20px;
+    padding: 0 0 0 30px;
+}
+
+.instruction .instruction-footer {
+    padding: 10px;
+    font-size: 1.5rem;
+    color: #D4440D;
+}
+
 .for-pc {
     display: block;
 }
@@ -201,7 +246,7 @@ table.confirm-table td .attention {
     text-align-last: left;
     padding: 0;
     margin: 0;
-    width: 140px;
+    width: 170px;
     position: absolute;
     top: 60px;
     right: 0;
@@ -418,15 +463,6 @@ footer .copyright {
 /* #endregion ログイン */
 
 /* #region 登録 */
-
-/*
-.already-registered {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: red;
-    text-align: center;
-}
-*/
 .entry-input {
     font-size: 1.6rem !important;
 }
@@ -1099,7 +1135,4 @@ dl.others dd {
 .tbl-detail tbody tr:last-child td {
     border-top: 4px double #444444;
 }
-
-
-
 /* #endregion 発注履歴 */

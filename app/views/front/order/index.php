@@ -31,6 +31,74 @@
 			<?php endif; ?>
 
 			<?php if( !empty($PAYMENT_LIST) ): ?>
+				<?php if( get_instruction() ): ?>
+					<div class="row justify-content-center">
+						<div class="col-md-6">
+							<div class="instruction" name="instruction">
+								<h1>
+									操作方法
+									<a href="javascript:void();"><i class="fas fa-window-close"></i></a>
+								</h1>
+
+								<section>
+									<ol>
+										<li>
+											教材を選択してください。<br>
+											※詳細は【教材の選択方法】をご覧ください。
+										</li>
+										<li>
+											数量を入力してください。
+										</li>
+										<li>
+											その他項目を選択、入力してください。<br>
+											※<span class="attention-msg">お支払方法は必須です</span>。
+										</li>
+										<li>
+											【確認】ボタンをクリックしてください。<br>
+											※確認画面へ遷移します。
+										</li>
+									</ol>
+								</section>
+
+								<div class="instruction-footer">
+									※この注意事項は【メニュー】より常に非表示にすることができます。
+								</div>
+							</div> <!-- end of .instruction -->
+						</div>
+
+						<div class="col-md-6">
+							<div class="instruction" name="instruction">
+								<h1>
+									教材の選択方法
+									<a href="javascript:void();"><i class="fas fa-window-close"></i></a>
+								</h1>
+
+								<section>
+									<ol>
+										<li>
+											【教材選択】ボタンをクリックしてください。<br>
+											※教材選択ウィンドウが表示されます。<br>
+											（<span class="attention-msg">以下、手順２，３は教材選択ウィンドウでの処理です</span>。）
+										</li>
+										<li>
+											検索条件を指定し【検索】ボタンをクリックしてください。
+										</li>
+										<li>
+											表示される教材の一覧左端にある【選択】ボタンをクリックしてください。<br>
+											※教材選択ウィンドウは必要に応じ、閉じてください。
+										</li>
+									</ol>
+									※間違った教材を選択した場合、削除欄にある【&nbsp;<i class="fas fa-times"></i>&nbsp;】をクリックしてください。
+								</section>
+
+								<div class="instruction-footer">
+									※この注意事項は【メニュー】より常に非表示にすることができます。
+								</div>
+							</div> <!-- end of .instruction -->
+						</div>
+					</div> <!-- end of .row -->
+				<?php endif; ?>
+
 				<?php echo form_open('order/confirm', array('id' => 'frm_order')); ?>
 					<?php echo form_input(array(
 						'type'	=> 'hidden',

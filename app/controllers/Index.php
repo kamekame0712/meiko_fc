@@ -99,4 +99,29 @@ class Index extends MY_Controller
 
 		redirect('index');
 	}
+
+
+
+	/*******************************************/
+	/*                ajax関数                 */
+	/*******************************************/
+	public function ajax_change_flg_instruction()
+	{
+		$post_data = $this->input->post();
+		$classroom_id = isset($post_data['classroom_id']) ? $post_data['classroom_id'] : '';
+		$flg_instruction = isset($post_data['flg_instruction']) ? $post_data['flg_instruction'] : '';
+
+		$ret_val = array(
+			'status'	=> TRUE
+		);
+
+		$update_data = array(
+			'flg_instruction'	=> $flg_instruction,
+			'update_time'		=> date('Y-m-d H:i:s')
+		);
+
+		$this->m_classroom->update(array('classroom_id' => $classroom_id), $update_data);
+
+		$this->ajax_out(json_encode($ret_val));
+	}
 }

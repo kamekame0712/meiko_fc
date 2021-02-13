@@ -834,6 +834,7 @@ dl.others dd {
     background-image: url('../img/point.png');
     background-repeat: no-repeat;
     background-position: 0 10px;
+    min-height: 80px;
     padding: 10px 10px 10px 60px;
     margin: 20px 20px 0 20px;
     font-size: 1.3rem;

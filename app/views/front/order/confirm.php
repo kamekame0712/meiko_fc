@@ -37,16 +37,16 @@
 
 						<tr>
 							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>送料</td>
-							<td>&nbsp;</td>
+							<td class="text-right">送料</td>
+							<td>\<?= number_format($SHIPPING_UNIT) ?></td>
+							<td><?= $SHIPPING_CNT ?></td>
 							<td>\<?= number_format($SHIPPING_FEE) ?></td>
 						</tr>
 
 						<tr>
 							<td>&nbsp;</td>
+							<td class="text-right">合計</td>
 							<td>&nbsp;</td>
-							<td>合計</td>
 							<td class="text-right" style="padding:0.75rem;"><?= $TOTAL_QUANTITY ?></td>
 							<td>\<?= number_format($TOTAL_COST + $SHIPPING_FEE) ?></td>
 						</tr>
@@ -55,6 +55,19 @@
 			<?php endif; ?>
 
 			<p class="lead-title mt-5">その他</p>
+
+			<?php if( $PRODUCT_KIND == 1 ): ?>
+				<dl class="others">
+					<dt>市販教材</dt>
+					<dd>
+						<?php if( $PDATA['flg_partial'] == '1' ): ?>
+							『塾用教材』と一緒にお届け
+						<?php else: ?>
+							『塾用教材』とは別々でお届け
+						<?php endif; ?>
+					</dd>
+				</dl>
+			<?php endif; ?>
 
 			<dl class="others">
 				<dt>お支払方法</dt>
@@ -104,6 +117,7 @@
 					<?php echo form_hidden($PLIST); ?>
 					<?php echo form_hidden(array('total_cost' => $TOTAL_COST)); ?>
 					<?php echo form_hidden(array('shipping_fee' => $SHIPPING_FEE)); ?>
+					<?php echo form_hidden(array('exists_market' => ( $PRODUCT_KIND == 2 ? '1' : '2') )); ?>
 
 					<?php echo form_button(array(
 						'name'		=> 'btn-back',

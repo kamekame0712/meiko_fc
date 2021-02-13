@@ -43,6 +43,8 @@ class Order extends MY_Controller
 		}
 
 		$product_list = array();
+		$exists_market = FALSE;
+		$exists_juku = FALSE;
 		if( !empty($product_ids) ) {
 			foreach( $product_ids as $wk_product_id => $val) {
 				$wk_product_data = $this->m_product->get_one(array('product_id' => $wk_product_id));
@@ -56,8 +58,26 @@ class Order extends MY_Controller
 						'quantity'		=> $val,
 						'sub_total'		=> intval($wk_product_data['sales_price']) * intval($val)
 					);
+
+					if( $wk_product_data['flg_market'] == '1' ) {
+						$exists_market = TRUE;
+					}
+					else {
+						$exists_juku = TRUE;
+					}
 				}
 			}
+		}
+
+		$product_kind = 0;
+		if( $exists_market == TRUE && $exists_juku == TRUE ) {
+			$product_kind = 1;
+		}
+		else if( $exists_market == FALSE && $exists_juku == TRUE ) {
+			$product_kind = 2;
+		}
+		else if( $exists_market == TRUE && $exists_juku == FALSE ) {
+			$product_kind = 3;
 		}
 
 		$total_quantity = 0;
@@ -115,6 +135,23 @@ class Order extends MY_Controller
 		}
 
 		// その他
+		$flg_partial = '1';
+		if( isset($post_data['flg_partial']) ) {
+			$flg_partial = $post_data['flg_partial'];
+
+			$cookie_save_data = array(
+				'name'	=> 'flg_partial',
+				'value'	=> $flg_partial,
+				'expire'=> '86400'
+			);
+			$this->input->set_cookie($cookie_save_data);
+		}
+		else {
+			if( $this->input->cookie('flg_partial') ) {
+				$flg_partial = $this->input->cookie('flg_partial');
+			}
+		}
+
 		$payment_method = '';
 		if( isset($post_data['payment_method']) ) {
 			$payment_method = $post_data['payment_method'];
@@ -168,9 +205,14 @@ class Order extends MY_Controller
 
 		// お届け日、時間（選択肢）
 		$w = array('日', '月', '火', '水', '木', '金', '土');
-		$base_date = date('Y-m-d', strtotime('+6 day', time()));
-		$select_date = array('' => '最短');
+		if( $product_kind == 2 ) {
+			$base_date = date('Y-m-d', strtotime('+8 day', time()));
+		}
+		else {
+			$base_date = date('Y-m-d', strtotime('+15 day', time()));
+		}
 
+		$select_date = array('' => '最短');
 		for( $i = 1; $i <= 15; $i++ ) {
 			$target_date = date('Y/m/d', strtotime('+' . $i . ' day', strtotime($base_date)));
 
@@ -260,6 +302,8 @@ class Order extends MY_Controller
 			'SHIPPING_FEE'	=> $this->get_shipping_fee($total_cost),
 			'TOTAL_QUANTITY'=> $total_quantity,
 			'TOTAL_COST'	=> $total_cost,
+			'PRODUCT_KIND'	=> $product_kind,
+			'PARTIAL'		=> $flg_partial,
 			'PAYMENT'		=> $payment_method,
 			'DELIVERY_DATE'	=> $delivery_date,
 			'DELIVERY_TIME'	=> $delivery_time,
@@ -289,6 +333,8 @@ class Order extends MY_Controller
 		$post_data = $this->input->post();
 
 		$product_list = array();
+		$exists_market = FALSE;
+		$exists_juku = FALSE;
 		if( $this->input->cookie('product_ids') ) {
 			$product_ids = unserialize($this->input->cookie('product_ids'));
 
@@ -301,15 +347,43 @@ class Order extends MY_Controller
 								'publisher'		=> $wk_product_data['publisher'],
 								'publisher_name'=> $this->conf['publisher'][$wk_product_data['publisher']],
 								'product_name'	=> $wk_product_data['name'],
+								'flg_market'	=> $wk_product_data['flg_market'],
 								'normal_price'	=> $wk_product_data['normal_price'],
 								'sales_price'	=> $wk_product_data['sales_price'],
 								'quantity'		=> $val,
 								'sub_total'		=> intval($wk_product_data['sales_price']) * intval($val)
 							);
+
+							if( $wk_product_data['flg_market'] == '1' ) {
+								$exists_market = TRUE;
+							}
+							else {
+								$exists_juku = TRUE;
+							}
 						}
 					}
 				}
 			}
+		}
+
+		$product_kind = 0;
+		if( $exists_market == TRUE && $exists_juku == TRUE ) {
+			$product_kind = 1;
+		}
+		else if( $exists_market == FALSE && $exists_juku == TRUE ) {
+			$product_kind = 2;
+		}
+		else if( $exists_market == TRUE && $exists_juku == FALSE ) {
+			$product_kind = 3;
+		}
+
+		if( isset($post_data['flg_partial']) ) {
+			$cookie_save_data = array(
+				'name'	=> 'flg_partial',
+				'value'	=> $post_data['flg_partial'],
+				'expire'=> '86400'
+			);
+			$this->input->set_cookie($cookie_save_data);
 		}
 
 		$cookie_save_data = array(
@@ -342,10 +416,45 @@ class Order extends MY_Controller
 
 		$total_quantity = 0;
 		$total_cost = 0;
+		$shipping_fee = 0;
+		$shipping_cnt = 0;
 		if( !empty($product_list) ) {
-			foreach( $product_list as $val ) {
-				$total_quantity += intval($val['quantity']);
-				$total_cost += intval($val['sub_total']);
+			$flg_partial = isset($post_data['flg_partial']) && $post_data['flg_partial'] == '2' ? TRUE : FALSE;
+
+			if( $product_kind != 1 || ( $product_kind == 1 && !$flg_partial ) ) {
+				foreach( $product_list as $val ) {
+					$total_quantity += intval($val['quantity']);
+					$total_cost += intval($val['sub_total']);
+				}
+				$shipping_fee = $this->get_shipping_fee($total_cost);
+				$shipping_cnt = $shipping_fee == 0 ? 0 : 1;
+			}
+			else {
+				$market_cost = 0;
+				$juku_cost = 0;
+
+				foreach( $product_list as $val ) {
+					$total_quantity += intval($val['quantity']);
+					if( $val['flg_market'] == '1' ) {
+						$market_cost += intval($val['sub_total']);
+					}
+					else {
+						$juku_cost += intval($val['sub_total']);
+					}
+				}
+				$shipping_fee_market = $this->get_shipping_fee($market_cost);
+				$shipping_fee_juku = $this->get_shipping_fee($juku_cost);
+				$total_cost = $market_cost + $juku_cost;
+				$shipping_fee = $shipping_fee_market + $shipping_fee_juku;
+				if( $shipping_fee_market == 0 && $shipping_fee_juku == 0 ) {
+					$shipping_cnt = 0;
+				}
+				else if( ( $shipping_fee_market * $shipping_fee_juku ) == 0 ) {
+					$shipping_cnt = 1;
+				}
+				else {
+					$shipping_cnt = 2;
+				}
 			}
 		}
 
@@ -353,9 +462,12 @@ class Order extends MY_Controller
 			'CONF'			=> $this->conf,
 			'PDATA'			=> $post_data,
 			'PLIST'			=> $product_list,
-			'SHIPPING_FEE'	=> $this->get_shipping_fee($total_cost),
+			'SHIPPING_FEE'	=> $shipping_fee,
+			'SHIPPING_CNT'	=> $shipping_cnt,
+			'SHIPPING_UNIT'	=> $this->get_shipping_fee(),
 			'TOTAL_QUANTITY'=> $total_quantity,
-			'TOTAL_COST'	=> $total_cost
+			'TOTAL_COST'	=> $total_cost,
+			'PRODUCT_KIND'	=> $product_kind
 		);
 
 		$this->load->view('front/order/confirm', $view_data);
@@ -383,12 +495,14 @@ class Order extends MY_Controller
 		}
 
 		$post_data = $this->input->post();
+		$flg_partial = isset($post_data['flg_partial']) ? $post_data['flg_partial'] : '1';
 		$payment_method = isset($post_data['payment_method']) ? $post_data['payment_method'] : '';
 		$delivery_date = isset($post_data['delivery_date']) ? $post_data['delivery_date'] : '';
 		$delivery_time = isset($post_data['delivery_time']) ? $post_data['delivery_time'] : '';
 		$note = isset($post_data['note']) ? $post_data['note'] : '';
 		$sub_total = isset($post_data['total_cost']) ? $post_data['total_cost'] : '';
 		$shipping_fee = isset($post_data['shipping_fee']) ? $post_data['shipping_fee'] : '';
+		$exists_market = isset($post_data['exists_market']) ? $post_data['exists_market'] : '1';
 		$gmo_token = isset($post_data['gmo_token']) ? $post_data['gmo_token'] : '';
 		$chk_register = isset($post_data['chk_register']) ? $post_data['chk_register'] : '';
 		$card_type = isset($post_data['card_type']) ? $post_data['card_type'] : '';
@@ -426,6 +540,8 @@ class Order extends MY_Controller
 
 		$insert_data_order = array(
 			'classroom_id'		=> $classroom_id,
+			'exists_market'		=> $exists_market,
+			'flg_partial'		=> $flg_partial,
 			'payment_method'	=> $payment_method,
 			'delivery_date'		=> $delivery_date == '' ? NULL : $delivery_date,
 			'delivery_time'		=> $delivery_time,
@@ -554,6 +670,10 @@ class Order extends MY_Controller
 
 		if( $this->input->cookie('product_ids') ) {
 			delete_cookie('product_ids');
+		}
+
+		if( $this->input->cookie('flg_partial') ) {
+			delete_cookie('flg_partial');
 		}
 
 		if( $this->input->cookie('payment_method') ) {

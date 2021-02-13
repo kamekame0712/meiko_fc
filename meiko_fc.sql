@@ -57,6 +57,8 @@ CREATE TABLE `t_classroom` (
 CREATE TABLE `t_order` (
   `order_id` int(7) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `classroom_id` int(7) NOT NULL COMMENT 't_classroomのID',
+  `exists_market` varchar(1) DEFAULT '0' COMMENT '市販教材の有無 0:無 1:有',
+  `flg_partial` varchar(1) DEFAULT '0' COMMENT '分納希望 0:全納 1:分納',
   `payment_method` varchar(1) NOT NULL COMMENT '支払方法 1:掛け 2:クレジットカード 3:代引き',
   `delivery_date` date DEFAULT NULL COMMENT 'お届け日',
   `delivery_time` varchar(1) DEFAULT NULL COMMENT 'お届け時間 NULL:指定なし 1:午前 2:14～16時 3:16～18時 4:18～20時 5:19～21時',

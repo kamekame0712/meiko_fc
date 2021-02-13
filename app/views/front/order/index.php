@@ -200,6 +200,47 @@
 
 					<p class="lead-title mt-5">その他</p>
 
+					<?php if( $PRODUCT_KIND == 1 ): ?>
+						<dl class="others">
+							<dt>市販教材</dt>
+							<dd>
+								発注内容に『市販教材』と『塾用教材』が含まれています。<br>
+								『市販教材』と『塾用教材』を一緒にお届けするか、別々でお届けするかお選びください。
+
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-md-3 pl-0">
+											<?php echo form_radio(array(
+												'name'	=> 'flg_partial',
+												'id'	=> 'flg_partial1',
+												'value'	=> '1',
+												'checked'	=> $PARTIAL == '1' ? TRUE : FALSE
+											)); ?>
+											<?php echo form_label('一緒にお届け', 'flg_partial1'); ?>
+										</div>
+
+										<div class="col-md-3 pl-0">
+											<?php echo form_radio(array(
+												'name'	=> 'flg_partial',
+												'id'	=> 'flg_partial2',
+												'value'	=> '2',
+												'checked'	=> $PARTIAL == '2' ? TRUE : FALSE
+											)); ?>
+											<?php echo form_label('別々でお届け', 'flg_partial2'); ?>
+										</div>
+									</div> <!-- end of .row -->
+								</div> <!-- end of .container-fluid -->
+
+								<div class="attention-credit">
+									『市販教材』は<span class="attention-msg">お届けまで2週間程度かかります</span>。<br>
+									一緒にお届する場合、お届け日は『市販教材』に合わせます。<br>
+									別々でお届けする場合、『塾用教材』は早くお届けできますが、<span class="attention-msg">発注金額によっては送料がそれぞれにかかってしまいます</span>。<br>
+									※送料につきましては、次ページ（発注内容の確認）でご確認ください。
+								</div>
+							</dd>
+						</dl>
+					<?php endif; ?>
+
 					<dl class="others">
 						<dt>お支払方法</dt>
 						<dd>
@@ -228,8 +269,8 @@
 											)); ?>
 										<?php endif; ?>
 									<?php endfor; ?>
-								</div>
-							</div>
+								</div> <!-- end of .row -->
+							</div> <!-- end of .container-fluid -->
 						</dd>
 					</dl>
 

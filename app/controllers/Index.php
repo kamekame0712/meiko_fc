@@ -81,6 +81,10 @@ class Index extends MY_Controller
 			delete_cookie('product_ids');
 		}
 
+		if( $this->input->cookie('flg_partial') ) {
+			delete_cookie('flg_partial');
+		}
+
 		if( $this->input->cookie('payment_method') ) {
 			delete_cookie('payment_method');
 		}

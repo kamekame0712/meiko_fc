@@ -216,6 +216,60 @@ class MY_Controller extends CI_Controller
 		return TRUE;
 	}
 
+	// 掛け登録先郵便番号
+	public function chk_account_zip()
+	{
+		$account_zip1 = isset($_POST['account_zip1']) ? $_POST['account_zip1'] : '';
+		$account_zip2 = isset($_POST['account_zip2']) ? $_POST['account_zip2'] : '';
+
+		if( $account_zip1 == '' || $account_zip2 == '' ) {
+			$this->form_validation->set_message('chk_account_zip', '%s 欄は必須です。');
+			return FALSE;
+		}
+
+		if( !preg_match('/^[0-9]{3}$/', $account_zip1) || !preg_match('/^[0-9]{4}$/', $account_zip2) ) {
+			$this->form_validation->set_message('chk_account_zip', '%s 欄が正しくありません。');
+			return FALSE;
+		}
+
+		return TRUE;
+	}
+
+	// 掛け登録先住所
+	public function chk_account_address()
+	{
+		$account_pref = isset($_POST['account_pref']) ? $_POST['account_pref'] : '';
+		$account_addr1 = isset($_POST['account_addr1']) ? $_POST['account_addr1'] : '';
+		$account_addr2 = isset($_POST['account_addr2']) ? $_POST['account_addr2'] : '';
+
+		if( $account_pref == '' || $account_addr1 == '' || $account_addr2 == '' ) {
+			$this->form_validation->set_message('chk_account_address', '%s 欄は必須です。');
+			return FALSE;
+		}
+
+		return TRUE;
+	}
+
+	// 掛け登録先電話番号
+	public function chk_account_tel()
+	{
+		$account_tel1 = isset($_POST['account_tel1']) ? $_POST['account_tel1'] : '';
+		$account_tel2 = isset($_POST['account_tel2']) ? $_POST['account_tel2'] : '';
+		$account_tel3 = isset($_POST['account_tel3']) ? $_POST['account_tel3'] : '';
+
+		if( $account_tel1 == '' || $account_tel2 == '' || $account_tel3 == '' ) {
+			$this->form_validation->set_message('chk_account_tel', '%s 欄は必須です。');
+			return FALSE;
+		}
+
+		if( !preg_match('/^[0-9]{2,5}$/', $account_tel1) || !preg_match('/^[0-9]{1,4}$/', $account_tel2) || !preg_match('/^[0-9]{4}$/', $account_tel3) ) {
+			$this->form_validation->set_message('chk_account_tel', '%s 欄が正しくありません。');
+			return FALSE;
+		}
+
+		return TRUE;
+	}
+
 	// ご請求先郵便番号
 	public function chk_bill_zip()
 	{

@@ -33,20 +33,28 @@
 															管理者の登録、修正、削除が行えます。
 														</td>
 													</tr>
+
 													<tr>
-														<td rowspan="2">マスター関連</td>
+														<td rowspan="3">マスター関連</td>
+														<td><a href="<?= site_url('admin/owner') ?>"><i class="fas fa-building"></i>&nbsp;オーナー管理</a></td>
+														<td>
+															オーナーの登録、修正、削除が行えます。<br>
+															また、オーナーから利用申込みがあった場合、こちらから登録管理が行えます。
+														</td>
+													</tr>
+													<tr>
 														<td><a href="<?= site_url('admin/classroom') ?>"><i class="fas fa-school"></i>&nbsp;教室管理</a></td>
 														<td>
 															教室の登録、修正、削除が行えます。
 														</td>
 													</tr>
 													<tr>
-													<td>
-														<a href="<?= site_url('admin/product') ?>"><i class="fas fa-book"></i>&nbsp;教材管理</a></td>
+														<td><a href="<?= site_url('admin/product') ?>"><i class="fas fa-book"></i>&nbsp;教材管理</a></td>
 														<td>
 															教材の登録、修正、削除が行えます。
 														</td>
 													</tr>
+
 													<tr>
 														<td>その他</td>
 														<td><a href="<?= site_url('admin/manage') ?>"><i class="fas fa-user-tie"></i>&nbsp;管理者管理</a></td>

@@ -55,7 +55,7 @@ class Forgot extends MY_Controller
 				'from'		=> $this->conf_mail['apply_comp_to_customer']['from'],
 				'from_name'	=> $this->conf_mail['apply_comp_to_customer']['from_name'],
 				'to'		=> $email,
-				'subject'	=> 'パスワード再発行の確認',
+				'subject'	=> '【教材発注システム】パスワード再発行の確認',
 				'message'	=> $mail_body
 			);
 
@@ -123,7 +123,7 @@ class Forgot extends MY_Controller
 						'from'		=> $this->conf_mail['apply_comp_to_customer']['from'],
 						'from_name'	=> $this->conf_mail['apply_comp_to_customer']['from_name'],
 						'to'		=> $classroom_data['email'],
-						'subject'	=> 'パスワード再発行のお知らせ',
+						'subject'	=> '【教材発注システム】パスワード再発行のお知らせ',
 						'message'	=> $mail_body
 					);
 

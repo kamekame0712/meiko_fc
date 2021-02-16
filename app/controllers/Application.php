@@ -100,6 +100,7 @@ class Application extends MY_Controller
 			'payment_method1'	=> $payment_method1,
 			'payment_method2'	=> $payment_method2,
 			'payment_method3'	=> $payment_method3,
+			'flg_complete'		=> '1',
 			'regist_time'		=> $now,
 			'update_time'		=> $now,
 			'status'			=> '0'
@@ -147,7 +148,7 @@ class Application extends MY_Controller
 
 				$payment_method = array();
 				if( $payment_method1 == '1' ) {
-					$payment_method[] = '掛け';
+					$payment_method[] = '買掛';
 				}
 
 				if( $payment_method2 == '1' ) {
@@ -155,7 +156,7 @@ class Application extends MY_Controller
 				}
 
 				if( $payment_method3 == '1' ) {
-					$payment_method[] = '代引き';
+					$payment_method[] = '代金引換';
 				}
 
 				$mail_data = $insert_data;
@@ -321,7 +322,7 @@ class Application extends MY_Controller
 			if( !empty($owner_data) ) {
 				$payment_method = array();
 				if( $owner_data['payment_method1'] == '1' ) {
-					$payment_method[] = '掛け';
+					$payment_method[] = '買掛';
 				}
 
 				if( $owner_data['payment_method2'] == '1' ) {
@@ -329,7 +330,7 @@ class Application extends MY_Controller
 				}
 
 				if( $owner_data['payment_method3'] == '1' ) {
-					$payment_method[] = '代引き';
+					$payment_method[] = '代金引換';
 				}
 
 				$classroom_data = $this->m_classroom->get_list(array('owner_id' => $owner_id));

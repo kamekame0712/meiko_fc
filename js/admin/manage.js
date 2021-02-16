@@ -70,7 +70,7 @@ function do_submit()
 				email: $('#email').val()
 			};
 			break;
-	
+
 		case 2: // 更新
 			ajax_url = SITE_URL + 'admin/manage/ajax_mod';
 			ajax_data = {
@@ -117,7 +117,7 @@ function do_submit()
 function reset_password(admin_id)
 {
 	wk_admin_id = admin_id;
-	
+
 	$('#modal_title').html('確認');
 	$('#modal_body').html('本当にパスワードをリセットしますか？<br>新しいパスワードは管理者へメールでお知らせします。');
 	$('#modal_act').html('実行');

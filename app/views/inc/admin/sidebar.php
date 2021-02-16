@@ -1,11 +1,12 @@
 <?php
-	$active_order = $active_classroom = $active_product = $active_manage = '';
+	$active_order = $active_owner = $active_classroom = $active_product = $active_manage = '';
 
 	switch( $current ) {
-		case 'order':		$active_order = 'class="active"';	break;
+		case 'order':		$active_order = 'class="active"';		break;
+		case 'owner':		$active_owner = 'class="active"';		break;
 		case 'classroom':	$active_classroom = 'class="active"';	break;
-		case 'product':		$active_product = 'class="active"';	break;
-		case 'manage':		$active_manage = 'class="active"';	break;
+		case 'product':		$active_product = 'class="active"';		break;
+		case 'manage':		$active_manage = 'class="active"';		break;
 	}
 ?>
 
@@ -23,6 +24,7 @@
 			<li <?= $active_order ?>><a class="nav-link" href="<?= site_url('admin/order') ?>"><i class="fas fa-dolly-flatbed"></i><span>受注管理</span></a></li>
 
 			<li class="menu-header">マスター関連</li>
+			<li <?= $active_owner ?>><a class="nav-link" href="<?= site_url('admin/owner') ?>"><i class="fas fa-building"></i><span>オーナー管理</span></a></li>
 			<li <?= $active_classroom ?>><a class="nav-link" href="<?= site_url('admin/classroom') ?>"><i class="fas fa-school"></i><span>教室管理</span></a></li>
 			<li <?= $active_product ?>><a class="nav-link" href="<?= site_url('admin/product') ?>"><i class="fas fa-book"></i><span>教材管理</span></a></li>
 

@@ -282,7 +282,7 @@ class Order extends MY_Controller
 		$owner_data = $this->m_owner->get_one(array('owner_id' => $classroom_data['owner_id']));
 		if( !empty($owner_data) ) {
 			if( $owner_data['payment_method1'] == '1' && !empty($classroom_data['smile_code1']) ) {
-				$payment_method_list['1'] = '掛け';
+				$payment_method_list['1'] = '買掛';
 			}
 
 			if( $owner_data['payment_method2'] == '1' ) {
@@ -290,7 +290,7 @@ class Order extends MY_Controller
 			}
 
 			if( $owner_data['payment_method3'] == '1' ) {
-				$payment_method_list['3'] = '代引き';
+				$payment_method_list['3'] = '代金引換';
 			}
 		}
 
@@ -579,7 +579,7 @@ class Order extends MY_Controller
 
 				if( $card_type == '1' ) { // 登録済みカードを使用
 					// 取引登録
-					$ret_et_val = $this->m_gmo->entry_tran($gmo_order_id, intval($shipping_fee) + intval($sub_total));
+					$ret_et_val = $this->m_gmo->entry_tran($gmo_order_id, intval($shipping_fee) + intval($sub_total), 'AUTH');	// CAPTURE:即時売上 AUTH:仮売上
 					if( !is_array($ret_et_val) || empty($ret_et_val['accessId']) || empty($ret_et_val['accessPass']) ) {
 						$this->db->trans_rollback();
 						$this->index($ret_et_val);
@@ -625,7 +625,7 @@ class Order extends MY_Controller
 					}
 
 					// 取引登録
-					$ret_et_val = $this->m_gmo->entry_tran($gmo_order_id, intval($shipping_fee) + intval($sub_total));
+					$ret_et_val = $this->m_gmo->entry_tran($gmo_order_id, intval($shipping_fee) + intval($sub_total), 'AUTH');	// CAPTURE:即時売上 AUTH:仮売上
 					if( !is_array($ret_et_val) || empty($ret_et_val['accessId']) || empty($ret_et_val['accessPass']) ) {
 						$this->db->trans_rollback();
 						$this->index($ret_et_val);
@@ -714,6 +714,8 @@ class Order extends MY_Controller
 			'SUB_TOTAL'	=> $sub_total,
 			'SHIPPING'	=> $shipping_fee,
 			'TOTAL'		=> intval($sub_total) + intval($shipping_fee),
+			'MARKET'	=> $exists_market,
+			'PARTIAL'	=> $flg_partial,
 			'PAYMENT'	=> $this->conf['payment_method'][$payment_method],
 			'DDATE'		=> $show_delivery_date,
 			'DTIME'		=> $this->conf['delivery_time'][$delivery_time],
@@ -725,7 +727,7 @@ class Order extends MY_Controller
 			'from'		=> $this->conf_mail['apply_comp_to_customer']['from'],
 			'from_name'	=> $this->conf_mail['apply_comp_to_customer']['from_name'],
 			'to'		=> $classroom_data['email'],
-			'subject'	=> 'ご注文ありがとうございます（自動送信メール）',
+			'subject'	=> '【教材発注システム】ご注文ありがとうございます（自動送信メール）',
 			'message'	=> $mail_body
 		);
 

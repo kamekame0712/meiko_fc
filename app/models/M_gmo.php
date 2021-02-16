@@ -31,7 +31,7 @@ class M_gmo extends MY_Model
 	}
 
 	// 取引登録
-	public function entry_tran($order_id = '', $amount = '')
+	public function entry_tran($order_id = '', $amount = '', $job = 'CAPTURE')
 	{
 		if( $order_id == '' || $amount == '' ) {
 			return 'パラメータエラー';
@@ -45,7 +45,7 @@ class M_gmo extends MY_Model
 		//各種パラメータを設定
 		$input->setShopId($this->shop_id);
 		$input->setShopPass($this->shop_pass);
-		$input->setJobCd('CAPTURE');	// CAPTURE:即時売上 AUTH:仮売上
+		$input->setJobCd($job);	// CAPTURE:即時売上 AUTH:仮売上
 		$input->setOrderId($order_id);
 		$input->setAmount($amount);
 

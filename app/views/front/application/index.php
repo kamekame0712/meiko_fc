@@ -9,7 +9,7 @@
 				<p class="lead-title">ご利用申込み</p>
 
 				<div class="form-group row">
-					<div class="col-md-2 offset-md-3 entry-required">オーナー名</div>
+					<div class="col-md-2 offset-md-2 entry-required">オーナー名</div>
 					<div class="col-md-4">
 						<?php echo form_input(array(
 							'name'	=> 'owner_name',
@@ -22,7 +22,7 @@
 				</div> <!-- end of .form-group row -->
 
 				<div class="form-group row">
-					<div class="col-md-2 offset-md-3">法人名</div>
+					<div class="col-md-2 offset-md-2">法人名</div>
 					<div class="col-md-4">
 						<?php echo form_input(array(
 							'name'	=> 'corpo_name',
@@ -34,7 +34,7 @@
 				</div> <!-- end of .form-group row -->
 
 				<div class="form-group row">
-					<div class="col-md-2 offset-md-3 entry-required">郵便番号</div>
+					<div class="col-md-2 offset-md-2 entry-required">郵便番号</div>
 					<div class="col-md-4">
 						<?php echo form_input(array(
 							'name'	=> 'zip1',
@@ -55,14 +55,14 @@
 				</div> <!-- end of .form-group row -->
 
 				<div class="form-group row">
-					<div class="col-md-2 offset-md-3 entry-required">住所</div>
+					<div class="col-md-2 offset-md-2 entry-required">住所</div>
 					<div class="col-md-4">
 						<div class="container-fluid">
-							<div class="form-group row">
+							<div class="form-group row input-pref">
 								<?php echo form_dropdown('pref', $CONF['pref'], set_value('pref', ''), 'class="form-control entry-input"'); ?>
 							</div> <!-- end of .form-group row -->
 
-							<div class="form-group row">
+							<div class="form-group row input-addr1">
 								<?php echo form_input(array(
 									'name'	=> 'addr1',
 									'value'	=> set_value('addr1', ''),
@@ -71,7 +71,7 @@
 								)); ?>
 							</div> <!-- end of .form-group row -->
 
-							<div class="form-group row">
+							<div class="form-group row input-addr2">
 								<?php echo form_input(array(
 									'name'	=> 'addr2',
 									'value'	=> set_value('addr2', ''),
@@ -82,10 +82,13 @@
 						</div>
 						<?php echo form_error('pref'); ?>
 					</div>
+					<div class="col-md-4">
+						<span class="attention-msg d-block">※弊社からの送付物をお受け取りいただけるご住所をご入力ください。<br>（教材は各教室に発送いたします。）</span>
+					</div>
 				</div> <!-- end of .form-group row -->
 
 				<div class="form-group row">
-					<div class="col-md-2 offset-md-3 entry-required">電話番号</div>
+					<div class="col-md-2 offset-md-2 entry-required">電話番号</div>
 					<div class="col-md-4">
 						<?php echo form_input(array(
 							'name'	=> 'tel1',
@@ -107,10 +110,13 @@
 						)); ?>
 						<?php echo form_error('tel1'); ?>
 					</div>
+					<div class="col-md-4">
+						<span class="attention-msg d-block">※連絡先として利用いたします。</span>
+					</div>
 				</div> <!-- end of .form-group row -->
 
 				<div class="form-group row">
-					<div class="col-md-2 offset-md-3">FAX番号</div>
+					<div class="col-md-2 offset-md-2">FAX番号</div>
 					<div class="col-md-4">
 						<?php echo form_input(array(
 							'name'	=> 'fax1',
@@ -134,7 +140,7 @@
 				</div> <!-- end of .form-group row -->
 
 				<div class="form-group row">
-					<div class="col-md-2 offset-md-3 entry-required">メールアドレス</div>
+					<div class="col-md-2 offset-md-2 entry-required">メールアドレス</div>
 					<div class="col-md-4">
 						<?php echo form_input(array(
 							'name'	=> 'email',
@@ -144,10 +150,13 @@
 						)); ?>
 						<?php echo form_error('email'); ?>
 					</div>
+					<div class="col-md-4">
+						<span class="attention-msg d-block">※連絡先として利用いたします。</span>
+					</div>
 				</div> <!-- end of .form-group row -->
 
 				<div class="form-group row">
-					<div class="col-md-2 offset-md-3 entry-required">
+					<div class="col-md-2 offset-md-2 entry-required">
 						運営教室<br>
 						<?php echo form_button(array(
 							'name'		=> 'btn-add',
@@ -160,7 +169,7 @@
 						<table class="classroom-list" id="classroom_list">
 							<thead>
 								<tr>
-									<th>教室コード</th>
+									<th>教室コード(数字4桁)</th>
 									<th>教室名</th>
 								</tr>
 							</thead>
@@ -186,7 +195,7 @@
 				</div> <!-- end of .form-group row -->
 
 				<div class="form-group row">
-					<div class="col-md-2 offset-md-3 entry-required">お支払方法</div>
+					<div class="col-md-2 offset-md-2 entry-required">お支払方法</div>
 					<div class="col-md-4">
 						<?php echo form_checkbox(array(
 							'name'	=> 'payment_method1',
@@ -194,7 +203,7 @@
 							'value'	=> '1',
 							'checked'	=> set_checkbox('payment_method1', '1', FALSE)
 						)); ?>
-						<?php echo form_label('掛け', 'payment_method1'); ?>&nbsp;&nbsp;
+						<?php echo form_label('買掛', 'payment_method1'); ?>&nbsp;&nbsp;
 
 						<?php echo form_checkbox(array(
 							'name'	=> 'payment_method2',
@@ -210,8 +219,11 @@
 							'value'	=> '1',
 							'checked'	=> set_checkbox('payment_method3', '1', FALSE)
 						)); ?>
-						<?php echo form_label('代引き', 'payment_method3'); ?>
+						<?php echo form_label('代金引換', 'payment_method3'); ?>
 						<?php echo form_error('payment_method1'); ?>
+					</div>
+					<div class="col-md-4">
+						<span class="attention-msg d-block">※複数選択が可能です。</span>
 					</div>
 				</div> <!-- end of .form-group row -->
 

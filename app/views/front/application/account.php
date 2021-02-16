@@ -5,16 +5,16 @@
 		<?php $this->load->view('inc/header', array('MENU' => FALSE)); ?>
 
 		<div class="container">
-			<p class="lead-title">掛け取り引き申請</p>
+			<p class="lead-title">買掛取り引き申請</p>
 
 			<?php if( empty($OID) ): ?>
-				掛け取り引き申請はご利用申込みの際、お支払方法で【掛け】を選ばれた方のみ行えます。
+				買掛取り引き申請はご利用申込みの際、お支払方法で【買掛】を選ばれた方のみ行えます。
 			<?php else: ?>
 				<?php echo form_open('application/account_confirm'); ?>
 					<?php echo form_hidden('owner_id', $OID); ?>
 
 					<div class="form-group row">
-						<div class="col-md-2 offset-md-3 entry-required">事業形態</div>
+						<div class="col-md-2 offset-md-2 entry-required">事業形態</div>
 						<div class="col-md-4">
 							<?php echo form_radio(array(
 								'name'	=> 'corporation',
@@ -44,7 +44,7 @@
 							)); ?>
 						</div>
 						<div class="form-group row">
-							<div class="col-md-2 offset-md-3 entry-required" id="cd_corporation_name">法人名</div>
+							<div class="col-md-2 offset-md-2 entry-required" id="cd_corporation_name">法人名</div>
 							<div class="col-md-4">
 								<?php echo form_input(array(
 									'name'	=> 'corpo_name',
@@ -58,7 +58,7 @@
 						</div> <!-- end of .form-group row -->
 
 						<div class="form-group row" id="executive_box">
-							<div class="col-md-2 offset-md-3 entry-required">代表者名</div>
+							<div class="col-md-2 offset-md-2 entry-required">代表者名</div>
 							<div class="col-md-4">
 								<?php echo form_input(array(
 									'name'	=> 'executive',
@@ -72,7 +72,7 @@
 						</div> <!-- end of .form-group row -->
 
 						<div class="form-group row">
-							<div class="col-md-2 offset-md-3 entry-required" id="cd_zip">法人郵便番号</div>
+							<div class="col-md-2 offset-md-2 entry-required" id="cd_zip">法人郵便番号</div>
 							<div class="col-md-4">
 								<?php echo form_input(array(
 									'name'	=> 'zip1',
@@ -93,14 +93,14 @@
 						</div> <!-- end of .form-group row -->
 
 						<div class="form-group row">
-							<div class="col-md-2 offset-md-3 entry-required" id="cd_address">法人住所</div>
+							<div class="col-md-2 offset-md-2 entry-required" id="cd_address">法人住所</div>
 							<div class="col-md-4">
 								<div class="container-fluid">
-									<div class="form-group row">
+									<div class="form-group row input-pref">
 										<?php echo form_dropdown('pref', $CONF['pref'], set_value('pref', ''), 'id="pref" class="form-control entry-input"'); ?>
 									</div> <!-- end of .form-group row -->
 
-									<div class="form-group row">
+									<div class="form-group row input-addr1">
 										<?php echo form_input(array(
 											'name'	=> 'addr1',
 											'id'	=> 'addr1',
@@ -110,7 +110,7 @@
 										)); ?>
 									</div> <!-- end of .form-group row -->
 
-									<div class="form-group row">
+									<div class="form-group row input-addr2">
 										<?php echo form_input(array(
 											'name'	=> 'addr2',
 											'id'	=> 'addr2',
@@ -125,7 +125,7 @@
 						</div> <!-- end of .form-group row -->
 
 						<div class="form-group row">
-							<div class="col-md-2 offset-md-3 entry-required" id="cd_tel">代表電話番号</div>
+							<div class="col-md-2 offset-md-2 entry-required" id="cd_tel">代表電話番号</div>
 							<div class="col-md-4">
 								<?php echo form_input(array(
 									'name'	=> 'tel1',
@@ -153,7 +153,7 @@
 						</div> <!-- end of .form-group row -->
 
 						<div class="form-group row">
-							<div class="col-md-2 offset-md-3">FAX番号</div>
+							<div class="col-md-2 offset-md-2">FAX番号</div>
 							<div class="col-md-4">
 								<?php echo form_input(array(
 									'name'	=> 'fax1',
@@ -180,7 +180,7 @@
 						</div> <!-- end of .form-group row -->
 
 						<div class="form-group row">
-							<div class="col-md-2 offset-md-3 entry-required">ご請求先</div>
+							<div class="col-md-2 offset-md-2 entry-required">ご請求先</div>
 							<div class="col-md-4">
 								<?php echo form_radio(array(
 									'name'	=> 'bill_to',
@@ -199,11 +199,14 @@
 								<?php echo form_label('上記とは別', 'bill_to2'); ?>
 								<?php echo form_error('bill_to'); ?>
 							</div>
+							<div class="col-md-4">
+								<span class="attention-msg d-block">※ご入力いただいた情報で請求書を作成し、送付いたします。</span>
+							</div>
 						</div>
 
 						<div id="bill-other" style="display:none;">
 							<div class="form-group row">
-								<div class="col-md-2 offset-md-3 entry-required">ご請求先名</div>
+								<div class="col-md-2 offset-md-2 entry-required">ご請求先名</div>
 								<div class="col-md-4">
 									<?php echo form_input(array(
 										'name'	=> 'bill_name',
@@ -217,7 +220,7 @@
 							</div> <!-- end of .form-group row -->
 
 							<div class="form-group row">
-								<div class="col-md-2 offset-md-3 entry-required">ご請求先郵便番号</div>
+								<div class="col-md-2 offset-md-2 entry-required">ご請求先郵便番号</div>
 								<div class="col-md-4">
 									<?php echo form_input(array(
 										'name'	=> 'bill_zip1',
@@ -238,14 +241,14 @@
 							</div> <!-- end of .form-group row -->
 
 							<div class="form-group row">
-								<div class="col-md-2 offset-md-3 entry-required">ご請求先住所</div>
+								<div class="col-md-2 offset-md-2 entry-required">ご請求先住所</div>
 								<div class="col-md-4">
 									<div class="container-fluid">
-										<div class="form-group row">
+										<div class="form-group row input-pref">
 											<?php echo form_dropdown('bill_pref', $CONF['pref'], set_value('bill_pref', ''), 'id="bill_pref" class="form-control entry-input"'); ?>
 										</div> <!-- end of .form-group row -->
 
-										<div class="form-group row">
+										<div class="form-group row input-addr1">
 											<?php echo form_input(array(
 												'name'	=> 'bill_addr1',
 												'id'	=> 'bill_addr1',
@@ -255,7 +258,7 @@
 											)); ?>
 										</div> <!-- end of .form-group row -->
 
-										<div class="form-group row">
+										<div class="form-group row input-addr2">
 											<?php echo form_input(array(
 												'name'	=> 'bill_addr2',
 												'id'	=> 'bill_addr2',
@@ -270,7 +273,7 @@
 							</div> <!-- end of .form-group row -->
 
 							<div class="form-group row">
-								<div class="col-md-2 offset-md-3 entry-required">ご請求先電話番号</div>
+								<div class="col-md-2 offset-md-2 entry-required">ご請求先電話番号</div>
 								<div class="col-md-4">
 									<?php echo form_input(array(
 										'name'	=> 'bill_tel1',
@@ -298,13 +301,14 @@
 							</div> <!-- end of .form-group row -->
 
 							<div class="form-group row">
-								<div class="col-md-2 offset-md-3">備考</div>
+								<div class="col-md-2 offset-md-2">備考</div>
 								<div class="col-md-4">
 									<?php echo form_textarea(array(
 										'name'	=> 'bill_note',
 										'id'	=> 'bill_note',
 										'value'	=> set_value('bill_note', ''),
 										'class'	=> 'form-control entry-input',
+										'style'	=> 'height:100px',
 										'placeholder'	=> '請求先が複数に分かれる等、上記内容では申請できない場合にご記入ください。'
 									)); ?>
 								</div>
@@ -312,7 +316,7 @@
 						</div> <!-- end of #bill-other -->
 
 						<div class="form-group row">
-							<div class="col-md-2 offset-md-3 entry-required">決済方法</div>
+							<div class="col-md-2 offset-md-2 entry-required">決済方法</div>
 							<div class="col-md-4">
 								<?php echo form_radio(array(
 									'name'	=> 'settlement_method',
@@ -334,7 +338,7 @@
 						</div> <!-- end of .form-group row -->
 
 						<div class="form-group row" id="transfer" style="display:none;">
-							<div class="col-md-2 offset-md-3 entry-required">お振込み名義</div>
+							<div class="col-md-2 offset-md-2 entry-required">お振込み名義</div>
 							<div class="col-md-4">
 								<?php echo form_input(array(
 									'name'	=> 'transfer_name',
@@ -348,7 +352,7 @@
 						</div> <!-- end of .form-group row -->
 
 						<div class="form-group row" id="debit" style="display:none;">
-							<div class="col-md-2 offset-md-3 entry-required">金融機関名</div>
+							<div class="col-md-2 offset-md-2 entry-required">金融機関名</div>
 							<div class="col-md-4">
 								<?php echo form_input(array(
 									'name'	=> 'bank_name',

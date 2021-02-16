@@ -65,19 +65,19 @@
 						<?php
 							$payment_method = array();
 							if( !empty($PDATA['payment_method1']) ) {
-								$payment_method[] = '掛け';
+								$payment_method[] = '買掛';
 							}
 							if( !empty($PDATA['payment_method2']) ) {
 								$payment_method[] = 'クレジットカード';
 							}
 							if( !empty($PDATA['payment_method3']) ) {
-								$payment_method[] = '代引き';
+								$payment_method[] = '代金引換';
 							}
 						?>
 
 						<?= implode(',', $payment_method) ?>
 						<?php if( !empty($PDATA['payment_method1']) ): ?>
-							<p class="account-attention">掛け取り引きをご希望の方は引き続き、掛け取り引きの申請をお願いします。</p>
+							<p class="account-attention">買掛取り引きをご希望の方は引き続き、買掛取り引きの申請をお願いします。</p>
 						<?php endif; ?>
 					</td>
 				</tr>
@@ -97,7 +97,7 @@
 					<?php echo form_button(array(
 						'name'		=> 'btn_submit',
 						'class'		=> 'btn btn-success',
-						'content'	=> !empty($PDATA['payment_method1']) ? '登録して掛け取引の申請へ進む' : '　登録　',
+						'content'	=> !empty($PDATA['payment_method1']) ? '登録して買掛取引の申請へ進む' : '　登録　',
 						'onclick'	=> 'do_submit(2);'
 					)); ?>
 				</div>

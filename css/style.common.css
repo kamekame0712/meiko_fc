@@ -26,7 +26,14 @@ body,
     min-height: 100vh;
 }
 
-.error-msg,
+.error-msg {
+    border: 1px solid red;
+    background-color: #FFE0EB;
+    color: red;
+    padding: 0 5px;
+    margin: 5px 0 0;
+}
+
 .attention-msg {
 	color: red;
 }
@@ -494,6 +501,36 @@ footer .copyright {
     left: -25px;
 }
 
+.input-pref,
+.input-addr1,
+.input-addr2 {
+    position: relative;
+}
+
+.input-pref::before,
+.input-addr1::before,
+.input-addr2::before {
+    display: block;
+    position: absolute;
+    font-size: 1.2rem;
+    top: 9px;
+}
+
+.input-pref::before {
+    content: "都道府県";
+    left: -50px;
+}
+
+.input-addr1::before {
+    content: "市区町村・丁目・番地";
+    left: -123px;
+}
+
+.input-addr2::before {
+    content: "建物名・階数等";
+    left: -86px;
+}
+
 .classroom-list {
     width: 100%;
     border-collapse: collapse;
@@ -511,7 +548,7 @@ footer .copyright {
 }
 
 .classroom-list th:nth-child(1) {
-    width: 120px;
+    width: 170px;
 }
 
 .classroom-list td {

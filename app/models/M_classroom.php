@@ -24,6 +24,14 @@ class M_classroom extends MY_Model
 			return FALSE;
 		}
 
+		if( empty($classroom_data[0]['owner_id']) ) {
+			return FALSE;
+		}
+
+		if( empty($classroom_data[0]['smile_code1']) && empty($classroom_data[0]['smile_code2']) && empty($classroom_data[0]['smile_code3']) ) {
+			return FALSE;
+		}
+
 		$hashedPassword = $classroom_data[0]['password'];
 		if( empty($hashedPassword) ) {
 			return FALSE;

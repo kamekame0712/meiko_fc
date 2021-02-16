@@ -5,7 +5,7 @@
 		<?php $this->load->view('inc/header', array('MENU' => FALSE)); ?>
 
 		<div class="container">
-			<p class="lead-title">掛け取り引き申請 確認</p>
+			<p class="lead-title">買掛取り引き申請 確認</p>
 
 			<table class="confirm-table">
 				<?php if( $PDATA['corporation'] == 1 ): ?>

@@ -38,6 +38,13 @@
 						)); ?>
 					</div> <!-- end of login-box -->
 				<?php echo form_close(); ?>
+
+				<div class="attention-box" style="margin-top:100px;">
+					<h3>始めてご利用される方は<span class="attention-msg">メールアドレスとパスワードの登録</span>をお願いします。</h3>
+					ご登録いただいたメールアドレスとパスワードはログインに使用していただきます。<br>
+					また、ご注文いただいた内容の確認の為、ご登録いただいたメールアドレス宛てにメールをお送りします。<br><br>
+					まだ登録がお済みでない方は<a href="<?= site_url('entry') ?>">こちら</a>からお願いします。
+				</div>
 			</div>
 
 			<div class="for-sp">

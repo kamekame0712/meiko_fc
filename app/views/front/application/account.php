@@ -79,14 +79,14 @@
 									'id'	=> 'zip1',
 									'value'	=> set_value('zip1', ''),
 									'class'	=> 'form-control entry-input entry-input-small',
-									'placeholder'	=> '730'
+									'placeholder'	=> '163'
 								)); ?>&nbsp;-&nbsp;
 								<?php echo form_input(array(
 									'name'	=> 'zip2',
 									'id'	=> 'zip2',
 									'value'	=> set_value('zip2', ''),
 									'class'	=> 'form-control entry-input entry-input-small',
-									'placeholder'	=> '0013'
+									'placeholder'	=> '8001'
 								)); ?>
 								<?php echo form_error('zip1'); ?>
 							</div>
@@ -106,7 +106,7 @@
 											'id'	=> 'addr1',
 											'value'	=> set_value('addr1', ''),
 											'class'	=> 'form-control entry-input',
-											'placeholder'	=> '広島市中区八丁堀15-6'
+											'placeholder'	=> '新宿区西新宿2-8-1'
 										)); ?>
 									</div> <!-- end of .form-group row -->
 
@@ -116,7 +116,7 @@
 											'id'	=> 'addr2',
 											'value'	=> set_value('addr2', ''),
 											'class'	=> 'form-control entry-input',
-											'placeholder'	=> '広島ちゅうぎんビル３階'
+											'placeholder'	=> '第一本庁舎7階'
 										)); ?>
 									</div> <!-- end of .form-group row -->
 								</div>
@@ -132,21 +132,21 @@
 									'id'	=> 'tel1',
 									'value'	=> set_value('tel1', ''),
 									'class'	=> 'form-control entry-input entry-input-small',
-									'placeholder'	=> '082'
+									'placeholder'	=> '03'
 								)); ?>&nbsp;-&nbsp;
 								<?php echo form_input(array(
 									'name'	=> 'tel2',
 									'id'	=> 'tel2',
 									'value'	=> set_value('tel2', ''),
 									'class'	=> 'form-control entry-input entry-input-small',
-									'placeholder'	=> '227'
+									'placeholder'	=> '5321'
 								)); ?>&nbsp;-&nbsp;
 								<?php echo form_input(array(
 									'name'	=> 'tel3',
 									'id'	=> 'tel3',
 									'value'	=> set_value('tel3', ''),
 									'class'	=> 'form-control entry-input entry-input-small',
-									'placeholder'	=> '3999'
+									'placeholder'	=> '1111'
 								)); ?>
 								<?php echo form_error('tel1'); ?>
 							</div>
@@ -160,21 +160,21 @@
 									'id'	=> 'fax1',
 									'value'	=> set_value('fax1', ''),
 									'class'	=> 'form-control entry-input entry-input-small',
-									'placeholder'	=> '082'
+									'placeholder'	=> '03'
 								)); ?>&nbsp;-&nbsp;
 								<?php echo form_input(array(
 									'name'	=> 'fax2',
 									'id'	=> 'fax2',
 									'value'	=> set_value('fax2', ''),
 									'class'	=> 'form-control entry-input entry-input-small',
-									'placeholder'	=> '227'
+									'placeholder'	=> '5388'
 								)); ?>&nbsp;-&nbsp;
 								<?php echo form_input(array(
 									'name'	=> 'fax3',
 									'id'	=> 'fax3',
 									'value'	=> set_value('fax3', ''),
 									'class'	=> 'form-control entry-input entry-input-small',
-									'placeholder'	=> '4000'
+									'placeholder'	=> '1233'
 								)); ?>
 							</div>
 						</div> <!-- end of .form-group row -->

@@ -536,7 +536,7 @@ class Owner extends MY_Controller
 						'from'		=> $this->conf_mail['apply_comp_to_customer']['from'],
 						'from_name'	=> $this->conf_mail['apply_comp_to_customer']['from_name'],
 						'to'		=> $owner_data['email'],
-						'subject'	=> '【教材発注システム】登録が完了いたしました',
+						'subject'	=> '【教材発注システム】登録完了 ※まだご注文いただけません',
 						'message'	=> $mail_body
 					);
 

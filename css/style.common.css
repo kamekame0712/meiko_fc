@@ -173,6 +173,23 @@ table.confirm-table td .attention {
     color: #D4440D;
 }
 
+.attention-box {
+    background-color: #FCF537;
+    background-image: url('../img/point.png');
+    background-repeat: no-repeat;
+    background-position: 0 50%;
+    min-height: 80px;
+    padding: 10px 10px 10px 60px;
+    margin: 20px 20px 0 20px;
+    font-size: 1.3rem;
+    border-left: 10px solid #157BCA;
+}
+
+.attention-box h3 {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
 .for-pc {
     display: block;
 }
@@ -864,18 +881,6 @@ dl.others dd {
 .dl-credit dd input[type="text"]::placeholder {
     color: #808080;
     font-weight: bold;
-}
-
-.attention-credit {
-    background-color: #FCF537;
-    background-image: url('../img/point.png');
-    background-repeat: no-repeat;
-    background-position: 0 10px;
-    min-height: 80px;
-    padding: 10px 10px 10px 60px;
-    margin: 20px 20px 0 20px;
-    font-size: 1.3rem;
-    border-left: 10px solid #157BCA;
 }
 
 .select-other {

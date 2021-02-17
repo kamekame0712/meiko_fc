@@ -231,11 +231,20 @@
 									</div> <!-- end of .row -->
 								</div> <!-- end of .container-fluid -->
 
-								<div class="attention-credit">
-									『市販教材』は<span class="attention-msg">お届けまで2週間程度かかります</span>。<br>
+								<div class="attention-box">
+									<h3>『市販教材』は<span class="attention-msg">お届けまで2週間程度かかります</span>。</h3>
 									一緒にお届する場合、お届け日は『市販教材』に合わせます。<br>
 									別々でお届けする場合、『塾用教材』は早くお届けできますが、<span class="attention-msg">発注金額によっては送料がそれぞれにかかってしまいます</span>。<br>
 									※送料につきましては、次ページ（発注内容の確認）でご確認ください。
+								</div>
+							</dd>
+						</dl>
+					<?php elseif( $PRODUCT_KIND == 3 ): ?>
+						<dl class="others">
+							<dt>&nbsp;</dt>
+							<dd>
+								<div class="attention-box">
+									<h3>『市販教材』は<span class="attention-msg">お届けまで2週間程度かかります</span>。</h3>
 								</div>
 							</dd>
 						</dl>
@@ -402,7 +411,7 @@
 									<?php endif; ?>
 								</div> <!-- end of #newly -->
 
-								<div class="attention-credit">
+								<div class="attention-box">
 									クレジットカード決済は、クレジットカード決済代行のGMOペイメントゲートウェイ株式会社の決済代行サービスを利用しております。<br>
 									安心してお支払いをしていただくために、お客様の情報は暗号化して送信し、クレジットカード情報は当サイトでは保有せず、同社で厳重に管理しております。
 								</div>

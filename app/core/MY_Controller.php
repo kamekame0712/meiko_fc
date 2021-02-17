@@ -119,9 +119,8 @@ class MY_Controller extends CI_Controller
 	{
 		$pref = isset($_POST['pref']) ? $_POST['pref'] : '';
 		$addr1 = isset($_POST['addr1']) ? $_POST['addr1'] : '';
-		$addr2 = isset($_POST['addr2']) ? $_POST['addr2'] : '';
 
-		if( $pref == '' || $addr1 == '' || $addr2 == '' ) {
+		if( $pref == '' || $addr1 == '' ) {
 			$this->form_validation->set_message('chk_address', '%s 欄は必須です。');
 			return FALSE;
 		}
@@ -240,9 +239,8 @@ class MY_Controller extends CI_Controller
 	{
 		$account_pref = isset($_POST['account_pref']) ? $_POST['account_pref'] : '';
 		$account_addr1 = isset($_POST['account_addr1']) ? $_POST['account_addr1'] : '';
-		$account_addr2 = isset($_POST['account_addr2']) ? $_POST['account_addr2'] : '';
 
-		if( $account_pref == '' || $account_addr1 == '' || $account_addr2 == '' ) {
+		if( $account_pref == '' || $account_addr1 == '' ) {
 			$this->form_validation->set_message('chk_account_address', '%s 欄は必須です。');
 			return FALSE;
 		}
@@ -294,9 +292,8 @@ class MY_Controller extends CI_Controller
 	{
 		$bill_pref = isset($_POST['bill_pref']) ? $_POST['bill_pref'] : '';
 		$bill_addr1 = isset($_POST['bill_addr1']) ? $_POST['bill_addr1'] : '';
-		$bill_addr2 = isset($_POST['bill_addr2']) ? $_POST['bill_addr2'] : '';
 
-		if( $bill_pref == '' || $bill_addr1 == '' || $bill_addr2 == '' ) {
+		if( $bill_pref == '' || $bill_addr1 == '' ) {
 			$this->form_validation->set_message('chk_bill_address', '%s 欄は必須です。');
 			return FALSE;
 		}

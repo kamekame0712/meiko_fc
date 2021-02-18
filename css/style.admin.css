@@ -61,6 +61,14 @@ body {
 .mw-100 {
     max-width: 100px !important;
 }
+
+.mw-200 {
+    max-width: 200px !important;
+}
+
+.of-scroll-x {
+	overflow-x: scroll;
+}
 /* #endregion 共通 */
 
 /* #region bootgridのbootstrap4対策 */

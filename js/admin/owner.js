@@ -9,9 +9,9 @@ jQuery( function($) {
 		formatters: {
 			'col_proc': function(column, row) {
 				return '<a href="' + SITE_URL + 'admin/owner/detail/' + row.owner_id + '">'
-					 + '<i class="fas fa-info"></i>&nbsp;詳細</a>&nbsp;&nbsp;'
+					 + '<i class="fas fa-info"></i>&nbsp;詳細</a>&nbsp;&nbsp;&nbsp;'
 					 + '<a href="' + SITE_URL + 'admin/owner/modify/' + row.owner_id + '">'
-					 + '<i class="fas fa-pencil-alt"></i>&nbsp;修正</a>&nbsp;&nbsp;'
+					 + '<i class="fas fa-pencil-alt"></i>&nbsp;修正</a>&nbsp;&nbsp;&nbsp;'
 					 + '<a href="javascript:void(0);" onclick="del_owner(' + row.owner_id + ',\'' + row.owner_name + '\',\'' + row.corpo_name + '\')">'
 					 + '<i class="far fa-trash-alt"></i>&nbsp;削除</a>';
 			},
@@ -24,7 +24,7 @@ jQuery( function($) {
 				}
 			}
 		},
-		rowCount: [15, 30, 50, -1],
+		rowCount: [20, 30, 50, -1],
 		labels: {
 			search: 'オーナー名、法人名で検索'
 		}

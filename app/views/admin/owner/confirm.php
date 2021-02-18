@@ -17,7 +17,7 @@
 							<div class="col-4">
 								<div class="card card-primary">
 									<div class="card-header">
-										オーナー情報
+										<h4>オーナー情報</h4>
 									</div>
 									<div class="card-body">
 										<dl class="owner-confirm">
@@ -61,7 +61,7 @@
 								<div class="col-4">
 									<div class="card card-primary">
 										<div class="card-header">
-											買掛情報
+											<h4>買掛情報</h4>
 										</div>
 										<div class="card-body">
 											<dl class="owner-confirm">
@@ -128,7 +128,7 @@
 							<div class="col-4">
 								<div class="card card-primary">
 									<div class="card-header">
-										運営教室
+										<h4>運営教室</h4>
 									</div>
 									<div class="card-body">
 										<?= $CLASSROOM ?>

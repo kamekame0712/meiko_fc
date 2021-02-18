@@ -59,7 +59,7 @@ class Order extends MY_Controller
 						'sub_total'		=> intval($wk_product_data['sales_price']) * intval($val)
 					);
 
-					if( $wk_product_data['flg_market'] == '1' ) {
+					if( $wk_product_data['flg_market'] == '2' ) {
 						$exists_market = TRUE;
 					}
 					else {
@@ -354,7 +354,7 @@ class Order extends MY_Controller
 								'sub_total'		=> intval($wk_product_data['sales_price']) * intval($val)
 							);
 
-							if( $wk_product_data['flg_market'] == '1' ) {
+							if( $wk_product_data['flg_market'] == '2' ) {
 								$exists_market = TRUE;
 							}
 							else {
@@ -435,7 +435,7 @@ class Order extends MY_Controller
 
 				foreach( $product_list as $val ) {
 					$total_quantity += intval($val['quantity']);
-					if( $val['flg_market'] == '1' ) {
+					if( $val['flg_market'] == '2' ) {
 						$market_cost += intval($val['sub_total']);
 					}
 					else {

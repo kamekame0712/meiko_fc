@@ -414,10 +414,15 @@ class Order extends MY_Controller
 		);
 		$this->input->set_cookie($cookie_save_data);
 
+		// 送料、代引手数料
 		$total_quantity = 0;
 		$total_cost = 0;
 		$shipping_fee = 0;
 		$shipping_cnt = 0;
+		$commission_full = 0;
+		$commission_market = 0;
+		$commission_juku = 0;
+
 		if( !empty($product_list) ) {
 			$flg_partial = isset($post_data['flg_partial']) && $post_data['flg_partial'] == '2' ? TRUE : FALSE;
 
@@ -428,6 +433,22 @@ class Order extends MY_Controller
 				}
 				$shipping_fee = $this->get_shipping_fee($total_cost);
 				$shipping_cnt = $shipping_fee == 0 ? 0 : 1;
+
+				if( $post_data['payment_method'] == '3' ) {
+					$commission_full = 0;
+					if( $total_cost >= 100000 ) {
+						$commission_full = 1100;
+					}
+					else if( $total_cost >= 30000 ) {
+						$commission_full = 660;
+					}
+					else if( $total_cost >= 10000 ) {
+						$commission_full = 440;
+					}
+					else {
+						$commission_full = 330;
+					}
+				}
 			}
 			else {
 				$market_cost = 0;
@@ -455,19 +476,52 @@ class Order extends MY_Controller
 				else {
 					$shipping_cnt = 2;
 				}
+
+				if( $post_data['payment_method'] == '3' ) {
+					$commission_market = 0;
+					if( $market_cost >= 100000 ) {
+						$commission_market = 1100;
+					}
+					else if( $market_cost >= 30000 ) {
+						$commission_market = 660;
+					}
+					else if( $market_cost >= 10000 ) {
+						$commission_market = 440;
+					}
+					else {
+						$commission_market = 330;
+					}
+
+					$commission_juku = 0;
+					if( $juku_cost >= 100000 ) {
+						$commission_juku = 1100;
+					}
+					else if( $juku_cost >= 30000 ) {
+						$commission_juku = 660;
+					}
+					else if( $juku_cost >= 10000 ) {
+						$commission_juku = 440;
+					}
+					else {
+						$commission_juku = 330;
+					}
+				}
 			}
 		}
 
 		$view_data = array(
-			'CONF'			=> $this->conf,
-			'PDATA'			=> $post_data,
-			'PLIST'			=> $product_list,
-			'SHIPPING_FEE'	=> $shipping_fee,
-			'SHIPPING_CNT'	=> $shipping_cnt,
-			'SHIPPING_UNIT'	=> $this->get_shipping_fee(),
-			'TOTAL_QUANTITY'=> $total_quantity,
-			'TOTAL_COST'	=> $total_cost,
-			'PRODUCT_KIND'	=> $product_kind
+			'CONF'				=> $this->conf,
+			'PDATA'				=> $post_data,
+			'PLIST'				=> $product_list,
+			'SHIPPING_FEE'		=> $shipping_fee,
+			'SHIPPING_CNT'		=> $shipping_cnt,
+			'SHIPPING_UNIT'		=> $this->get_shipping_fee(),
+			'COMMISSION_FULL'	=> $commission_full,
+			'COMMISSION_MARKET'	=> $commission_market,
+			'COMMISSION_JUKU'	=> $commission_juku,
+			'TOTAL_QUANTITY'	=> $total_quantity,
+			'TOTAL_COST'		=> $total_cost,
+			'PRODUCT_KIND'		=> $product_kind
 		);
 
 		$this->load->view('front/order/confirm', $view_data);
@@ -500,8 +554,9 @@ class Order extends MY_Controller
 		$delivery_date = isset($post_data['delivery_date']) ? $post_data['delivery_date'] : '';
 		$delivery_time = isset($post_data['delivery_time']) ? $post_data['delivery_time'] : '';
 		$note = isset($post_data['note']) ? $post_data['note'] : '';
-		$sub_total = isset($post_data['total_cost']) ? $post_data['total_cost'] : '';
-		$shipping_fee = isset($post_data['shipping_fee']) ? $post_data['shipping_fee'] : '';
+		$sub_total = isset($post_data['total_cost']) ? $post_data['total_cost'] : '0';
+		$shipping_fee = isset($post_data['shipping_fee']) ? $post_data['shipping_fee'] : '0';
+		$commission = isset($post_data['commission']) ? $post_data['commission'] : '0';
 		$exists_market = isset($post_data['exists_market']) ? $post_data['exists_market'] : '1';
 		$gmo_token = isset($post_data['gmo_token']) ? $post_data['gmo_token'] : '';
 		$chk_register = isset($post_data['chk_register']) ? $post_data['chk_register'] : '';
@@ -537,6 +592,7 @@ class Order extends MY_Controller
 		$classroom_id = $this->session->userdata('classroom_id');
 		$classroom_data = $this->m_classroom->get_one(array('classroom_id' => $classroom_id));
 		$card_error = FALSE;
+		$total_cost = intval($shipping_fee) + intval($commission) + intval($sub_total);
 
 		$insert_data_order = array(
 			'classroom_id'		=> $classroom_id,
@@ -547,8 +603,9 @@ class Order extends MY_Controller
 			'delivery_time'		=> $delivery_time,
 			'note'				=> $note,
 			'shipping_fee'		=> $shipping_fee,
+			'commission'		=> $commission,
 			'sub_total'			=> $sub_total,
-			'total_cost'		=> intval($shipping_fee) + intval($sub_total),
+			'total_cost'		=> $total_cost,
 			'regist_time'		=> $now,
 			'update_time'		=> $now,
 			'status'			=> '0'
@@ -579,7 +636,7 @@ class Order extends MY_Controller
 
 				if( $card_type == '1' ) { // 登録済みカードを使用
 					// 取引登録
-					$ret_et_val = $this->m_gmo->entry_tran($gmo_order_id, intval($shipping_fee) + intval($sub_total), 'AUTH');	// CAPTURE:即時売上 AUTH:仮売上
+					$ret_et_val = $this->m_gmo->entry_tran($gmo_order_id, $total_cost, 'AUTH');	// CAPTURE:即時売上 AUTH:仮売上
 					if( !is_array($ret_et_val) || empty($ret_et_val['accessId']) || empty($ret_et_val['accessPass']) ) {
 						$this->db->trans_rollback();
 						$this->index($ret_et_val);
@@ -625,7 +682,7 @@ class Order extends MY_Controller
 					}
 
 					// 取引登録
-					$ret_et_val = $this->m_gmo->entry_tran($gmo_order_id, intval($shipping_fee) + intval($sub_total), 'AUTH');	// CAPTURE:即時売上 AUTH:仮売上
+					$ret_et_val = $this->m_gmo->entry_tran($gmo_order_id, $total_cost, 'AUTH');	// CAPTURE:即時売上 AUTH:仮売上
 					if( !is_array($ret_et_val) || empty($ret_et_val['accessId']) || empty($ret_et_val['accessPass']) ) {
 						$this->db->trans_rollback();
 						$this->index($ret_et_val);
@@ -709,17 +766,18 @@ class Order extends MY_Controller
 		}
 
 		$mail_data = array(
-			'JUKU_NAME'	=> $classroom_data['name'],
-			'PRODUCTS'	=> $products,
-			'SUB_TOTAL'	=> $sub_total,
-			'SHIPPING'	=> $shipping_fee,
-			'TOTAL'		=> intval($sub_total) + intval($shipping_fee),
-			'MARKET'	=> $exists_market,
-			'PARTIAL'	=> $flg_partial,
-			'PAYMENT'	=> $this->conf['payment_method'][$payment_method],
-			'DDATE'		=> $show_delivery_date,
-			'DTIME'		=> $this->conf['delivery_time'][$delivery_time],
-			'NOTE'		=> empty($note) ? '（ご記入なし）' : $note
+			'JUKU_NAME'		=> $classroom_data['name'],
+			'PRODUCTS'		=> $products,
+			'SUB_TOTAL'		=> $sub_total,
+			'SHIPPING'		=> $shipping_fee,
+			'COMMISSION'	=> $commission,
+			'TOTAL'			=> $total_cost,
+			'MARKET'		=> $exists_market,
+			'PARTIAL'		=> $flg_partial,
+			'PAYMENT'		=> $this->conf['payment_method'][$payment_method],
+			'DDATE'			=> $show_delivery_date,
+			'DTIME'			=> $this->conf['delivery_time'][$delivery_time],
+			'NOTE'			=> empty($note) ? '（ご記入なし）' : $note
 		);
 
 		$mail_body = $this->load->view('mail/tmpl_apply_comp_to_customer', $mail_data, TRUE);

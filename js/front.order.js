@@ -50,6 +50,13 @@ $('input[name="payment_method"]').change( function() {
 	else {
 		$('#credit').slideUp();
 	}
+
+	if( $('input[name="payment_method"]:checked').val() == '3' ) {
+		$('#commission').slideDown();
+	}
+	else {
+		$('#commission').slideUp();
+	}
 });
 
 function change_card(flg)

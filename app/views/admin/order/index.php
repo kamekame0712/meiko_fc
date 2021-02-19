@@ -163,7 +163,7 @@
 											)); ?>
 										</div>
 
-										<div class="col-6">
+										<div class="col-4">
 											<?php echo form_button(array(
 												'name'		=> 'btn_check_all',
 												'content'	=> 'SMILEデータダウンロード',
@@ -176,6 +176,15 @@
 												'content'	=> '帳票PDFダウンロード',
 												'class'		=> 'btn btn-success note-btn',
 												'onclick'	=> 'dl_order(2);'
+											)); ?>
+										</div>
+
+										<div class="col-3">
+											<?php echo form_button(array(
+												'name'		=> 'btn_check_all',
+												'content'	=> '『取込済』に変更',
+												'class'		=> 'btn btn-warning note-btn',
+												'onclick'	=> 'change_status();'
 											)); ?>
 										</div>
 									</div>

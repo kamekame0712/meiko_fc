@@ -44,7 +44,6 @@ class Order extends MY_Controller
 		set_time_limit(0);
 
 		$fp = fopen('php://output', 'w');
-//		stream_filter_append($fp, 'convert.iconv.UTF-8/CP932', STREAM_FILTER_WRITE);
 		stream_filter_append($fp, 'convert.iconv.UTF-8/CP932//TRANSLIT', STREAM_FILTER_WRITE);
 
 		header("Content-Type: application/octet-stream");
@@ -55,26 +54,10 @@ class Order extends MY_Controller
 		}
 		else {
 			$csv_array = array(
-				'受注日付',
-				'得意先コード',
-				'得意先名1',
-				'担当者名',
-				'納品先名',
-				'お届け先名2',
-				'お届け先郵便番号',
-				'お届け先住所',
-				'お届け先TEL',
-				'支払方法',
-				'納期',
-				'オーダーNo',
-				'商品コード',
-				'商品名',
-				'規格1',
-				'規格2',
-				'数量',
-				'単価',
-				'金額',
-				'備考'
+				'受注日付', '得意先コード', '得意先名1', '担当者名',
+				'納品先名', 'お届け先名2', 'お届け先郵便番号', 'お届け先住所', 'お届け先TEL',
+				'支払方法', '納期',	'オーダーNo', '商品コード', '商品名', '規格1', '規格2',
+				'数量', '単価', '金額', '備考'
 			);
 			fputcsv($fp, $csv_array);
 
@@ -113,26 +96,10 @@ class Order extends MY_Controller
 						}
 
 						$csv_array = array(
-							date('Y/m/d', strtotime($val['regist_time'])),
-							$customer_code,
-							$val['classroom_name'],
-							'',
-							$val['classroom_name'],
-							'',
-							$val['zip'],
-							$this->conf['pref'][$val['pref']] . $val['address'],
-							$val['tel'],
-							$payment_code,
-							'',
-							$order_no,
-							$val['smile_code'],
-							$val['product_name'],
-							'',
-							'',
-							$val['quantity'],
-							$val['sales_price'],
-							$val['sub_total'],
-							''
+							date('Y/m/d', strtotime($val['regist_time'])), $customer_code, $val['classroom_name'], '',
+							$val['classroom_name'], '', $val['zip'], $this->conf['pref'][$val['pref']] . $val['address'], $val['tel'],
+							$payment_code, '', $order_no, $val['smile_code'], $val['product_name'], '', '',
+							$val['quantity'], $val['sales_price'], $val['sub_total'], ''
 						);
 						fputcsv($fp, $csv_array);
 					}
@@ -164,6 +131,37 @@ echo '</pre>';
 	/*******************************************/
 	/*                ajax関数                 */
 	/*******************************************/
+	public function ajax_change_status()
+	{
+		$post_data = $this->input->post();
+		$order_ids = isset($post_data['order_ids']) ? $post_data['order_ids'] : '';
+
+		$ret_val = array(
+			'status'			=> FALSE,
+			'err_msg'			=> ''
+		);
+
+		if( $order_ids == '' ) {
+			$ret_val['err_msg'] = '対象の受注にチェックを付けてください。';
+		}
+		else {
+			$where = 'order_id IN (' . $order_ids . ') AND order_status = "0" AND status = "0"';
+
+			$update_data = array(
+				'order_status'	=> '9',
+				'update_time'	=> date('Y-m-d H:i:s')
+			);
+
+			if( $this->m_order->update($where, $update_data) ) {
+				$ret_val['status'] = TRUE;
+			}
+			else {
+				$ret_val['err_msg'] = 'データベースエラーが発生しました。';
+			}
+		}
+
+		$this->ajax_out(json_encode($ret_val));
+	}
 
 
 

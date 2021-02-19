@@ -19,6 +19,11 @@
 ◯送料
 　<?= number_format($SHIPPING) ?>円
 
+<?php if( $COMMISSION != 0 ): ?>
+◯代金引換手数料
+　<?= number_format($COMMISSION) ?>円
+
+<?php endif; ?>
 ◯合計金額
 　<?= number_format($TOTAL) ?>円
 

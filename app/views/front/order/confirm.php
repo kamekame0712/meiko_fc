@@ -43,12 +43,48 @@
 							<td>\<?= number_format($SHIPPING_FEE) ?></td>
 						</tr>
 
+						<?php if( $PDATA['payment_method'] == '3' ): ?>
+							<?php if( $COMMISSION_FULL != 0 ): ?>
+								<tr>
+									<td>&nbsp;</td>
+									<td class="text-right">代金引換手数料</td>
+									<td>\<?= number_format($COMMISSION_FULL) ?></td>
+									<td>1</td>
+									<td>\<?= number_format($COMMISSION_FULL) ?></td>
+								</tr>
+							<?php elseif( $COMMISSION_MARKET == $COMMISSION_JUKU ): ?>
+								<tr>
+									<td>&nbsp;</td>
+									<td class="text-right">代金引換手数料</td>
+									<td>\<?= number_format($COMMISSION_MARKET) ?></td>
+									<td>2</td>
+									<td>\<?= number_format($COMMISSION_MARKET * 2) ?></td>
+								</tr>
+							<?php else: ?>
+								<tr>
+									<td>&nbsp;</td>
+									<td class="text-right">代金引換手数料（『塾用教材』）</td>
+									<td>\<?= number_format($COMMISSION_JUKU) ?></td>
+									<td>1</td>
+									<td>\<?= number_format($COMMISSION_JUKU) ?></td>
+								</tr>
+
+								<tr>
+									<td>&nbsp;</td>
+									<td class="text-right">代金引換手数料（『市販教材』）</td>
+									<td>\<?= number_format($COMMISSION_MARKET) ?></td>
+									<td>1</td>
+									<td>\<?= number_format($COMMISSION_MARKET) ?></td>
+								</tr>
+							<?php endif; ?>
+						<?php endif; ?>
+
 						<tr>
 							<td>&nbsp;</td>
 							<td class="text-right">合計</td>
 							<td>&nbsp;</td>
 							<td class="text-right" style="padding:0.75rem;"><?= $TOTAL_QUANTITY ?></td>
-							<td>\<?= number_format($TOTAL_COST + $SHIPPING_FEE) ?></td>
+							<td>\<?= number_format($TOTAL_COST + $SHIPPING_FEE + $COMMISSION_FULL + $COMMISSION_MARKET + $COMMISSION_JUKU) ?></td>
 						</tr>
 					</tbody>
 				</table>
@@ -117,6 +153,7 @@
 					<?php echo form_hidden($PLIST); ?>
 					<?php echo form_hidden(array('total_cost' => $TOTAL_COST)); ?>
 					<?php echo form_hidden(array('shipping_fee' => $SHIPPING_FEE)); ?>
+					<?php echo form_hidden(array('commission' => ( $COMMISSION_FULL + $COMMISSION_MARKET + $COMMISSION_JUKU ))); ?>
 					<?php echo form_hidden(array('exists_market' => ( $PRODUCT_KIND == 2 ? '1' : '2') )); ?>
 
 					<?php echo form_button(array(

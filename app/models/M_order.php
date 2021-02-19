@@ -32,7 +32,8 @@ class M_order extends MY_Model
 	{
 		$select = '
 			o.*, p.smile_code, p.flg_market,
-			c.smile_code1, c.smile_code2, c.smile_code3, c.name AS classroom_name, c.zip, c.pref, c.address, c.tel,
+			c.smile_code1, c.smile_code2, c.smile_code3, c.en_code1, c.en_code2,
+			c.name AS classroom_name, c.zip, c.pref, c.address, c.tel,
 			od.product_id, od.quantity, od.publisher_name, od.product_name, od.sales_price, od.sub_total
 		';
 

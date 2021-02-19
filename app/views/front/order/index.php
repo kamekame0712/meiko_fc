@@ -285,13 +285,13 @@
 
 					<?php
 						if( $PAYMENT == '2' ) {
-							$show_dl = 'block';
+							$show_credit_dl = 'block';
 						}
 						else {
-							$show_dl = 'none';
+							$show_credit_dl = 'none';
 						}
 					?>
-					<dl class="others" id="credit" style="display:<?= $show_dl ?>">
+					<dl class="others" id="credit" style="display:<?= $show_credit_dl ?>">
 						<dt>&nbsp;</dt>
 						<dd>
 							<?php echo form_fieldset('クレジットカード情報', array('class' => 'fs-credit')); ?>
@@ -416,6 +416,50 @@
 									安心してお支払いをしていただくために、お客様の情報は暗号化して送信し、クレジットカード情報は当サイトでは保有せず、同社で厳重に管理しております。
 								</div>
 							<?php echo form_fieldset_close(); ?>
+						</dd>
+					</dl>
+
+					<?php
+						if( $PAYMENT == '3' ) {
+							$show_commission_dl = 'block';
+						}
+						else {
+							$show_commission_dl = 'none';
+						}
+					?>
+					<dl class="others" id="commission" style="display:<?= $show_commission_dl ?>">
+						<dt>&nbsp;</dt>
+						<dd>
+							<div class="attention-box">
+								<h3>教材代金とは別に<span class="attention-msg">代金引換手数料かかります</span>。</h3>
+								代金引換手数料の金額は教材代金の合計金額によってことなります。
+								<table class="table mt-5">
+									<thead>
+										<tr>
+											<th>教材代金の合計金額</th>
+											<th>代金引換手数料（税込）</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>1万円未満</td>
+											<td>330円</td>
+										</tr>
+										<tr>
+											<td>1万円以上 3万円未満</td>
+											<td>440円</td>
+										</tr>
+										<tr>
+											<td>3万円以上 10万円未満</td>
+											<td>660円</td>
+										</tr>
+										<tr>
+											<td>10万円以上 30万円未満</td>
+											<td>1,100円</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
 						</dd>
 					</dl>
 

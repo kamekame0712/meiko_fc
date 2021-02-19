@@ -83,9 +83,16 @@ function uncheck_all()
 function dl_order(kind)
 {
 	var order_ids = [];
+	var flg_exists = false;
 	$('[name="chk_target[]"]:checked').each( function() {
 		order_ids.push(this.value);
+		flg_exists = true;
 	});
+
+	if( !flg_exists ) {
+		show_error_notification('対象の受注にチェックを付けてください。');
+		return;
+	}
 
 	var url = '';
 	if( kind == 1 ) {
@@ -99,4 +106,40 @@ function dl_order(kind)
 		.append($('<input/>', {'type': 'hidden', 'name': 'order_ids', 'value': order_ids.join(',')}))
 		.appendTo(document.body)
 		.submit();
+}
+
+function change_status()
+{
+	var order_ids = [];
+	var flg_exists = false;
+	$('[name="chk_target[]"]:checked').each( function() {
+		order_ids.push(this.value);
+		flg_exists = true;
+	});
+
+	if( !flg_exists ) {
+		show_error_notification('対象の受注にチェックを付けてください。');
+		return;
+	}
+
+	$.ajax({
+		url: SITE_URL + 'admin/order/ajax_change_status',
+		type:'post',
+		cache:false,
+		data: {
+			order_ids: order_ids.join(',')
+		}
+	})
+	.done( function(ret, textStatus, jqXHR) {
+		if( ret['status'] ) {
+			$('#tbl_order').bootgrid('reload');
+			show_success_notification('処理が完了しました。');
+		}
+		else {
+			show_error_notification(ret['err_msg']);
+		}
+	})
+	.fail( function(data, textStatus, errorThrown) {
+		show_error_notification(textStatus);
+	});
 }

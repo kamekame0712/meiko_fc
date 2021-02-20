@@ -1,0 +1,106 @@
+@charset "UTF-8";
+@media all {
+	.title-box {
+		border-collapse: collapse;
+		border-spacing: 0;
+		margin: 0 0 20px;
+		width: 100%;
+	}
+
+	.title-box td.dummy {
+		padding: 0;
+		width: 0;
+	}
+
+	.title-box td.title {
+		padding: 10px 0;
+		font-size: 2.0rem;
+		font-weight: bold;
+		text-align: center;
+		border: 2px solid #404040;
+		width: 100%;
+	}
+
+	.classroom-name {
+		font-size: 1.5rem;
+		font-weight: bold;
+	}
+
+	table.info {
+		width: 100%;
+		font-size: 1.0rem;
+	}
+
+	table.info td.juku-info {
+		width: 60%;
+		vertical-align: top;
+	}
+
+	table.info td.other-info {
+		width: 40%;
+		vertical-align: top;
+	}
+
+	.total_cost {
+		border-collapse: collapse;
+		border-spacing: 0;
+		margin: 20px 0 10px;
+		width: 300px;
+	}
+
+	.total_cost .attention {
+		padding: 0 0 0 10px;
+		font-size: 1.1rem;
+		border-bottom: 1px solid #404040;
+		width: 150px;
+	}
+
+	.total_cost .cost {
+		padding: 0 10px 0 0;
+		font-size: 1.5rem;
+		font-weight: bold;
+		border-bottom: 1px solid #404040;
+		width: 150px;
+		text-align: right;
+	}
+
+	.detail {
+		border-collapse: collapse;
+		border-spacing: 0;
+		margin: 20px 0 10px;
+		width: 100%;
+		border-top: 1px solid #404040;
+		border-left: 1px solid #404040;
+	}
+
+	.detail th,
+	.detail td {
+		padding: 3px 5px;
+		border-right: 1px solid #404040;
+		border-bottom: 1px solid #404040;
+	}
+
+	.detail th,
+	.detail tr:nth-child(even) {
+		background-color: #F0F0F0;
+	}
+
+	.note-box {
+		border-collapse: collapse;
+		border-spacing: 0;
+		margin: 20px 0 0;
+		width: 100%;
+	}
+
+	.note-box td.dummy {
+		padding: 0;
+		width: 0;
+	}
+
+	.note-box td.note {
+		padding: 10px;
+		font-size: 1.0rem;
+		border: 1px solid #404040;
+		width: 100%;
+	}
+}

@@ -146,24 +146,44 @@ ul.classroom-list li button {
     right: 10px;
 }
 
-ul.classroom-list li dl {
+ul.classroom-list li dl.smile-code {
     margin: 10px 0 0 20px;
     line-height: 1.0rem;
 }
 
-ul.classroom-list li dl::after {
+ul.classroom-list li dl.smile-code::after {
     content: "";
     display: block;
     clear: both;
 }
 
-ul.classroom-list li dl dt {
+ul.classroom-list li dl.smile-code dt {
     width: 60px;
     float: left;
 }
 
-ul.classroom-list li dl dd {
+ul.classroom-list li dl.smile-code dd {
     padding-left: 60px;
+}
+
+ul.classroom-list li dl.en-code {
+    margin: 10px 0 0 20px;
+    line-height: 1.0rem;
+}
+
+ul.classroom-list li dl.en-code::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+ul.classroom-list li dl.en-code dt {
+    width: 150px;
+    float: left;
+}
+
+ul.classroom-list li dl.en-code dd {
+    padding-left: 150px;
 }
 
 dl.owner-confirm {

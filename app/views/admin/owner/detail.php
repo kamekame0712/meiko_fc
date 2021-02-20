@@ -137,7 +137,7 @@
 													<li>
 														<?= $classroom['name'] ?>
 
-														<dl>
+														<dl class="smile-code">
 															<dt>買掛</dt>
 															<dd>
 																<?php
@@ -175,6 +175,26 @@
 																	}
 																?>
 																<?= $smile_code3 ?>
+															</dd>
+														</dl>
+
+														<dl class="en-code">
+															<dt>ENコード（買掛）</dt>
+															<dd>
+																<?php if( empty($classroom['en_code1']) ): ?>
+																	（未登録）
+																<?php else: ?>
+																	<?= $classroom['en_code1'] == '1' ? 'あり' : 'なし' ?>
+																<?php endif; ?>
+															</dd>
+
+															<dt>ENコード（クレカ）</dt>
+															<dd>
+																<?php if( empty($classroom['en_code2']) ): ?>
+																	（未登録）
+																<?php else: ?>
+																	<?= $classroom['en_code2'] == '1' ? 'あり' : 'なし' ?>
+																<?php endif; ?>
 															</dd>
 														</dl>
 													</li>

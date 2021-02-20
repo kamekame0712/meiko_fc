@@ -119,11 +119,256 @@ class Order extends MY_Controller
 		}
 
 		$post_data = $this->input->post();
+		$order_ids = isset($post_data['order_ids']) ? explode(',', $post_data['order_ids']) : array();
 
-echo '<pre>';
-print_r($post_data);
-echo '</pre>';
+		// タイムアウトさせない
+		set_time_limit(0);
 
+		require_once APPPATH.'libraries/mpdf/autoload.php';
+		$mpdf = new \Mpdf\Mpdf(
+			array(
+				'mode'				=> 'ja',
+				'format'			=> 'A4',
+				'default_font_size'	=> 10,
+				'autoScriptToLang'	=> TRUE,
+				'autoLangToFont'	=> TRUE,
+				'fontdata'			=> array(
+					'ipa' => array(
+						'R' => 'ipam.ttf'
+					)
+				)
+			)
+		);
+
+		$mpdf->setTitle("MyPDF.pdf");
+		$mpdf->ignore_invalid_utf8 = true;
+
+		$stylesheet = file_get_contents(base_url('css/style.pdf.css'));
+		$mpdf->WriteHTML($stylesheet,1);
+
+		$first_page_flg = TRUE;
+		foreach( $order_ids as $order_id ) {
+			$order_data = $this->m_order->get_one_for_download($order_id);
+			if( !empty($order_data) ) {
+				$title = $this->conf['payment_method'][$order_data[0]['payment_method']];
+				if( !empty($order_data[0]['delivery_date']) && !empty($order_data[0]['delivery_time']) ) {
+					$title .= ' ' . date('Y年n月j日', strtotime($order_data[0]['delivery_date'])) . '（' . $this->conf['delivery_time'][$order_data[0]['delivery_time']] . '）指定';
+				}
+				else if( !empty($order_data[0]['delivery_date']) && empty($order_data[0]['delivery_time']) ) {
+					$title .= ' ' . date('Y年n月j日', strtotime($order_data[0]['delivery_date'])) . '指定';
+				}
+				else if( empty($order_data[0]['delivery_date']) && !empty($order_data[0]['delivery_time']) ) {
+					$title .= ' ' . $this->conf['delivery_time'][$order_data[0]['delivery_time']] . '指定';
+				}
+
+				$customer_code = '';
+				switch( $order_data[0]['payment_method'] ) {
+					case '1': $customer_code = empty($order_data[0]['smile_code1']) ? 'SMILE未登録' : $order_data[0]['smile_code1'];	break;
+					case '2': $customer_code = empty($order_data[0]['smile_code2']) ? 'SMILE未登録' : $order_data[0]['smile_code2'];	break;
+					case '3': $customer_code = empty($order_data[0]['smile_code3']) ? 'SMILE未登録' : $order_data[0]['smile_code3'];	break;
+				}
+
+				$select_data = array(
+					'order_id <'	=> $order_data[0]['order_id'],
+					'classroom_id'	=> $order_data[0]['classroom_id']
+				);
+				$wk_order_data = $this->m_order->get_list($select_data, 'regist_time DESC');
+
+				$order_detail_full = array();
+				$order_detail_juku = array();
+				$order_detail_market = array();
+				$total_cost_full = 0;
+				$total_cost_juku = 0;
+				$total_cost_market = 0;
+
+				foreach( $order_data as $val ) {
+					if( $val['exists_market'] == '1' || ( $val['exists_market'] == '2' && $val['flg_partial'] == '1' ) ) {
+						$order_detail_full[] = array(
+							'publisher_name'	=> $val['publisher_name'],
+							'product_name'		=> $val['product_name'],
+							'smile_code'		=> $val['smile_code'],
+							'quantity'			=> $val['quantity'],
+							'sales_price'		=> $val['sales_price'],
+							'sub_total'			=> $val['sub_total']
+						);
+						$total_cost_full += intval($val['sub_total']);
+					}
+					else {
+						if( $val['flg_market'] == '1' ) {	// 塾用
+							$order_detail_juku[] = array(
+								'publisher_name'	=> $val['publisher_name'],
+								'product_name'		=> $val['product_name'],
+								'smile_code'		=> $val['smile_code'],
+								'quantity'			=> $val['quantity'],
+								'sales_price'		=> $val['sales_price'],
+								'sub_total'			=> $val['sub_total']
+							);
+							$total_cost_juku += intval($val['sub_total']);
+						}
+						else {
+							$order_detail_market[] = array(
+								'publisher_name'	=> $val['publisher_name'],
+								'product_name'		=> $val['product_name'],
+								'smile_code'		=> $val['smile_code'],
+								'quantity'			=> $val['quantity'],
+								'sales_price'		=> $val['sales_price'],
+								'sub_total'			=> $val['sub_total']
+							);
+							$total_cost_market += intval($val['sub_total']);
+						}
+					}
+				}
+
+				if( $val['exists_market'] == '1' || ( $val['exists_market'] == '2' && $val['flg_partial'] == '1' ) ) {
+					$shipping_fee = $this->get_shipping_fee($total_cost_full, $order_data[0]['pref']);
+					$commission = $order_data[0]['payment_method'] == '3' ? $this->get_commission($total_cost_full) : 0;
+
+					if( $val['exists_market'] == '2' && $val['flg_partial'] == '1' ) {
+						$title .= ' ' . '市販あり（全納）';
+					}
+
+					$view_data = array(
+						'TITLE'		=> $title,
+						'NAME'		=> $order_data[0]['classroom_name'] . '（' . $customer_code . '）',
+						'ZIP'		=> $order_data[0]['zip'],
+						'ADDRESS'	=> $this->conf['pref'][$order_data[0]['pref']] . $order_data[0]['address'],
+						'TEL'		=> $order_data[0]['tel'],
+						'EN_CODE1'	=> empty($order_data[0]['en_code1']) ? '（未登録）' : ( $order_data[0]['en_code1'] == '1' ? 'あり' : 'なし' ),
+						'EN_CODE2'	=> empty($order_data[0]['en_code2']) ? '（未登録）' : ( $order_data[0]['en_code2'] == '1' ? 'あり' : 'なし' ),
+						'PREV'		=> empty($wk_order_data) ? '初めてのご注文' : $wk_order_data[0]['regist_time'],
+						'NOTE'		=> $order_data[0]['note'],
+						'ORDER_ID'	=> $order_data[0]['order_id'],
+						'REGIST'	=> $order_data[0]['regist_time'],
+						'DETAIL'	=> $order_detail_full,
+						'SUB_TOTAL'	=> $total_cost_full,
+						'SHIPPING'	=> $shipping_fee,
+						'COMMISSION'=> $commission,
+						'TOTAL'		=> $total_cost_full + $shipping_fee + $commission
+					);
+
+					if( $first_page_flg ) {
+						$first_page_flg = FALSE;
+					}
+					else {
+						$mpdf->AddPage();
+					}
+
+					$html = $this->load->view('admin/order/delivery_note', $view_data, TRUE);
+					$mpdf->WriteHTML($html);
+				}
+				else {
+					// 塾用
+					$shipping_fee_juku = $this->get_shipping_fee($total_cost_juku, $order_data[0]['pref']);
+					$commission_juku = $order_data[0]['payment_method'] == '3' ? $this->get_commission($total_cost_juku) : 0;
+
+					$view_data = array(
+						'TITLE'		=> $title . ' ' . '市販あり（分納-塾用）',
+						'NAME'		=> $order_data[0]['classroom_name'] . '（' . $customer_code . '）',
+						'ZIP'		=> $order_data[0]['zip'],
+						'ADDRESS'	=> $this->conf['pref'][$order_data[0]['pref']] . $order_data[0]['address'],
+						'TEL'		=> $order_data[0]['tel'],
+						'EN_CODE1'	=> empty($order_data[0]['en_code1']) ? '（未登録）' : ( $order_data[0]['en_code1'] == '1' ? 'あり' : 'なし' ),
+						'EN_CODE2'	=> empty($order_data[0]['en_code2']) ? '（未登録）' : ( $order_data[0]['en_code2'] == '1' ? 'あり' : 'なし' ),
+						'PREV'		=> empty($wk_order_data) ? '初めてのご注文' : $wk_order_data[0]['regist_time'],
+						'NOTE'		=> $order_data[0]['note'],
+						'ORDER_ID'	=> $order_data[0]['order_id'] . '_1',
+						'REGIST'	=> $order_data[0]['regist_time'],
+						'DETAIL'	=> $order_detail_juku,
+						'SUB_TOTAL'	=> $total_cost_juku,
+						'SHIPPING'	=> $shipping_fee_juku,
+						'COMMISSION'=> $commission_juku,
+						'TOTAL'		=> $total_cost_juku + $shipping_fee_juku + $commission_juku
+					);
+
+					if( $first_page_flg ) {
+						$first_page_flg = FALSE;
+					}
+					else {
+						$mpdf->AddPage();
+					}
+
+					$html = $this->load->view('admin/order/delivery_note', $view_data, TRUE);
+					$mpdf->WriteHTML($html);
+
+					// 市販
+					$shipping_fee_market = $this->get_shipping_fee($total_cost_market, $order_data[0]['pref']);
+					$commission_market = $order_data[0]['payment_method'] == '3' ? $this->get_commission($total_cost_market) : 0;
+
+					$view_data = array(
+						'TITLE'		=> $title . ' ' . '市販あり（分納-市販）',
+						'NAME'		=> $order_data[0]['classroom_name'] . '（' . $customer_code . '）',
+						'ZIP'		=> $order_data[0]['zip'],
+						'ADDRESS'	=> $this->conf['pref'][$order_data[0]['pref']] . $order_data[0]['address'],
+						'TEL'		=> $order_data[0]['tel'],
+						'EN_CODE1'	=> empty($order_data[0]['en_code1']) ? '（未登録）' : ( $order_data[0]['en_code1'] == '1' ? 'あり' : 'なし' ),
+						'EN_CODE2'	=> empty($order_data[0]['en_code2']) ? '（未登録）' : ( $order_data[0]['en_code2'] == '1' ? 'あり' : 'なし' ),
+						'PREV'		=> empty($wk_order_data) ? '初めてのご注文' : $wk_order_data[0]['regist_time'],
+						'NOTE'		=> $order_data[0]['note'],
+						'ORDER_ID'	=> $order_data[0]['order_id'] . '_2',
+						'REGIST'	=> $order_data[0]['regist_time'],
+						'DETAIL'	=> $order_detail_market,
+						'SUB_TOTAL'	=> $total_cost_market,
+						'SHIPPING'	=> $shipping_fee_market,
+						'COMMISSION'=> $commission_market,
+						'TOTAL'		=> $total_cost_market + $shipping_fee_market + $commission_market
+					);
+
+					if( $first_page_flg ) {
+						$first_page_flg = FALSE;
+					}
+					else {
+						$mpdf->AddPage();
+					}
+
+					$html = $this->load->view('admin/order/delivery_note', $view_data, TRUE);
+					$mpdf->WriteHTML($html);
+				}
+			}
+		}
+
+		$mpdf->Output('delivery_note' . date('YmdHis') . '.pdf', 'D');
+	}
+
+
+
+	/*******************************************/
+	/*               private関数               */
+	/*******************************************/
+	// 送料計算
+	private function get_shipping_fee($cost = 0, $pref = '01')
+	{
+		if( $cost >= 10000 ) {
+			$shipping_fee = 0;
+		}
+		else {
+			if( $pref == '01' ) {
+				$shipping_fee = 1320;
+			}
+			else {
+				$shipping_fee = 770;
+			}
+		}
+
+		return $shipping_fee;
+	}
+
+	// 代引手数料計算
+	private function get_commission($cost = 0)
+	{
+		if( $cost >= 100000 ) {
+			$commission = 1100;
+		}
+		else if( $cost >= 30000 ) {
+			$commission = 660;
+		}
+		else if( $cost >= 10000 ) {
+			$commission = 440;
+		}
+		else {
+			$commission = 330;
+		}
+
+		return $commission;
 	}
 
 

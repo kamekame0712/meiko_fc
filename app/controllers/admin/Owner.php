@@ -663,6 +663,8 @@ class Owner extends MY_Controller
 		$smile_code1 = !empty($post_data['smile_code1']) ? $post_data['smile_code1'] : NULL;
 		$smile_code2 = !empty($post_data['smile_code2']) ? $post_data['smile_code2'] : NULL;
 		$smile_code3 = !empty($post_data['smile_code3']) ? $post_data['smile_code3'] : NULL;
+		$en_code1 = !empty($post_data['en_code1']) ? $post_data['en_code1'] : NULL;
+		$en_code2 = !empty($post_data['en_code2']) ? $post_data['en_code2'] : NULL;
 
 		$ret_val = array(
 			'status'	=> FALSE,
@@ -682,6 +684,8 @@ class Owner extends MY_Controller
 					'smile_code1'	=> $smile_code1,
 					'smile_code2'	=> $smile_code2,
 					'smile_code3'	=> $smile_code3,
+					'en_code1'		=> $en_code1,
+					'en_code2'		=> $en_code2,
 					'update_time'	=> date('Y-m-d H:i:s')
 				);
 

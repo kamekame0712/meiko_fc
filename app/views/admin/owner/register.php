@@ -137,7 +137,7 @@
 													<li>
 														<?= $classroom['name'] ?>
 
-														<dl>
+														<dl class="smile-code">
 															<dt>買掛</dt>
 															<dd>
 																<?php if( $ODATA['payment_method1'] == '1' ): ?>
@@ -178,8 +178,48 @@
 															</dd>
 														</dl>
 
+														<dl class="en-code">
+															<dt>ENコード（買掛）</dt>
+															<dd>
+																<?php echo form_radio(array(
+																	'name'	=> 'en_code1_' . $classroom['classroom_id'],
+																	'id'	=> 'en_code11_' . $classroom['classroom_id'],
+																	'value'	=> '1',
+																	'checked'	=> $classroom['en_code1'] == '1' ? TRUE : FALSE
+																)); ?>
+																<?php echo form_label('あり', 'en_code11_' . $classroom['classroom_id'], 'class="mr-3"'); ?>
+
+																<?php echo form_radio(array(
+																	'name'	=> 'en_code1_' . $classroom['classroom_id'],
+																	'id'	=> 'en_code12_' . $classroom['classroom_id'],
+																	'value'	=> '2',
+																	'checked'	=> $classroom['en_code1'] == '2' ? TRUE : FALSE
+																)); ?>
+																<?php echo form_label('なし', 'en_code12_' . $classroom['classroom_id']); ?>
+															</dd>
+
+															<dt>ENコード（クレカ）</dt>
+															<dd>
+																<?php echo form_radio(array(
+																	'name'	=> 'en_code2_' . $classroom['classroom_id'],
+																	'id'	=> 'en_code21_' . $classroom['classroom_id'],
+																	'value'	=> '1',
+																	'checked'	=> $classroom['en_code2'] == '1' ? TRUE : FALSE
+																)); ?>
+																<?php echo form_label('あり', 'en_code21_' . $classroom['classroom_id'], 'class="mr-3"'); ?>
+
+																<?php echo form_radio(array(
+																	'name'	=> 'en_code2_' . $classroom['classroom_id'],
+																	'id'	=> 'en_code22_' . $classroom['classroom_id'],
+																	'value'	=> '2',
+																	'checked'	=> $classroom['en_code2'] == '2' ? TRUE : FALSE
+																)); ?>
+																<?php echo form_label('なし', 'en_code22_' . $classroom['classroom_id']); ?>
+															</dd>
+														</dl>
+
 														<div class="text-right mt-2 mb-3">
-															<a href="javascript:void(0);" onclick="register_smile_code('<?= $classroom['classroom_id'] ?>')" class="btn btn-sm btn-danger">SMILEコード登録</a>
+															<a href="javascript:void(0);" onclick="register_smile_code('<?= $classroom['classroom_id'] ?>')" class="btn btn-sm btn-danger">教室情報登録</a>
 														</div>
 													</li>
 												<?php endforeach; ?>
@@ -202,8 +242,8 @@
 						<div class="row justify-content-center">
 							<p>
 								<span class="text-danger">※『登録完了』をクリックするとオーナーに登録完了メールが送信されます。</span><br>
-								※各教室のSMILEコードはそれぞれの『SMILEコード登録』ボタンをクリックして登録してください。<br>
-								<span class="text-danger">（『登録完了』ボタンをクリックしてもSMILEコードは登録されません。）</span>
+								※各教室のSMILEコード、ENコードの有無はそれぞれの『教室情報登録』ボタンをクリックして登録してください。<br>
+								<span class="text-danger">（『登録完了』ボタンをクリックしてもSMILEコード、ENコードの有無は登録されません。）</span>
 							</p>
 						</div> <!-- end of .row -->
 					</div> <!-- end of .section-body -->

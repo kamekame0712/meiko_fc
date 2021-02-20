@@ -23,6 +23,21 @@ function register_smile_code(classroom_id)
 		smile_code3 = '';
 	}
 
+	var en_code1, en_code2;
+	if( $('[name="en_code1_' + classroom_id + '"]:checked').val() == null ) {
+		en_code1 = '';
+	}
+	else {
+		en_code1 = $('[name="en_code1_' + classroom_id + '"]:checked').val();
+	}
+
+	if( $('[name="en_code2_' + classroom_id + '"]:checked').val() == null ) {
+		en_code2 = '';
+	}
+	else {
+		en_code2 = $('[name="en_code2_' + classroom_id + '"]:checked').val();
+	}
+
 	$.ajax({
 		url: SITE_URL + 'admin/owner/ajax_register_smile_code',
 		type:'post',
@@ -31,7 +46,9 @@ function register_smile_code(classroom_id)
 			classroom_id: classroom_id,
 			smile_code1: smile_code1,
 			smile_code2: smile_code2,
-			smile_code3: smile_code3
+			smile_code3: smile_code3,
+			en_code1: en_code1,
+			en_code2: en_code2
 		}
 	})
 	.done( function(ret, textStatus, jqXHR) {
@@ -45,5 +62,4 @@ function register_smile_code(classroom_id)
 	.fail( function(data, textStatus, errorThrown) {
 		show_error_notification(textStatus);
 	});
-
 }

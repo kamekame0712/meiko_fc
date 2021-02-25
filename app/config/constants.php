@@ -93,10 +93,10 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 const SITE_NAME				= '明光義塾FC専用教材発注';
 
 // CSSやJSの変更を正しく反映させるためキャッシュをクリアする必要があるときに変更
-const CACHES_CLEAR_VERSION	= '20200918_1';
+const CACHES_CLEAR_VERSION	= '20210225_1';
 
 // GMOのオーダーIDにつける先頭文字列
-const GMO_PREFIX			= 'meikofc-';
+const GMO_PREFIX			= 'meikofc-test-';
 
 // ページネーション ページあたりのデータ件数
 const RECORD_PER_PAGE		= 20;
@@ -109,3 +109,9 @@ const MAX_BEFORE_CURRENT	= 2;
 
 // ページネーション カレントページ後のページ最大数
 const MAX_AFTER_CURRENT		= 3;
+
+// 送料（一般）
+const SHIPPING_FEE_COMMON	= 770;
+
+// 送料（北海道）
+const SHIPPING_FEE_HOKKAIDO	= 1320;

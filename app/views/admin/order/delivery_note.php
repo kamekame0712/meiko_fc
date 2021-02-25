@@ -107,7 +107,5 @@
 			<td class="dummy">&nbsp;</td>
 		</tr>
 	</table>
-
-
 </body>
 </html>

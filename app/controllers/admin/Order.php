@@ -329,6 +329,26 @@ class Order extends MY_Controller
 		$mpdf->Output('delivery_note' . date('YmdHis') . '.pdf', 'D');
 	}
 
+	public function detail($order_id = '')
+	{
+		// ログイン済みチェック
+		if( !$this->chk_logged_in_admin() ) {
+			redirect('admin');
+			return;
+		}
+
+		$order_data = $this->m_order->get_one_with_detail_for_admin($order_id);
+		$order_history = $this->m_order->get_list(array('classroom_id' => $order_data[0]['classroom_id']), 'regist_time DESC');
+
+		$view_data = array(
+			'CONF'		=> $this->conf,
+			'DETAIL'	=> $order_data,
+			'HISTORY'	=> $order_history
+		);
+
+		$this->load->view('admin/order/detail', $view_data);
+	}
+
 
 
 	/*******************************************/
@@ -342,10 +362,10 @@ class Order extends MY_Controller
 		}
 		else {
 			if( $pref == '01' ) {
-				$shipping_fee = 1320;
+				$shipping_fee = SHIPPING_FEE_HOKKAIDO;
 			}
 			else {
-				$shipping_fee = 770;
+				$shipping_fee = SHIPPING_FEE_COMMON;
 			}
 		}
 
@@ -398,6 +418,37 @@ class Order extends MY_Controller
 			);
 
 			if( $this->m_order->update($where, $update_data) ) {
+				$ret_val['status'] = TRUE;
+			}
+			else {
+				$ret_val['err_msg'] = 'データベースエラーが発生しました。';
+			}
+		}
+
+		$this->ajax_out(json_encode($ret_val));
+	}
+
+	public function ajax_cancel()
+	{
+		$post_data = $this->input->post();
+		$order_id = isset($post_data['order_id']) ? $post_data['order_id'] : '';
+
+		$ret_val = array(
+			'status'			=> FALSE,
+			'err_msg'			=> ''
+		);
+
+		$order_data = $this->m_order->get_one(array('order_id' => $order_id));
+		if( empty($order_data) ) {
+			$ret_val['err_msg'] = '対象の受注が存在しません。';
+		}
+		else {
+			$update_data = array(
+				'order_status'	=> '8',
+				'update_time'	=> date('Y-m-d H:i:s')
+			);
+
+			if( $this->m_order->update(array('order_id' => $order_id), $update_data) ) {
 				$ret_val['status'] = TRUE;
 			}
 			else {
@@ -465,7 +516,8 @@ class Order extends MY_Controller
 					'delivery_date'		=> $val['delivery_date'],
 					'delivery_time'		=> $this->conf['delivery_time'][$val['delivery_time']],
 					'note'				=> $val['note'],
-					'order_status'		=> $this->conf['order_status'][$val['order_status']]
+					'order_status'		=> $this->conf['order_status'][$val['order_status']],
+					'order_status_val'	=> $val['order_status']
 				);
 			}
 		}

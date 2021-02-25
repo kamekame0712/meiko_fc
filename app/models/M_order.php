@@ -139,4 +139,31 @@ class M_order extends MY_Model
 
 		return $ret_array;
 	}
+
+	public function get_one_with_detail_for_admin($order_id = '')
+	{
+		$select = '
+			o.*,
+			od.product_id, od.quantity, od.publisher_name, od.product_name, od.sales_price, od.sub_total, p.smile_code,
+			c.classroom_number, c.smile_code1, c.smile_code2, c.smile_code3, c.en_code1, c.en_code2,
+			c.name AS classroom_name, on.owner_name, on.corpo_name, on.payment_method1, on.payment_method2, on.payment_method3
+		';
+
+		$where = array(
+			'o.order_id'	=> $order_id,
+			'o.status'		=> "0"
+		);
+
+		$this->db->from(SELF::TBL . ' o')->select($select)->where($where)
+			 ->join('t_order_detail od', 'od.order_id = o.order_id AND od.status = "0"', 'left')
+			 ->join('t_classroom c', 'c.classroom_id = o.classroom_id AND c.status = "0"', 'left')
+			 ->join('t_owner on', 'on.owner_id = c.owner_id AND on.status = "0"', 'left')
+			 ->join('t_product p', 'od.product_id = p.product_id AND p.status = "0"', 'left')
+			 ->order_by('od.product_id ASC');
+
+		$query = $this->db->get();
+		$this->cnt = $query->num_rows();
+
+		return ($this->cnt > 0) ? $query->result_array() : FALSE;
+	}
 }

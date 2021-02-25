@@ -12,3 +12,4 @@ ALTER TABLE t_classroom ADD  `en_code2` varchar(1) DEFAULT NULL COMMENT 'ENコ�
 
 ALTER TABLE t_order ADD `commission` int DEFAULT 0 COMMENT '代引手数料' AFTER `shipping_fee`;
 
+ALTER TABLE `t_order` CHANGE `sub_total` `product_cost` INT(11) NOT NULL DEFAULT '0' COMMENT '商品代金合計';

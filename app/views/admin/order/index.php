@@ -144,7 +144,7 @@
 							</section>
 						</div> <!-- end of .card -->
 
-						<div class="card card-success" id="search_result" style="display:none;">
+						<div class="card card-success">
 							<div class="card-header">
 								<div class="container-fluid">
 									<div class="row">
@@ -197,17 +197,17 @@
 										<thead>
 											<tr>
 												<th data-column-id="col_checkbox" data-formatter="col_checkbox" data-sortable="false" data-width="30px" data-align="center">&nbsp;</th>
-												<th data-column-id="col_proc" data-formatter="col_proc" data-sortable="false"  data-width="130px">処理</th>
+												<th data-column-id="col_proc" data-formatter="col_proc" data-sortable="false"  data-width="150px">処理</th>
 												<th data-column-id="regist_time" data-width="170px" data-order="desc">受注日</th>
 												<th data-column-id="order_id" data-width="90px" data-align="center">注文番号</th>
+												<th data-column-id="order_status" data-width="100px">対応状況</th>
 												<th data-column-id="classroom_name" data-width="180px">教室名</th>
 												<th data-column-id="payment_method" data-width="140px">支払方法</th>
-												<th data-column-id="total_cost" data-width="100px" data-align="right">購入金額</th>
+												<th data-column-id="total_cost" data-width="100px" data-align="right">合計金額</th>
 												<th data-column-id="exists_market" data-width="90px">市販教材</th>
 												<th data-column-id="delivery_date" data-width="110px">希望日</th>
 												<th data-column-id="delivery_time" data-width="90px">希望時間</th>
 												<th data-column-id="note" data-width="200px">備考</th>
-												<th data-column-id="order_status" data-width="100px">対応状況</th>
 											</tr>
 										</thead>
 									</table>
@@ -221,6 +221,58 @@
 			<?php $this->load->view('inc/admin/footer'); ?>
 		</div> <!-- end of .main-wrapper -->
 	</div> <!-- end of #app -->
+
+	<?php /* ダイアログ */ ?>
+	<div class="modal" id="modal_order" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true" data-show="true" data-keyboard="false">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">キャンセル</h4>
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&#215;</span><span class="sr-only">閉じる</span>
+					</button>
+				</div><!-- /modal-header -->
+
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-sm-4">教室名</div>
+						<div class="col-sm-8">
+							<?php echo form_input(array(
+								'name'		=> 'modal_classroom',
+								'id'		=> 'modal_classroom',
+								'disabled'	=> TRUE
+							)); ?>
+						</div>
+					</div><br />
+					<div class="row">
+						<div class="col-sm-4">受注日</div>
+						<div class="col-sm-8">
+							<?php echo form_input(array(
+								'name'		=> 'modal_regist_time',
+								'id'		=> 'modal_regist_time',
+								'disabled'	=> TRUE
+							)); ?>
+						</div>
+					</div><br />
+					<div class="row">
+						<div class="col-sm-4">購入金額</div>
+						<div class="col-sm-8">
+							<?php echo form_input(array(
+								'name'		=> 'modal_total_cost',
+								'id'		=> 'modal_total_cost',
+								'disabled'	=> TRUE
+							)); ?>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+					<button type="button" class="btn btn-primary" onclick="do_submit();">キャンセル</button>
+				</div>
+			</div> <!-- /.modal-content -->
+		</div> <!-- /.modal-dialog -->
+	</div> <!-- /.modal -->
 
 	<?php $this->load->view('inc/admin/_foot'); ?>
 	<script src="<?= base_url('js/admin/order.js')?>?var=<?= CACHES_CLEAR_VERSION ?>"></script>

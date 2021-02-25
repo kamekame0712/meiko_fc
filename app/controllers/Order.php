@@ -604,7 +604,7 @@ class Order extends MY_Controller
 			'note'				=> $note,
 			'shipping_fee'		=> $shipping_fee,
 			'commission'		=> $commission,
-			'sub_total'			=> $sub_total,
+			'product_cost'		=> $sub_total,
 			'total_cost'		=> $total_cost,
 			'regist_time'		=> $now,
 			'update_time'		=> $now,
@@ -965,10 +965,10 @@ class Order extends MY_Controller
 			$classroom_id = $this->session->userdata('classroom_id');
 			$classroom_data = $this->m_classroom->get_one(array('classroom_id' => $classroom_id));
 			if( isset($classroom_data['pref']) && $classroom_data['pref'] == '01' ) {
-				$shipping_fee = 1320;
+				$shipping_fee = SHIPPING_FEE_HOKKAIDO;
 			}
 			else {
-				$shipping_fee = 770;
+				$shipping_fee = SHIPPING_FEE_COMMON;
 			}
 		}
 

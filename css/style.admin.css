@@ -58,6 +58,14 @@ body {
     border-radius: 2px;
 }
 
+.align-center {
+    text-align: center;
+}
+
+.align-right {
+    text-align: right;
+}
+
 .mw-100 {
     max-width: 100px !important;
 }
@@ -120,6 +128,12 @@ ul.pagination > li:last-child > span {
 	display: inline-block;
 }
 /* #endregion bootgridのbootstrap4対策 */
+
+/* #region 受注管理 */
+.history-dl-bg {
+    background-color: #BDC6F7;
+}
+/* #endregion 受注管理 */
 
 /* #region オーナー管理 */
 ul.classroom-list {

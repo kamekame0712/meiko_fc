@@ -67,7 +67,7 @@ CREATE TABLE `t_order` (
   `note` text DEFAULT '' COMMENT '備考',
   `shipping_fee` int DEFAULT 0 COMMENT '送料',
   `commission` int DEFAULT 0 COMMENT '代引手数料',
-  `sub_total` int DEFAULT 0 COMMENT '小計',
+  `product_cost` int DEFAULT 0 COMMENT '商品代金合計',
   `total_cost` int DEFAULT 0 COMMENT '合計金額',
   `order_status` varchar(1) DEFAULT '0' COMMENT '対応状況 0:新規受付 8:キャンセル 9:取込済',
   `regist_time` datetime NOT NULL COMMENT '登録日',

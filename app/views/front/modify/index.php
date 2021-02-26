@@ -96,6 +96,13 @@
 					)); ?>
 				</div>
 			<?php echo form_close(); ?>
+
+			<div class="attention-box mb-5" style="margin-top:80px;">
+				<h3>教室名、オーナー様の登録情報等に変更があった場合は直接ご連絡ください。</h3>
+				教室の名前、住所、電話番号、もしくはオーナー様の登録情報に変更があった場合は
+				中央教育研究所株式会社まで直接ご連絡いただきますようお願いいたします。<br>
+				<i class="far fa-envelope"></i>：<a href="mailto:info@chuoh-kyouiku.co.jp">info@chuoh-kyouiku.co.jp</a>
+			</div>
 		</div> <!-- end of .container -->
 
 		<?php $this->load->view('inc/_foot'); ?>

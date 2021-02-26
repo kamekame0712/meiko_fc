@@ -139,6 +139,7 @@
 					<?php $i = 1; ?>
 					<?php if( !empty($PLIST) ): ?>
 						<table class="table table-striped tbl-order">
+							<caption>※価格は全て税込みです。</caption>
 							<thead>
 								<tr>
 									<th>削除</th>

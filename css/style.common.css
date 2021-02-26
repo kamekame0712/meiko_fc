@@ -722,6 +722,12 @@ ul.breadcrumb-list .current::before {
     table-layout: fixed;
 }
 
+.tbl-order caption {
+    text-align: right;
+    caption-side: top;
+    font-size: 1.3rem;
+}
+
 .tbl-order thead tr th,
 .tbl-order-confirm thead tr th {
     text-align: center;

@@ -90,7 +90,7 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 |--------------------------------------------------------------------------
 */
 // サイトタイトル
-const SITE_NAME				= '明光義塾FC専用教材発注';
+const SITE_NAME				= '明光義塾教室様専用教材発注システム';
 
 // CSSやJSの変更を正しく反映させるためキャッシュをクリアする必要があるときに変更
 const CACHES_CLEAR_VERSION	= '20210225_1';

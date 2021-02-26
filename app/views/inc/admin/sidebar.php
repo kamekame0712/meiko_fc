@@ -13,10 +13,10 @@
 <div class="main-sidebar sidebar-style-2">
 	<aside id="sidebar-wrapper">
 		<div class="sidebar-brand">
-			<a href="<?= site_url('admin') ?>"><?= SITE_NAME ?></a>
+			<a href="<?= site_url('admin') ?>">明光義塾受注管理</a>
 		</div>
 		<div class="sidebar-brand sidebar-brand-sm">
-			<a href="<?= site_url('admin') ?>">明光FC</a>
+			<a href="<?= site_url('admin') ?>">明光</a>
 		</div>
 
 		<ul class="sidebar-menu">

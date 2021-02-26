@@ -13,7 +13,9 @@
 body {
 	font-family: 'メイリオ', Meiryo, '游ゴシック Medium', '游ゴシック体', 'Yu Gothic Medium', YuGothic, 'ヒラギノ角ゴ ProN', 'Hiragino Kaku Gothic ProN', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;
 }
+/* #endregion 全体 */
 
+/* #region 共通 */
 .error-msg {
 	color: red;
 }
@@ -40,9 +42,7 @@ body {
     left: 50%;
     transform: translateX(-50%);
 }
-/* #endregion 全体 */
 
-/* #region 共通 */
 .required-label {
     position: relative;
 }
@@ -72,6 +72,20 @@ body {
 
 .mw-200 {
     max-width: 200px !important;
+}
+
+dl.confirm-list {
+    margin: 0;
+    padding: 0;
+}
+
+dl.confirm-list dt {
+    padding-left: 1.0em;
+}
+
+dl.confirm-list dd {
+    padding: 0 0 0.5rem 2.0em;
+    border-bottom: 1px solid #BDC6F7;
 }
 
 .of-scroll-x {
@@ -198,19 +212,5 @@ ul.classroom-list li dl.en-code dt {
 
 ul.classroom-list li dl.en-code dd {
     padding-left: 150px;
-}
-
-dl.owner-confirm {
-    margin: 0;
-    padding: 0;
-}
-
-dl.owner-confirm dt {
-    padding-left: 1.0em;
-}
-
-dl.owner-confirm dd {
-    padding: 0 0 0.5rem 2.0em;
-    border-bottom: 1px solid #BDC6F7;
 }
 /* #endregion オーナー管理 */

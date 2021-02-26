@@ -366,7 +366,43 @@ class MY_Controller extends CI_Controller
 		$classroom_data = $this->m_classroom->get_one(array('email' => $email));
 
 		if( !empty($classroom_data) ) {
-			$this->form_validation->set_message('exists_email_classroom', '入力されたメールアドレはすでに使われています。');
+			$this->form_validation->set_message('exists_email_classroom', '入力されたメールアドレスはすでに使われています。');
+			return FALSE;
+		}
+
+		return TRUE;
+	}
+
+	// 管理画面 → 教室管理で入力された教室番号の確認
+	public function chk_usable_classroom_number($classroom_number = '')
+	{
+		// モデルロード
+		$this->load->model('m_classroom');
+
+		if( $classroom_number == '' ) {
+			$this->form_validation->set_message('chk_usable_classroom_number', '%s 欄は必須です。');
+			return FALSE;
+		}
+
+		if( !preg_match('/^[0-9]{4}$/', $classroom_number) ) {
+			$this->form_validation->set_message('chk_usable_classroom_number', '教室番号は数字４桁で入力してください。');
+			return FALSE;
+		}
+
+		$classroom_id = isset($_POST['classroom_id']) ? $_POST['classroom_id'] : '';
+
+		$select_data = array(
+			'classroom_number'	=> $classroom_number
+		);
+
+		if( $classroom_id != '' ) {
+			$select_data['classroom_id !='] = $classroom_id;
+		}
+
+		$classroom_data = $this->m_classroom->get_one($select_data);
+
+		if( !empty($classroom_data) ) {
+			$this->form_validation->set_message('chk_usable_classroom_number', '入力された教室番号はすでに使われています。');
 			return FALSE;
 		}
 
@@ -374,43 +410,6 @@ class MY_Controller extends CI_Controller
 	}
 
 /*
-	// 教材管理 ⇒ SMILEコード
-	public function exists_smilecode($code_smile)
-	{
-		// モデルロード
-		$this->load->model('m_product');
-
-		$mode = isset($_POST['mode']) ? $_POST['mode'] : '';
-		$product_id = isset($_POST['product_id']) ? $_POST['product_id'] : '';
-
-		if( $mode == '' ) {
-			$this->form_validation->set_message('exists_smilecode', 'パラメータエラーが発生しました。');
-			return FALSE;
-		}
-
-		if( $mode == 'mod' && $product_id == '' ) {
-			$this->form_validation->set_message('exists_smilecode', 'パラメータエラーが発生しました。');
-			return FALSE;
-		}
-
-		if( $mode == 'add' ) {
-			$product_data = $this->m_product->get_list(array('code_smile' => $code_smile));
-			if( !empty($product_data) ) {
-				$this->form_validation->set_message('exists_smilecode', '入力されたSMILEコードはすでに存在しています。');
-				return FALSE;
-			}
-		}
-		else {
-			$product_data = $this->m_product->get_list(array('code_smile' => $code_smile, 'product_id !=' => $product_id));
-			if( !empty($product_data) ) {
-				$this->form_validation->set_message('exists_smilecode', '入力されたSMILEコードはすでに存在しています。');
-				return FALSE;
-			}
-		}
-
-		return TRUE;
-	}
-
 	// 日付チェック
 	public function chk_date($date)
 	{

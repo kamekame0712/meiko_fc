@@ -20,7 +20,7 @@
 										<h4>オーナー情報</h4>
 									</div>
 									<div class="card-body">
-										<dl class="owner-confirm">
+										<dl class="confirm-list">
 											<dt>オーナー名</dt>
 											<dd><?= $PDATA['owner_name'] ?></dd>
 
@@ -64,7 +64,7 @@
 											<h4>買掛情報</h4>
 										</div>
 										<div class="card-body">
-											<dl class="owner-confirm">
+											<dl class="confirm-list">
 												<dt>事業形態</dt>
 												<dd><?= $PDATA['corporation'] == '1' ? '法人' : '非法人' ?></dd>
 

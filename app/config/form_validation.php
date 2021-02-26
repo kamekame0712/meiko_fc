@@ -98,4 +98,25 @@ $config = array(
 			'rules' => 'required|min_length[8]'
 		)
 	),
+
+	// 教室登録
+	'admin/classroom' => array(
+		array(
+			'field' => 'name',
+			'label' => '教室名',
+			'rules' => 'required'
+		),
+
+		array(
+			'field' => 'pref',
+			'label' => '都道府県',
+			'rules' => 'required'
+		),
+
+		array(
+			'field' => 'classroom_number',
+			'label' => '教室番号（明光側コード）',
+			'rules' => 'required|callback_chk_usable_classroom_number'
+		)
+	),
 );

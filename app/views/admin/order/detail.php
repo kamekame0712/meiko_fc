@@ -23,7 +23,7 @@
 													<h4>発注者情報</h4>
 												</div>
 												<div class="card-body">
-													<dl class="owner-confirm">
+													<dl class="confirm-list">
 														<dt>教室名</dt>
 														<dd><?= $DETAIL[0]['classroom_name'] ?></dd>
 
@@ -107,7 +107,7 @@
 													<h4>注文情報</h4>
 												</div>
 												<div class="card-body">
-													<dl class="owner-confirm">
+													<dl class="confirm-list">
 														<dt>注文日</dt>
 														<dd><?= $DETAIL[0]['regist_time'] ?></dd>
 
@@ -242,10 +242,10 @@
 											<?php foreach( $HISTORY as $val ): ?>
 												<?php
 													if( $DETAIL[0]['order_id'] == $val['order_id'] ) {
-														$dl_class = 'owner-confirm history-dl-bg';
+														$dl_class = 'confirm-list history-dl-bg';
 													}
 													else {
-														$dl_class = 'owner-confirm';
+														$dl_class = 'confirm-list';
 													}
 												?>
 

@@ -103,4 +103,88 @@ class M_product extends MY_Model
 
 		return array($course_data, $total);
 	}
+
+	public function get_list_bootgrid($conditions = array(), $sort_str = '', $limit_array = '')
+	{
+		$where_array = $this->get_where($conditions);
+		$where = implode(' AND ', $where_array);
+
+		$this->db->from(SELF::TBL)->distinct()
+			 ->where($where)->order_by($sort_str);
+
+		if( is_array($limit_array) && !empty($limit_array) ) {
+			$this->db->limit($limit_array[0], $limit_array[1]);
+		}
+
+		$query = $this->db->get();
+		$data = ($query->num_rows() > 0) ? $query->result_array() : FALSE;
+
+		$this->db->from(SELF::TBL)->distinct()
+			 ->where($where);
+
+		$cnt = 0;
+		$query = $this->db->get();
+		if( $query->num_rows() > 0 ) {
+			$wk = $query->result_array();
+			if( !empty($wk) ) {
+				$cnt = count($wk);
+			}
+		}
+
+		return array($data, $cnt);
+	}
+
+	public function get_list_for_download($conditions = array())
+	{
+		$where_array = $this->get_where($conditions);
+		$where = implode(' AND ', $where_array);
+
+		$this->db->from(SELF::TBL)->distinct()
+			 ->where($where)->order_by('smile_code ASC');
+
+		$query = $this->db->get();
+		return ($query->num_rows() > 0) ? $query->result_array() : FALSE;
+	}
+
+	private function get_where($conditions)
+	{
+		 $ret_array = array();
+		 $ret_array[] = 'status = "0"';
+
+		 if( $conditions['product_name'] != '' ) {
+			$ret_array[] = 'name LIKE "%' . $conditions['product_name'] . '%"';
+		}
+
+		if( $conditions['smile_code_from'] != '' ) {
+			$ret_array[] = 'smile_code <= "' . $conditions['smile_code_from'] . '"';
+		}
+
+		if( $conditions['smile_code_to'] != '' ) {
+			$ret_array[] = 'smile_code >= "' . $conditions['smile_code_to'] . '"';
+		}
+
+		if( $conditions['publisher'] != '' ) {
+			$ret_array[] = 'publisher = "' . $conditions['publisher'] . '"';
+		}
+
+		if( !empty($conditions['flg_market']) ) {
+			$where_flg_market = array();
+			foreach( $conditions['flg_market'] as $val ) {
+				$where_flg_market[] = 'flg_market = "' . $val . '"';
+			}
+
+			$ret_array[] = '( ' . implode(' OR ', $where_flg_market) . ')';
+		}
+
+		if( !empty($conditions['flg_sales']) ) {
+			$where_flg_sales = array();
+			foreach( $conditions['flg_sales'] as $val ) {
+				$where_flg_sales[] = 'flg_sales = "' . $val . '"';
+			}
+
+			$ret_array[] = '( ' . implode(' OR ', $where_flg_sales) . ')';
+		}
+
+		return $ret_array;
+	}
 }

@@ -409,6 +409,32 @@ class MY_Controller extends CI_Controller
 		return TRUE;
 	}
 
+	// 管理画面 → 教材管理で入力されたSMILEコードの重複チェック
+	public function exists_smile_code($smile_code = '')
+	{
+		// モデルロード
+		$this->load->model('m_product');
+
+		$product_id = isset($_POST['product_id']) ? $_POST['product_id'] : '';
+
+		$select_data = array(
+			'smile_code'	=> $smile_code
+		);
+
+		if( $product_id != '' ) {
+			$select_data['product_id !='] = $product_id;
+		}
+
+		$product_data = $this->m_product->get_one($select_data);
+
+		if( !empty($product_data) ) {
+			$this->form_validation->set_message('exists_smile_code', '入力されたSMILEコードはすでに使われています。');
+			return FALSE;
+		}
+
+		return TRUE;
+	}
+
 /*
 	// 日付チェック
 	public function chk_date($date)

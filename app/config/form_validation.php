@@ -119,4 +119,43 @@ $config = array(
 			'rules' => 'required|callback_chk_usable_classroom_number'
 		)
 	),
+
+	// 教材登録
+	'admin/product' => array(
+		array(
+			'field' => 'name',
+			'label' => '教材名',
+			'rules' => 'required'
+		),
+
+		array(
+			'field' => 'smile_code',
+			'label' => 'SMILEコード',
+			'rules' => 'callback_exists_smile_code'
+		),
+
+		array(
+			'field' => 'normal_price',
+			'label' => '通常価格',
+			'rules' => 'numeric'
+		),
+
+		array(
+			'field' => 'sales_price',
+			'label' => '販売価格',
+			'rules' => 'required|numeric'
+		),
+
+		array(
+			'field' => 'flg_market',
+			'label' => '塾用/市販',
+			'rules' => 'required'
+		),
+
+		array(
+			'field' => 'flg_sales',
+			'label' => '発刊状況',
+			'rules' => 'required'
+		)
+	),
 );

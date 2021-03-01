@@ -98,6 +98,9 @@ const CACHES_CLEAR_VERSION	= '20210225_1';
 // GMOのオーダーIDにつける先頭文字列
 const GMO_PREFIX			= 'meikofc-test-';
 
+// CSVファイルのアップロードに使うパス
+const CSV_UPLOAD_PATH		= 'C:/product/meiko_fc/upload/';
+
 // ページネーション ページあたりのデータ件数
 const RECORD_PER_PAGE		= 20;
 

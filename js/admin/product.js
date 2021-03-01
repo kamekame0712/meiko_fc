@@ -105,18 +105,20 @@ function product_dl()
 	.submit();
 }
 
+var subwin;
 function product_ul()
 {
-
-
-
-
-
-
-
-
-
-
+	if( subwin === void 0 ) {
+		subwin = window.open(SITE_URL + 'admin/product/ul', 'window_ul', 'width=640, height=700, menubar=no, toolbar=no, scrollbars=yes');
+	}
+	else {
+		if( subwin.closed ) {
+			subwin = window.open(SITE_URL + 'admin/product/ul', 'window_ul', 'width=640, height=700, menubar=no, toolbar=no, scrollbars=yes');
+		}
+		else {
+			alert('ウィンドウはすでに開かれています。');
+		}
+	}
 }
 
 function del_product(product_id, product_name)

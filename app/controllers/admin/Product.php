@@ -262,7 +262,7 @@ class Product extends MY_Controller
 				'ID', 'SMILEコード', '商品名', '検索キーワード',
 				'通常価格', '販売価格', '明光本部推奨',
 				'学年', '教科', '期間講習', '出版社',
-				'1:塾用 2:市販', '1:通常 2:売上 3:未発刊'
+				'1:塾用 2:市販', '1:通常 2:売切 3:未発刊'
 			);
 			fputcsv($fp, $csv_array);
 
@@ -348,11 +348,243 @@ class Product extends MY_Controller
 		fclose($fp);
 	}
 
+	public function ul($message = '')
+	{
+		// ログイン済みチェック
+		if( !$this->chk_logged_in_admin() ) {
+			redirect('admin');
+			return;
+		}
+
+		$view_data = array(
+			'MESSAGE'	=> $message
+		);
+
+		$this->load->view('admin/product/ul_index', $view_data);
+	}
+
+	public function ul_confirm()
+	{
+		// ログイン済みチェック
+		if( !$this->chk_logged_in_admin() ) {
+			redirect('admin');
+			return;
+		}
+
+		// タイムアウトさせない
+		set_time_limit(0);
+
+		$config = array(
+			'upload_path'	=> CSV_UPLOAD_PATH,
+			'allowed_types'	=> 'csv',
+			'max_size'		=> '10240',
+			'file_name'		=> 'product_' . date('YmdHis'),
+			'overwrite'		=> TRUE
+		);
+
+		$res = $this->do_upload($config, 'import_file');
+		if( $res['status'] == FALSE ) { // アップロードエラー
+			$this->ul(trim($res['msg']));
+			return;
+		}
+
+		// fgetcsvを使用するのでlocale設定（windowsだけ？？）
+		if( strpos(PHP_OS, 'WIN') === 0 ) {
+			setlocale(LC_CTYPE, 'C');
+		}
+
+		$errors = array();
+		$insert_cnt = 0;
+		$update_cnt = 0;
+		$csv_file = $res['data']['full_path'];
+		if( ($handle = fopen($csv_file, 'r')) !== false ) {
+			// ファイル内容の簡単なチェック
+			$file_content_error = '';
+			$wk_data = fgetcsv($handle, 256, ',', '"');
+			if( empty($wk_data) ) {
+				$file_content_error = '<p class="error-msg">ファイルが空です。</p>';
+			}
+			else {
+				if( count($wk_data) != 13 ) {
+					$file_content_error = '<p class="error-msg">ファイル内容（項目数）が正しくありません。</p>';
+				}
+			}
+
+			if( $file_content_error != '' ) {
+				fclose($handle);
+				$this->ul($file_content_error);
+				return;
+			}
+
+			rewind($handle);
+			$data_cnt = 0;
+			$now = date('Y-m-d H:i:s');
+			while( ($data = fgetcsv($handle, 256, ',', '"')) ) {
+				$product_id = !empty($data[0]) ? mb_convert_encoding($data[0], 'UTF-8', 'UTF-8, JIS, eucjp-win, sjis-win') : '';
+				$smile_code = !empty($data[1]) ? mb_convert_encoding($data[1], 'UTF-8', 'UTF-8, JIS, eucjp-win, sjis-win') : NULL;
+				$name = !empty($data[2]) ? mb_convert_encoding($data[2], 'UTF-8', 'UTF-8, JIS, eucjp-win, sjis-win') : '';
+				$keyword = !empty($data[3]) ? mb_convert_encoding($data[3], 'UTF-8', 'UTF-8, JIS, eucjp-win, sjis-win') : NULL;
+				$normal_price = !empty($data[4]) ? mb_convert_encoding($data[4], 'UTF-8', 'UTF-8, JIS, eucjp-win, sjis-win') : '0';
+				$sales_price = !empty($data[5]) ? mb_convert_encoding($data[5], 'UTF-8', 'UTF-8, JIS, eucjp-win, sjis-win') : '0';
+				$recommend = !empty($data[6]) && $data[6] == '1' ? '1' : '9';
+				$grade = !empty($data[7]) ? mb_convert_encoding($data[7], 'UTF-8', 'UTF-8, JIS, eucjp-win, sjis-win') : NULL;
+				$subject = !empty($data[8]) ? mb_convert_encoding($data[8], 'UTF-8', 'UTF-8, JIS, eucjp-win, sjis-win') : NULL;
+				$period = !empty($data[9]) ? mb_convert_encoding($data[9], 'UTF-8', 'UTF-8, JIS, eucjp-win, sjis-win') : NULL;
+				$publisher = !empty($data[10]) ? mb_convert_encoding($data[10], 'UTF-8', 'UTF-8, JIS, eucjp-win, sjis-win') : NULL;
+				$flg_market = !empty($data[11]) ? mb_convert_encoding($data[11], 'UTF-8', 'UTF-8, JIS, eucjp-win, sjis-win') : '';
+				$flg_sales = !empty($data[12]) ? mb_convert_encoding($data[12], 'UTF-8', 'UTF-8, JIS, eucjp-win, sjis-win') : '';
+
+				if( $data_cnt != 0 ) { // 1行目は項目名
+					if( $name == '' || $sales_price == '' || $flg_market == '' || $flg_sales == '' ) {
+						$errors[] = array(
+							'data_cnt' 		=> $data_cnt,
+							'product_id'	=> $product_id,
+							'name'			=> $name,
+							'smile_code'	=> $smile_code,
+							'comment'		=> '教材名、販売価格、塾用/市販の別、発刊状況は必須です。'
+						);
+					}
+					else {
+						if( $product_id == '' ) { // 新規追加
+							$wk_product_data = $this->m_product->get_list(array('smile_code' => $smile_code));
+							if( $smile_code != '' && !empty($wk_product_data) ) {
+								$errors[] = array(
+									'data_cnt' 		=> $data_cnt,
+									'product_id'	=> $product_id,
+									'name'			=> $name,
+									'smile_code'	=> $smile_code,
+									'comment'		=> '入力されたSMILEコードはすでに登録されています。'
+								);
+							}
+							else {
+								$insert_data = array(
+									'smile_code'	=> $smile_code,
+									'name'			=> $name,
+									'keyword'		=> $keyword,
+									'normal_price'	=> $normal_price,
+									'sales_price'	=> $sales_price,
+									'recommend'		=> $recommend,
+									'grade'			=> $grade,
+									'subject'		=> $subject,
+									'period'		=> $period,
+									'publisher'		=> $publisher,
+									'flg_market'	=> $flg_market,
+									'flg_sales'		=> $flg_sales,
+									'regist_time'	=> $now,
+									'update_time'	=> $now,
+									'status'		=> '0'
+								);
+
+								if( $this->m_product->insert($insert_data) ) {
+									$insert_cnt++;
+								}
+								else {
+									$errors[] = array(
+										'data_cnt' 		=> $data_cnt,
+										'product_id'	=> $product_id,
+										'name'			=> $name,
+										'smile_code'	=> $smile_code,
+										'comment'		=> 'データベースエラーが発生しました。'
+									);
+								}
+							}
+						}
+						else { // 更新
+							$wk_product_data = $this->m_product->get_list(array('product_id' => $product_id));
+							if( empty($wk_product_data) ) {
+								$errors[] = array(
+									'data_cnt' 		=> $data_cnt,
+									'product_id'	=> $product_id,
+									'name'			=> $name,
+									'smile_code'	=> $smile_code,
+									'comment'		=> '該当の商品が存在しません。'
+								);
+							}
+							else {
+								$wk_product_data = $this->m_product->get_list(array('product_id !=' => $product_id, 'smile_code' => $smile_code));
+								if( $smile_code != '' && !empty($wk_product_data) ) {
+									$errors[] = array(
+										'data_cnt' 		=> $data_cnt,
+										'product_id'	=> $product_id,
+										'name'			=> $name,
+										'smile_code'	=> $smile_code,
+										'comment'		=> '入力されたSMILEコードはすでに登録されています。'
+									);
+								}
+								else {
+									$update_data = array(
+										'smile_code'	=> $smile_code,
+										'name'			=> $name,
+										'keyword'		=> $keyword,
+										'normal_price'	=> $normal_price,
+										'sales_price'	=> $sales_price,
+										'recommend'		=> $recommend,
+										'grade'			=> $grade,
+										'subject'		=> $subject,
+										'period'		=> $period,
+										'publisher'		=> $publisher,
+										'flg_market'	=> $flg_market,
+										'flg_sales'		=> $flg_sales,
+										'update_time'	=> $now
+									);
+
+									if( $this->m_product->update(array('product_id' => $product_id), $update_data) ) {
+										$update_cnt++;
+									}
+									else {
+										$errors[] = array(
+											'data_cnt' 		=> $data_cnt,
+											'product_id'	=> $product_id,
+											'name'			=> $name,
+											'smile_code'	=> $smile_code,
+											'comment'		=> 'データベースエラーが発生しました。'
+										);
+									}
+								}
+							}
+						}
+					}
+				}
+				$data_cnt++;
+			}
+			fclose($handle);
+		}
+
+		$view_data = array(
+			'ERRORS'	=> $errors,
+			'INSERT'	=> $insert_cnt,
+			'UPDATA'	=> $update_cnt
+		);
+
+		$this->load->view('admin/product/ul_confirm', $view_data);
+	}
 
 
 
+	/*******************************************/
+	/*               private関数               */
+	/*******************************************/
+	// ファイルアップロード
+	private function do_upload($config, $field_name='import_file')
+	{
+		$this->load->library('upload');
+		$this->upload->initialize($config);
 
+		$ret = array(
+			'status'	=> TRUE,
+			'data'		=> array(),
+			'msg'		=> ''
+		);
+		if( !$this->upload->do_upload($field_name) ) {
+			$ret['status'] = FALSE;
+			$ret['msg'] = $this->upload->display_errors('<p class="error-msg">', '</p>');
+		}
+		else {
+			$ret['data'] = $this->upload->data();
+		}
 
+		return $ret;
+	}
 
 
 

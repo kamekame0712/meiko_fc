@@ -35,3 +35,15 @@ function get_instruction()
 
 	return TRUE;
 }
+
+/**
+ * 未処理のオーナー数を返す
+ */
+function get_not_register_owner()
+{
+	$CI =& get_instance();
+
+	// モデルロード
+	$CI->load->model('m_owner');
+	return $CI->m_owner->get_count(array('flg_complete' => '1'));
+}

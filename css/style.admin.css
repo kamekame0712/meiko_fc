@@ -43,6 +43,29 @@ body {
     transform: translateX(-50%);
 }
 
+.side-menu-badge {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background-color: red;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+}
+
+.side-menu-badge .num {
+    display: block;
+    position: absolute;
+    top: -6px;
+    left: 0;
+    color: #FFFFFF;
+    font-size: 0.6rem;
+    width: inherit;
+    text-align: center;
+}
+
 .required-label {
     position: relative;
 }

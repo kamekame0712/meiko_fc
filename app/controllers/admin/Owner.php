@@ -499,6 +499,55 @@ class Owner extends MY_Controller
 		$this->load->view('admin/owner/register', $view_data);
 	}
 
+	public function dl_classroom($owner_id = '')
+	{
+		// ログイン済みチェック
+		if( !$this->chk_logged_in_admin() ) {
+			redirect('admin');
+			return;
+		}
+
+		$classroom_data = $this->m_classroom->get_list(array('owner_id' => $owner_id));
+
+		// タイムアウトさせない
+		set_time_limit(0);
+
+		$fp = fopen('php://output', 'w');
+		stream_filter_append($fp, 'convert.iconv.UTF-8/CP932//TRANSLIT', STREAM_FILTER_WRITE);
+
+		header("Content-Type: application/octet-stream");
+		header("Content-Disposition: attachment; filename=" . 'classroom' . $owner_id . '_' . date('YmdHis') . '.csv');
+
+		if( empty($classroom_data) ) {
+			fputs($fp, 'no data');
+		}
+		else {
+			$csv_array = array(
+				'教室名',
+				'郵便番号',
+				'都道府県コード',
+				'都道府県',
+				'住所',
+				'電話番号'
+			);
+			fputcsv($fp, $csv_array);
+
+			foreach( $classroom_data as $val ) {
+				$csv_array = array(
+					$val['name'],
+					$val['zip'],
+					$val['pref'],
+					$this->conf['pref'][$val['pref']],
+					$val['address'],
+					$val['tel']
+				);
+				fputcsv($fp, $csv_array);
+			}
+		}
+
+		fclose($fp);
+	}
+
 	public function do_register($owner_id = '')
 	{
 		// ログイン済みチェック

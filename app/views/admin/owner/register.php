@@ -131,6 +131,8 @@
 										<h4>運営教室</h4>
 									</div>
 									<div class="card-body">
+										<a href="<?= site_url('admin/owner/dl_classroom/' . $ODATA['owner_id']) ?>" class="btn btn-info">教室情報をダウンロード</a>
+
 										<ul class="classroom-list">
 											<?php if( !empty($CDATA) ): ?>
 												<?php foreach( $CDATA as $classroom ): ?>

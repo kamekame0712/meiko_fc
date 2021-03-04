@@ -237,6 +237,20 @@ table.confirm-table td .attention {
     font-size: 3.2rem;
 }
 
+.header .manual-download {
+    display: block;
+    position: absolute;
+    top: -13px;
+    left: 200px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.header .manual-download p {
+    font-size: 1.1rem;
+    line-height: 1.1rem;
+}
+
 .header .menu-box {
     text-align: right;
     position: absolute;
@@ -270,7 +284,7 @@ table.confirm-table td .attention {
     text-align-last: left;
     padding: 0;
     margin: 0;
-    width: 170px;
+    width: 200px;
     position: absolute;
     top: 60px;
     right: 0;
@@ -334,6 +348,10 @@ hr.header-bottom {
     .header .site-title-large {
         font-size: 2.5rem;
     }
+
+    .header .manual-download {
+        display: none;
+    }
 }
 /* #endregion header */
 
@@ -364,9 +382,14 @@ footer .address {
     font-size: 1.2rem;
 }
 
+footer .anchor-help {
+    font-size: 1.4rem;
+}
+
 footer .copyright {
     font-size: 1.2rem;
     text-align: right;
+    margin-top: 10px;
 }
 
 @media screen and (max-width : 768px) {
@@ -1185,3 +1208,50 @@ dl.others dd {
     border-top: 4px double #444444;
 }
 /* #endregion 発注履歴 */
+
+/* #region プライバシーポリシー */
+.top-box {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.privacy-content {
+    padding: 0 5.0rem;
+    margin: 0 0 40px;
+}
+
+.contact-information-box {
+    margin: 0 auto 40px;
+    padding: 10px;
+    border: 2px solid #157BCA;
+    border-radius: 4px;
+    width: 40%;
+    max-width: 500px;
+}
+
+.contact-information-box h3 {
+    text-align: center;
+    font-weight: bold;
+}
+
+.contact-information-box dl {
+    margin: 20px 0 10px 20px;
+    padding: 0;
+}
+
+.contact-information-box dl::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.contact-information-box dl dt {
+    font-weight: normal;
+    width: 180px;
+    float: left;
+}
+
+.contact-information-box dl dd {
+    padding-left: 180px;
+}
+/* #endregion プライバシーポリシー */

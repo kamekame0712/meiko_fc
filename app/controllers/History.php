@@ -188,15 +188,16 @@ class History extends MY_Controller
 						$err_array[0] = TRUE;
 						$err_flg = TRUE;
 					}
+					else {
+						if( $product_data['name'] != $val['product_name'] ) {
+							$err_array[1] = TRUE;
+							$err_flg = TRUE;
+						}
 
-					if( $product_data['name'] != $val['product_name'] ) {
-						$err_array[1] = TRUE;
-						$err_flg = TRUE;
-					}
-
-					if( $product_data['sales_price'] != $val['sales_price'] ) {
-						$err_array[2] = TRUE;
-						$err_flg = TRUE;
+						if( $product_data['sales_price'] != $val['sales_price'] ) {
+							$err_array[2] = TRUE;
+							$err_flg = TRUE;
+						}
 					}
 				}
 

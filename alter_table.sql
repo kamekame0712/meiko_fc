@@ -17,3 +17,5 @@ ALTER TABLE `t_order` CHANGE `sub_total` `product_cost` INT(11) NOT NULL DEFAULT
 ALTER TABLE `t_product` CHANGE `grade` `grade` VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '学年等（config参照）';
 ALTER TABLE `t_product` CHANGE `subject` `subject` VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '教科（config参照）';
 ALTER TABLE `t_product` CHANGE `period` `period` VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '期間講習（config参照）';
+
+ALTER TABLE t_order ADD `flg_send_mail` varchar(1) DEFAULT '1' COMMENT 'メール送信履歴 1:無 2:有' AFTER `order_status`;

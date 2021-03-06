@@ -145,7 +145,7 @@ class M_order extends MY_Model
 		$select = '
 			o.*,
 			od.product_id, od.quantity, od.publisher_name, od.product_name, od.sales_price, od.sub_total, p.smile_code,
-			c.classroom_number, c.smile_code1, c.smile_code2, c.smile_code3, c.en_code1, c.en_code2,
+			c.classroom_number, c.smile_code1, c.smile_code2, c.smile_code3, c.en_code1, c.en_code2, c.email,
 			c.name AS classroom_name, on.owner_name, on.corpo_name, on.payment_method1, on.payment_method2, on.payment_method3
 		';
 

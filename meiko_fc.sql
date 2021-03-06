@@ -170,3 +170,16 @@ CREATE TABLE `t_forgot` (
   PRIMARY KEY (forgot_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `t_send_mail` (
+  `send_mail_id` int(7) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `order_id` int(7) NOT NULL COMMENT 't_orderのID',
+  `classroom_id` int(7) NOT NULL COMMENT 't_classroomのID',
+  `title` varchar(256) NOT NULL COMMENT '件名',
+  `content` text NOT NULL COMMENT '本文',
+  `regist_time` datetime NOT NULL COMMENT '登録日',
+  `update_time` datetime NOT NULL COMMENT '更新日',
+  `status` varchar(1) DEFAULT '0' COMMENT '状態 0:通常 9:削除済',
+
+  PRIMARY KEY (send_mail_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+

@@ -146,7 +146,7 @@
 									'id'	=> 'tel3',
 									'value'	=> set_value('tel3', ''),
 									'class'	=> 'form-control entry-input entry-input-small',
-									'placeholder'	=> '1111'
+									'placeholder'	=> 'XXXX'
 								)); ?>
 								<?php echo form_error('tel1'); ?>
 							</div>
@@ -174,7 +174,7 @@
 									'id'	=> 'fax3',
 									'value'	=> set_value('fax3', ''),
 									'class'	=> 'form-control entry-input entry-input-small',
-									'placeholder'	=> '1233'
+									'placeholder'	=> 'XXXX'
 								)); ?>
 							</div>
 						</div> <!-- end of .form-group row -->
@@ -294,7 +294,7 @@
 										'id'	=> 'bill_tel3',
 										'value'	=> set_value('bill_tel3', ''),
 										'class'	=> 'form-control entry-input entry-input-small',
-										'placeholder'	=> '5677'
+										'placeholder'	=> 'XXXX'
 									)); ?>
 									<?php echo form_error('bill_tel1'); ?>
 								</div>

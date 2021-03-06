@@ -8,13 +8,17 @@ class Order extends MY_Controller
 
 		// モデルロード
 		$this->load->model('m_order');
+		$this->load->model('m_send_mail');
 
 		// 設定ファイルロード
 		$this->config->load('config_disp', TRUE, TRUE);
 		$this->conf = $this->config->item('disp', 'config_disp');
+
+		// バリデーションエラー設定
+		$this->form_validation->set_error_delimiters('<p class="error-msg">', '</p>');
 	}
 
-	public function index()
+	public function index($result = '')
 	{
 		// ログイン済みチェック
 		if( !$this->chk_logged_in_admin() ) {
@@ -23,7 +27,8 @@ class Order extends MY_Controller
 		}
 
 		$view_data = array(
-			'CONF'	=> $this->conf
+			'CONF'	=> $this->conf,
+			'RESULT'	=> $result
 		);
 
 		$this->load->view('admin/order/index', $view_data);
@@ -82,26 +87,28 @@ class Order extends MY_Controller
 								break;
 						}
 
-						$order_no = '';
-						if( $val['exists_market'] == '1' ) {
-							$order_no = $val['order_id'];
-						}
-						else {
-							if( $val['flg_partial'] == '1' ) {
+						if( !empty($customer_code) ) {
+							$order_no = '';
+							if( $val['exists_market'] == '1' ) {
 								$order_no = $val['order_id'];
 							}
 							else {
-								$order_no = $val['order_id'] . '_' . $val['flg_market'];
+								if( $val['flg_partial'] == '1' ) {
+									$order_no = $val['order_id'];
+								}
+								else {
+									$order_no = $val['order_id'] . '_' . $val['flg_market'];
+								}
 							}
-						}
 
-						$csv_array = array(
-							date('Y/m/d', strtotime($val['regist_time'])), $customer_code, $val['classroom_name'], '',
-							$val['classroom_name'], '', $val['zip'], $this->conf['pref'][$val['pref']] . $val['address'], $val['tel'],
-							$payment_code, '', $order_no, $val['smile_code'], $val['product_name'], '', '',
-							$val['quantity'], $val['sales_price'], $val['sub_total'], ''
-						);
-						fputcsv($fp, $csv_array);
+							$csv_array = array(
+								date('Y/m/d', strtotime($val['regist_time'])), $customer_code, $val['classroom_name'], '',
+								$val['classroom_name'], '', $val['zip'], $this->conf['pref'][$val['pref']] . $val['address'], $val['tel'],
+								$payment_code, '', $order_no, $val['smile_code'], $val['product_name'], '', '',
+								$val['quantity'], $val['sales_price'], $val['sub_total'], ''
+							);
+							fputcsv($fp, $csv_array);
+						}
 					}
 				}
 			}
@@ -340,13 +347,137 @@ class Order extends MY_Controller
 		$order_data = $this->m_order->get_one_with_detail_for_admin($order_id);
 		$order_history = $this->m_order->get_list(array('classroom_id' => $order_data[0]['classroom_id']), 'regist_time DESC');
 
+		if( $order_data[0]['flg_send_mail'] == '2' ) {
+			$send_mail_data = $this->m_send_mail->get_list(array('order_id' => $order_id), 'regist_time DESC');
+		}
+		else {
+			$send_mail_data = array();
+		}
+
 		$view_data = array(
 			'CONF'		=> $this->conf,
 			'DETAIL'	=> $order_data,
-			'HISTORY'	=> $order_history
+			'HISTORY'	=> $order_history,
+			'MAIL'		=> $send_mail_data
 		);
 
 		$this->load->view('admin/order/detail', $view_data);
+	}
+
+	public function send_mail($order_id = '')
+	{
+		// ログイン済みチェック
+		if( !$this->chk_logged_in_admin() ) {
+			redirect('admin');
+			return;
+		}
+
+		$order_data = $this->m_order->get_one_with_detail_for_admin($order_id);
+
+		$view_data = array(
+			'CONF'		=> $this->conf,
+			'DETAIL'	=> $order_data
+		);
+
+		$this->load->view('admin/order/send_mail', $view_data);
+	}
+
+	public function mail_confirm()
+	{
+		// ログイン済みチェック
+		if( !$this->chk_logged_in_admin() ) {
+			redirect('admin');
+			return;
+		}
+
+		$post_data = $this->input->post();
+		$order_id = isset($post_data['order_id']) ? $post_data['order_id'] : '';
+		$order_data = $this->m_order->get_one_with_detail_for_admin($order_id);
+
+		// バリデーションチェック
+		if( $this->form_validation->run('admin/send_mail') == FALSE ) {
+			$view_data = array(
+				'CONF'		=> $this->conf,
+				'DETAIL'	=> $order_data
+			);
+
+			$this->load->view('admin/order/send_mail', $view_data);
+			return;
+		}
+
+		$view_data = array(
+			'PDATA'	=> $post_data,
+			'JUKU'	=> $order_data[0]['classroom_name'] . '（' . $order_data[0]['email']  . '）'
+		);
+
+		$this->load->view('admin/order/mail_confirm', $view_data);
+	}
+
+	public function mail_complete()
+	{
+		// ログイン済みチェック
+		if( !$this->chk_logged_in_admin() ) {
+			redirect('admin');
+			return;
+		}
+
+		$post_data = $this->input->post();
+		$order_id = isset($post_data['order_id']) ? $post_data['order_id'] : '';
+		$title = isset($post_data['title']) ? $post_data['title'] : '';
+		$content = isset($post_data['content']) ? $post_data['content'] : '';
+
+		$order_data = $this->m_order->get_one_with_detail_for_admin($order_id);
+		$now = date('Y-m-d H:i:s');
+
+		$this->db->trans_start();
+
+		$insert_data = array(
+			'order_id'		=> $order_id,
+			'classroom_id'	=> $order_data[0]['classroom_id'],
+			'title'			=> $title,
+			'content'		=> $content,
+			'regist_time'	=> $now,
+			'update_time'	=> $now,
+			'status'		=> '0'
+		);
+		$this->m_send_mail->insert($insert_data);
+
+		$update_data = array(
+			'flg_send_mail'	=> '2',
+			'update_time'	=> $now
+		);
+		$this->m_order->update(array('order_id', $order_id), $update_data);
+
+		$this->db->trans_complete();
+
+		if( $this->db->trans_status() !== FALSE ) {
+			// モデルロード
+			$this->load->model('m_mail');
+
+			// 設定ファイルロード
+			$this->config->load('config_mail', TRUE, TRUE);
+			$conf_mail = $this->config->item('mail', 'config_mail');
+
+			$params = array(
+				'from'		=> $conf_mail['apply_comp_to_customer']['from'],
+				'from_name'	=> $conf_mail['apply_comp_to_customer']['from_name'],
+				'to'		=> $order_data[0]['email'],
+				'subject'	=> $title,
+				'message'	=> $content
+			);
+
+			if( !$this->m_mail->send($params) ) {
+				redirect('admin/order/index/mail_err1');
+				return;
+			}
+		}
+		else {
+			redirect('admin/order/index/mail_err2');
+			return;
+		}
+
+		redirect('admin/order/index/ok');
+		return;
 	}
 
 
@@ -400,6 +531,7 @@ class Order extends MY_Controller
 	{
 		$post_data = $this->input->post();
 		$order_ids = isset($post_data['order_ids']) ? $post_data['order_ids'] : '';
+		$order_status = isset($post_data['order_status']) ? $post_data['order_status'] : '';
 
 		$ret_val = array(
 			'status'			=> FALSE,
@@ -410,10 +542,10 @@ class Order extends MY_Controller
 			$ret_val['err_msg'] = '対象の受注にチェックを付けてください。';
 		}
 		else {
-			$where = 'order_id IN (' . $order_ids . ') AND order_status = "0" AND status = "0"';
+			$where = 'order_id IN (' . $order_ids . ') AND status = "0"';
 
 			$update_data = array(
-				'order_status'	=> '9',
+				'order_status'	=> $order_status,
 				'update_time'	=> date('Y-m-d H:i:s')
 			);
 
@@ -517,7 +649,8 @@ class Order extends MY_Controller
 					'delivery_time'		=> $this->conf['delivery_time'][$val['delivery_time']],
 					'note'				=> $val['note'],
 					'order_status'		=> $this->conf['order_status'][$val['order_status']],
-					'order_status_val'	=> $val['order_status']
+					'order_status_val'	=> $val['order_status'],
+					'flg_send_mail'		=> $val['flg_send_mail'] == '1' ? '無' : '有'
 				);
 			}
 		}

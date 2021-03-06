@@ -36,32 +36,17 @@
 		vertical-align: top;
 	}
 
-	table.info td.other-info {
-		width: 40%;
-		vertical-align: top;
-	}
-
-	.total_cost {
-		border-collapse: collapse;
-		border-spacing: 0;
-		margin: 20px 0 10px;
-		width: 300px;
-	}
-
-	.total_cost .attention {
-		padding: 0 0 0 10px;
-		font-size: 1.1rem;
-		border-bottom: 1px solid #404040;
-		width: 150px;
-	}
-
-	.total_cost .cost {
+	table.info td.juku-info .total_cost {
 		padding: 0 10px 0 0;
 		font-size: 1.5rem;
 		font-weight: bold;
 		border-bottom: 1px solid #404040;
-		width: 150px;
 		text-align: right;
+	}
+
+	table.info td.other-info {
+		width: 40%;
+		vertical-align: top;
 	}
 
 	.detail {

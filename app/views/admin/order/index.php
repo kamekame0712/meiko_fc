@@ -179,13 +179,21 @@
 											)); ?>
 										</div>
 
-										<div class="col-3">
+										<div class="col-3 position-relative">
 											<?php echo form_button(array(
 												'name'		=> 'btn_check_all',
-												'content'	=> '『取込済』に変更',
+												'content'	=> '対応状況を変更&nbsp;<i class="fas fa-caret-down"></i>',
 												'class'		=> 'btn btn-warning note-btn',
 												'onclick'	=> 'change_status();'
 											)); ?>
+
+											<ul class="status-list" id="status_list" style="display:none;">
+												<li data-status="0">『新規受付』に変更</li>
+												<li data-status="1">『処理中』に変更</li>
+												<li data-status="2">『取り寄せ中』に変更</li>
+												<li data-status="8">『キャンセル』に変更</li>
+												<li data-status="9">『発送済み』に変更</li>
+											</ul>
 										</div>
 									</div>
 								</div>
@@ -197,16 +205,17 @@
 										<thead>
 											<tr>
 												<th data-column-id="col_checkbox" data-formatter="col_checkbox" data-sortable="false" data-width="30px" data-align="center">&nbsp;</th>
-												<th data-column-id="col_proc" data-formatter="col_proc" data-sortable="false"  data-width="150px">処理</th>
+												<th data-column-id="col_proc" data-formatter="col_proc" data-sortable="false"  data-width="160px">処理</th>
 												<th data-column-id="regist_time" data-width="170px" data-order="desc">受注日</th>
 												<th data-column-id="order_id" data-width="90px" data-align="center">注文番号</th>
 												<th data-column-id="order_status" data-width="100px">対応状況</th>
 												<th data-column-id="classroom_name" data-width="180px">教室名</th>
-												<th data-column-id="payment_method" data-width="140px">支払方法</th>
+												<th data-column-id="payment_method" data-width="120px">支払方法</th>
 												<th data-column-id="total_cost" data-width="100px" data-align="right">合計金額</th>
 												<th data-column-id="exists_market" data-width="90px">市販教材</th>
 												<th data-column-id="delivery_date" data-width="110px">希望日</th>
 												<th data-column-id="delivery_time" data-width="90px">希望時間</th>
+												<th data-column-id="flg_send_mail" data-width="70px">ﾒｰﾙ</th>
 												<th data-column-id="note" data-width="200px">備考</th>
 											</tr>
 										</thead>
@@ -275,6 +284,10 @@
 	</div> <!-- /.modal -->
 
 	<?php $this->load->view('inc/admin/_foot'); ?>
+
+	<script>
+		var result = '<?= $RESULT ?>';
+	</script>
 	<script src="<?= base_url('js/admin/order.js')?>?var=<?= CACHES_CLEAR_VERSION ?>"></script>
 </body>
 </html>

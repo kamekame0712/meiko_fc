@@ -233,7 +233,29 @@
 							</div>
 
 							<div class="col-4 pl-0">
-								<div class="card card-primary">
+								<?php if( $DETAIL[0]['flg_send_mail'] == '2' ): ?>
+									<div class="card card-warning">
+										<div class="card-header">
+											<h4>メール履歴</h4>
+										</div>
+										<div class="card-body">
+											<?php if( !empty($MAIL) ): ?>
+												<?php foreach( $MAIL as $val ): ?>
+													<dl class="confirm-list">
+														<dt><?= $val['regist_time'] ?></dt>
+														<dd>
+															<p>件名：<?= $val['title'] ?></p>
+															内容：<br>
+															<?= nl2br($val['content']) ?>
+														</dd>
+													</dl>
+												<?php endforeach; ?>
+											<?php endif; ?>
+										</div> <!-- end of .card-body -->
+									</div> <!-- end of .card -->
+								<?php endif; ?>
+
+								<div class="card card-success">
 									<div class="card-header">
 										<h4>注文履歴</h4>
 									</div>
@@ -270,6 +292,5 @@
 	</div> <!-- end of #app -->
 
 	<?php $this->load->view('inc/admin/_foot'); ?>
-	<script src="<?= base_url('js/admin/order.js')?>?var=<?= CACHES_CLEAR_VERSION ?>"></script>
 </body>
 </html>

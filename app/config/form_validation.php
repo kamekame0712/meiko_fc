@@ -99,6 +99,21 @@ $config = array(
 		)
 	),
 
+	// メール送信
+	'admin/send_mail' => array(
+		array(
+			'field' => 'title',
+			'label' => '件名',
+			'rules' => 'required'
+		),
+
+		array(
+			'field' => 'content',
+			'label' => '本文',
+			'rules' => 'required'
+		)
+	),
+
 	// 教室登録
 	'admin/classroom' => array(
 		array(

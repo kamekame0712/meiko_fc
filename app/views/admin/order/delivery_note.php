@@ -8,6 +8,10 @@
 </head>
 
 <body>
+	<div style="position:absolute; top:10px; right:10px;">
+		<img src="<?= base_url('img/common/logo-meiko.png') ?>" alt="明光義塾" class="logo-meiko">
+	</div>
+
 	<table class="title-box">
 		<tr>
 			<td class="dummy">&nbsp;</td>
@@ -21,24 +25,18 @@
 	<table class="info">
 		<tr>
 			<td class="juku-info">
-				<p>注文日：<?= $REGIST ?></p>
-				<p>注文番号：<?= $ORDER_ID ?></p>
 				<p>〒<?= $ZIP ?></p>
 				<p><?= $ADDRESS ?></p>
-				<p><?= $TEL ?></p>
+				<p><?= $TEL ?></p><br><br>
+				<p style="font-size: 1.5rem; font-weight: bold; border-bottom: 1px solid #404040; text-align: right;">　総合計金額　　<?= number_format($TOTAL) ?>円　</p>
 			</td>
 			<td class="other-info">
 				<p>ENコード（掛）：<?= $EN_CODE1 ?></p>
-				<p>ENコード（ｸﾚｼﾞｯﾄ）：<?= $EN_CODE2 ?></p>
-				<p>前回の注文：<?= $PREV ?></p>
+				<p>ENコード（ｸﾚｼﾞｯﾄ）：<?= $EN_CODE2 ?></p><br>
+				<p>前回の注文：<?= $PREV ?></p><br>
+				<p>注文日：<?= $REGIST ?></p>
+				<p>注文番号：<?= $ORDER_ID ?></p>
 			</td>
-		</tr>
-	</table>
-
-	<table class="total_cost">
-		<tr>
-			<td class="attention">総合計金額</td>
-			<td class="cost"><?= number_format($TOTAL) ?>円</td>
 		</tr>
 	</table>
 

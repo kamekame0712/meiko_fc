@@ -68,6 +68,14 @@ class Index extends MY_Controller
 		}
 	}
 
+	public function test_login()
+	{
+		$this->session->set_userdata('classroom_id', 1353);
+		$this->session->set_userdata('classroom_name', 'テスト教室');
+
+		redirect('order');
+	}
+
 	public function logout()
 	{
 		$this->session->unset_userdata('classroom_id');

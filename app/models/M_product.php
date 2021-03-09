@@ -156,11 +156,11 @@ class M_product extends MY_Model
 		}
 
 		if( $conditions['smile_code_from'] != '' ) {
-			$ret_array[] = 'smile_code <= "' . $conditions['smile_code_from'] . '"';
+			$ret_array[] = 'smile_code >= "' . $conditions['smile_code_from'] . '"';
 		}
 
 		if( $conditions['smile_code_to'] != '' ) {
-			$ret_array[] = 'smile_code >= "' . $conditions['smile_code_to'] . '"';
+			$ret_array[] = 'smile_code <= "' . $conditions['smile_code_to'] . '"';
 		}
 
 		if( $conditions['publisher'] != '' ) {

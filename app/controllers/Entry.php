@@ -111,7 +111,7 @@ class Entry extends MY_Controller
 			$ret_val['err_msg'] = '入力された教室コードは存在しません。';
 		}
 		else if( empty($classroom_data['owner_id']) ) {
-			$ret_val['err_msg'] = 'オーナー様のご利用申込みがお済みではありません。' . "\r\n" . 'オーナー様にご利用申込みをしていただきますよう、ご提案をお願いします。';
+			$ret_val['err_msg'] = 'オーナー様のご利用申込みがお済みではありません。' . "\r\n" . 'ご利用申込み状況のご確認をお願いします。';
 			$ret_val['classroom_name'] = $classroom_data['name'];
 		}
 		else if( empty($classroom_data['smile_code1']) && empty($classroom_data['smile_code2']) && empty($classroom_data['smile_code3']) ) {

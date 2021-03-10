@@ -17,8 +17,10 @@ class M_product extends MY_Model
 
 		if( !empty($conditions['keyword']) ) {
 			$keyword = str_replace('　', ' ', $conditions['keyword']);
+			$keyword = mb_convert_kana($keyword, 'HV');
+
 			foreach( explode(' ', $keyword) as $val ) {
-				$where_array[] = '( name LIKE "%' . $val . '%" OR keyword LIKE "%' . $val . '%" )';
+				$where_array[] = '( name collate utf8_unicode_ci LIKE "%' . $val . '%" OR keyword collate utf8_unicode_ci LIKE "%' . $val . '%" )';
 			}
 		}
 
@@ -86,12 +88,12 @@ class M_product extends MY_Model
 
 		// データの総数取得
 		$db_total = $this->db;
-		$db_total->distinct()->from(SELF::TBL)->where($where);
+		$db_total->distinct()->from(SELF::TBL)->where($where, '', FALSE);
 		$query_total = $db_total->get();
 		$total = $query_total->num_rows();
 
 		// データ取得
-		$this->db->distinct()->from(SELF::TBL)->where($where)->order_by('product_id ASC');
+		$this->db->distinct()->from(SELF::TBL)->where($where, '', FALSE)->order_by('product_id ASC');
 
 		// $pageに0を入れるとページネーションなし（全てのデータを返す）
 		if( $page != 0 ) {

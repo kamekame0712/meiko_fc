@@ -10,7 +10,7 @@
 
 <?php endif; ?>
 ◯住所
-〒<?= $zip1 ?>-<?= $zip2 ?>
+<?= $zip1 ?>-<?= $zip2 . "\r\n" ?>
 <?= $CONF['pref'][$pref] ?><?= $addr1 ?><?= $addr2 . "\r\n" ?>
 
 ◯電話番号

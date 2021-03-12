@@ -384,39 +384,81 @@ class Owner extends MY_Controller
 			}
 
 			if( $payment_method1 == '1' ) {
-				$update_data_account = array(
-					'owner_id'			=> $owner_id,
-					'corporation'		=> isset($post_data['corporation']) ? $post_data['corporation'] : '',
-					'corpo_name'		=> isset($post_data['account_corpo_name']) ? $post_data['account_corpo_name'] : '',
-					'executive'			=> !empty($post_data['account_executive']) ? $post_data['account_executive'] : NULL,
-					'zip1'				=> isset($post_data['account_zip1']) ? $post_data['account_zip1'] : '',
-					'zip2'				=> isset($post_data['account_zip2']) ? $post_data['account_zip2'] : '',
-					'pref'				=> isset($post_data['account_pref']) ? $post_data['account_pref'] : '',
-					'addr1'				=> isset($post_data['account_addr1']) ? $post_data['account_addr1'] : '',
-					'addr2'				=> isset($post_data['account_addr2']) ? $post_data['account_addr2'] : '',
-					'tel1'				=> isset($post_data['account_tel1']) ? $post_data['account_tel1'] : '',
-					'tel2'				=> isset($post_data['account_tel2']) ? $post_data['account_tel2'] : '',
-					'tel3'				=> isset($post_data['account_tel3']) ? $post_data['account_tel3'] : '',
-					'fax1'				=> !empty($post_data['account_fax1']) ? $post_data['account_fax1'] : NULL,
-					'fax2'				=> !empty($post_data['account_fax2']) ? $post_data['account_fax2'] : NULL,
-					'fax3'				=> !empty($post_data['account_fax3']) ? $post_data['account_fax3'] : NULL,
-					'bill_to'			=> isset($post_data['bill_to']) ? $post_data['bill_to'] : '',
-					'bill_name'			=> isset($post_data['bill_name']) ? $post_data['bill_name'] : '',
-					'bill_zip1'			=> isset($post_data['bill_zip1']) ? $post_data['bill_zip1'] : '',
-					'bill_zip2'			=> isset($post_data['bill_zip2']) ? $post_data['bill_zip2'] : '',
-					'bill_pref'			=> isset($post_data['bill_pref']) ? $post_data['bill_pref'] : '',
-					'bill_addr1'		=> isset($post_data['bill_addr1']) ? $post_data['bill_addr1'] : '',
-					'bill_addr2'		=> isset($post_data['bill_addr2']) ? $post_data['bill_addr2'] : '',
-					'bill_tel1'			=> isset($post_data['bill_tel1']) ? $post_data['bill_tel1'] : '',
-					'bill_tel2'			=> isset($post_data['bill_tel2']) ? $post_data['bill_tel2'] : '',
-					'bill_tel3'			=> isset($post_data['bill_tel3']) ? $post_data['bill_tel3'] : '',
-					'bill_note'			=> !empty($post_data['bill_note']) ? $post_data['bill_note'] : '',
-					'settlement_method'	=> isset($post_data['settlement_method']) ? $post_data['settlement_method'] : '',
-					'transfer_name'		=> !empty($post_data['transfer_name']) ? $post_data['transfer_name'] : NULL,
-					'bank_name'			=> !empty($post_data['bank_name']) ? $post_data['bank_name'] : NULL,
-					'update_time'		=> $now
-				);
-				$this->m_account->update(array('owner_id' => $owner_id), $update_data_account);
+				// オーナー登録（買掛有）だけして買掛登録していない場合はinsert、ちゃんと登録してある場合はupdate
+				$wk_account_data = $this->m_account->get_one(array('owner_id' => $owner_id));
+
+				if( !empty($wk_account_data) ) {
+					$update_data_account = array(
+						'owner_id'			=> $owner_id,
+						'corporation'		=> isset($post_data['corporation']) ? $post_data['corporation'] : '',
+						'corpo_name'		=> isset($post_data['account_corpo_name']) ? $post_data['account_corpo_name'] : '',
+						'executive'			=> !empty($post_data['account_executive']) ? $post_data['account_executive'] : NULL,
+						'zip1'				=> isset($post_data['account_zip1']) ? $post_data['account_zip1'] : '',
+						'zip2'				=> isset($post_data['account_zip2']) ? $post_data['account_zip2'] : '',
+						'pref'				=> isset($post_data['account_pref']) ? $post_data['account_pref'] : '',
+						'addr1'				=> isset($post_data['account_addr1']) ? $post_data['account_addr1'] : '',
+						'addr2'				=> isset($post_data['account_addr2']) ? $post_data['account_addr2'] : '',
+						'tel1'				=> isset($post_data['account_tel1']) ? $post_data['account_tel1'] : '',
+						'tel2'				=> isset($post_data['account_tel2']) ? $post_data['account_tel2'] : '',
+						'tel3'				=> isset($post_data['account_tel3']) ? $post_data['account_tel3'] : '',
+						'fax1'				=> !empty($post_data['account_fax1']) ? $post_data['account_fax1'] : NULL,
+						'fax2'				=> !empty($post_data['account_fax2']) ? $post_data['account_fax2'] : NULL,
+						'fax3'				=> !empty($post_data['account_fax3']) ? $post_data['account_fax3'] : NULL,
+						'bill_to'			=> isset($post_data['bill_to']) ? $post_data['bill_to'] : '',
+						'bill_name'			=> isset($post_data['bill_name']) ? $post_data['bill_name'] : '',
+						'bill_zip1'			=> isset($post_data['bill_zip1']) ? $post_data['bill_zip1'] : '',
+						'bill_zip2'			=> isset($post_data['bill_zip2']) ? $post_data['bill_zip2'] : '',
+						'bill_pref'			=> isset($post_data['bill_pref']) ? $post_data['bill_pref'] : '',
+						'bill_addr1'		=> isset($post_data['bill_addr1']) ? $post_data['bill_addr1'] : '',
+						'bill_addr2'		=> isset($post_data['bill_addr2']) ? $post_data['bill_addr2'] : '',
+						'bill_tel1'			=> isset($post_data['bill_tel1']) ? $post_data['bill_tel1'] : '',
+						'bill_tel2'			=> isset($post_data['bill_tel2']) ? $post_data['bill_tel2'] : '',
+						'bill_tel3'			=> isset($post_data['bill_tel3']) ? $post_data['bill_tel3'] : '',
+						'bill_note'			=> !empty($post_data['bill_note']) ? $post_data['bill_note'] : '',
+						'settlement_method'	=> isset($post_data['settlement_method']) ? $post_data['settlement_method'] : '',
+						'transfer_name'		=> !empty($post_data['transfer_name']) ? $post_data['transfer_name'] : NULL,
+						'bank_name'			=> !empty($post_data['bank_name']) ? $post_data['bank_name'] : NULL,
+						'update_time'		=> $now
+					);
+					$this->m_account->update(array('owner_id' => $owner_id), $update_data_account);
+				}
+				else {
+					$insert_data_account = array(
+						'owner_id'			=> $owner_id,
+						'corporation'		=> isset($post_data['corporation']) ? $post_data['corporation'] : '',
+						'corpo_name'		=> isset($post_data['account_corpo_name']) ? $post_data['account_corpo_name'] : '',
+						'executive'			=> !empty($post_data['account_executive']) ? $post_data['account_executive'] : NULL,
+						'zip1'				=> isset($post_data['account_zip1']) ? $post_data['account_zip1'] : '',
+						'zip2'				=> isset($post_data['account_zip2']) ? $post_data['account_zip2'] : '',
+						'pref'				=> isset($post_data['account_pref']) ? $post_data['account_pref'] : '',
+						'addr1'				=> isset($post_data['account_addr1']) ? $post_data['account_addr1'] : '',
+						'addr2'				=> isset($post_data['account_addr2']) ? $post_data['account_addr2'] : '',
+						'tel1'				=> isset($post_data['account_tel1']) ? $post_data['account_tel1'] : '',
+						'tel2'				=> isset($post_data['account_tel2']) ? $post_data['account_tel2'] : '',
+						'tel3'				=> isset($post_data['account_tel3']) ? $post_data['account_tel3'] : '',
+						'fax1'				=> !empty($post_data['account_fax1']) ? $post_data['account_fax1'] : NULL,
+						'fax2'				=> !empty($post_data['account_fax2']) ? $post_data['account_fax2'] : NULL,
+						'fax3'				=> !empty($post_data['account_fax3']) ? $post_data['account_fax3'] : NULL,
+						'bill_to'			=> isset($post_data['bill_to']) ? $post_data['bill_to'] : '',
+						'bill_name'			=> isset($post_data['bill_name']) ? $post_data['bill_name'] : '',
+						'bill_zip1'			=> isset($post_data['bill_zip1']) ? $post_data['bill_zip1'] : '',
+						'bill_zip2'			=> isset($post_data['bill_zip2']) ? $post_data['bill_zip2'] : '',
+						'bill_pref'			=> isset($post_data['bill_pref']) ? $post_data['bill_pref'] : '',
+						'bill_addr1'		=> isset($post_data['bill_addr1']) ? $post_data['bill_addr1'] : '',
+						'bill_addr2'		=> isset($post_data['bill_addr2']) ? $post_data['bill_addr2'] : '',
+						'bill_tel1'			=> isset($post_data['bill_tel1']) ? $post_data['bill_tel1'] : '',
+						'bill_tel2'			=> isset($post_data['bill_tel2']) ? $post_data['bill_tel2'] : '',
+						'bill_tel3'			=> isset($post_data['bill_tel3']) ? $post_data['bill_tel3'] : '',
+						'bill_note'			=> !empty($post_data['bill_note']) ? $post_data['bill_note'] : '',
+						'settlement_method'	=> isset($post_data['settlement_method']) ? $post_data['settlement_method'] : '',
+						'transfer_name'		=> !empty($post_data['transfer_name']) ? $post_data['transfer_name'] : NULL,
+						'bank_name'			=> !empty($post_data['bank_name']) ? $post_data['bank_name'] : NULL,
+						'regist_time'		=> $now,
+						'update_time'		=> $now,
+						'status'			=> '0'
+					);
+					$this->m_account->insert($insert_data_account);
+				}
 			}
 		}
 

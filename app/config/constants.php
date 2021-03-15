@@ -96,7 +96,7 @@ const SITE_NAME				= '明光義塾教室様専用教材発注システム';
 const CACHES_CLEAR_VERSION	= '20210225_1';
 
 // GMOのオーダーIDにつける先頭文字列
-const GMO_PREFIX			= 'meikofc-test-';
+const GMO_PREFIX			= 'meikofc-';
 
 // CSVファイルのアップロードに使うパス
 const CSV_UPLOAD_PATH		= 'C:/product/meiko_fc/upload/';

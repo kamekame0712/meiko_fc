@@ -112,7 +112,7 @@ class M_product extends MY_Model
 		$where = implode(' AND ', $where_array);
 
 		$this->db->from(SELF::TBL)->distinct()
-			 ->where($where)->order_by($sort_str);
+			 ->where($where, '', FALSE)->order_by($sort_str);
 
 		if( is_array($limit_array) && !empty($limit_array) ) {
 			$this->db->limit($limit_array[0], $limit_array[1]);
@@ -122,7 +122,7 @@ class M_product extends MY_Model
 		$data = ($query->num_rows() > 0) ? $query->result_array() : FALSE;
 
 		$this->db->from(SELF::TBL)->distinct()
-			 ->where($where);
+			 ->where($where, '', FALSE);
 
 		$cnt = 0;
 		$query = $this->db->get();
@@ -142,7 +142,7 @@ class M_product extends MY_Model
 		$where = implode(' AND ', $where_array);
 
 		$this->db->from(SELF::TBL)->distinct()
-			 ->where($where)->order_by('smile_code ASC');
+			 ->where($where, '', FALSE)->order_by('smile_code ASC');
 
 		$query = $this->db->get();
 		return ($query->num_rows() > 0) ? $query->result_array() : FALSE;
@@ -154,7 +154,12 @@ class M_product extends MY_Model
 		 $ret_array[] = 'status = "0"';
 
 		 if( $conditions['product_name'] != '' ) {
-			$ret_array[] = 'name LIKE "%' . $conditions['product_name'] . '%"';
+			$product_name = str_replace('　', ' ', $conditions['product_name']);
+			$product_name = mb_convert_kana($product_name, 'HV');
+
+			foreach( explode(' ', $product_name) as $val ) {
+				$ret_array[] = 'name collate utf8_unicode_ci LIKE "%' . $val . '%"';
+			}
 		}
 
 		if( $conditions['smile_code_from'] != '' ) {

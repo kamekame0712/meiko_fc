@@ -52,6 +52,22 @@ class MY_Controller extends CI_Controller
 			->set_output($data);
 	}
 
+	// Cookieに登録した検索条件の削除
+	protected function delete_conditions($current_page = '')
+	{
+		if( $current_page != 'order' && $this->input->cookie('conditions_order') ) {
+			delete_cookie('conditions_order');
+		}
+
+		if( $current_page != 'product' && $this->input->cookie('conditions_product') ) {
+			delete_cookie('conditions_product');
+		}
+
+		if( $current_page != 'classroom' && $this->input->cookie('conditions_classroom') ) {
+			delete_cookie('conditions_classroom');
+		}
+	}
+
 
 
 	/*****************************************/

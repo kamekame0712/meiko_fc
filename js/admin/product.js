@@ -29,6 +29,8 @@ function clear_conditions()
 	$('#flg_sales1').prop('checked', true);
 	$('#flg_sales2').prop('checked', true);
 	$('#flg_sales3').prop('checked', true);
+
+	do_search();
 }
 
 function do_search()

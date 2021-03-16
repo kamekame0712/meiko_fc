@@ -17,6 +17,9 @@ class Owner extends MY_Controller
 
 		// バリデーションエラー設定
 		$this->form_validation->set_error_delimiters('<p class="error-msg">', '</p>');
+
+		// cookieの削除
+		$this->delete_conditions('');
 	}
 
 	public function index($result = '')

@@ -31,7 +31,7 @@
 												<?php echo form_input(array(
 													'name'	=> 'product_name',
 													'id'	=> 'product_name',
-													'value'	=> set_value('product_name', ''),
+													'value'	=> set_value('product_name', ( isset($CONDITION['product_name']) ? $CONDITION['product_name'] : '' )),
 													'class'	=> 'form-control'
 												)); ?>
 											</div>
@@ -43,13 +43,13 @@
 												<?php echo form_input(array(
 													'name'	=> 'smile_code_from',
 													'id'	=> 'smile_code_from',
-													'value'	=> set_value('smile_code_from', ''),
+													'value'	=> set_value('smile_code_from', ( isset($CONDITION['smile_code_from']) ? $CONDITION['smile_code_from'] : '' )),
 													'class'	=> 'form-control d-inline-block mw-200'
 												)); ?>～
 												<?php echo form_input(array(
 													'name'	=> 'smile_code_to',
 													'id'	=> 'smile_code_to',
-													'value'	=> set_value('smile_code_to', ''),
+													'value'	=> set_value('smile_code_to', ( isset($CONDITION['smile_code_to']) ? $CONDITION['smile_code_to'] : '' )),
 													'class'	=> 'form-control d-inline-block mw-200'
 												)); ?>
 											</div>
@@ -58,7 +58,7 @@
 										<div class="col-4">
 											<div class="form-group">
 												<?php echo form_label('出版社'); ?>
-												<?php echo form_dropdown('publisher', array('' => '選択してください') + $CONF['publisher'], set_value('publisher', '0'), 'class="form-control" id="publisher"'); ?>
+												<?php echo form_dropdown('publisher', array('' => '選択してください') + $CONF['publisher'], set_value('publisher', ( isset($CONDITION['publisher']) ? $CONDITION['publisher'] : '0' )), 'class="form-control" id="publisher"'); ?>
 											</div>
 										</div>
 									</div> <!-- end of .row -->
@@ -66,13 +66,18 @@
 									<div class="row">
 										<div class="col-4">
 											<div class="form-group">
+												<?php
+													$fm1 = !empty($CONDITION['flg_market']) && !in_array('1', $CONDITION['flg_market']) ? FALSE : TRUE;
+													$fm2 = !empty($CONDITION['flg_market']) && !in_array('2', $CONDITION['flg_market']) ? FALSE : TRUE;
+												?>
+
 												<?php echo form_label('塾用/市販', '', array('class' => 'd-block')); ?>
 
 												<?php echo form_checkbox(array(
 													'name'	=> 'flg_market[]',
 													'id'	=> 'flg_market1',
 													'value'	=> '1',
-													'checked'	=> set_checkbox('flg_market[]', '1', TRUE)
+													'checked'	=> set_checkbox('flg_market[]', '1', $fm1)
 												)); ?>
 												<?php echo form_label('塾用', 'flg_market1', array('class' => 'font-weight-normal')); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
@@ -80,7 +85,7 @@
 													'name'	=> 'flg_market[]',
 													'id'	=> 'flg_market2',
 													'value'	=> '2',
-													'checked'	=> set_checkbox('flg_market[]', '2', TRUE)
+													'checked'	=> set_checkbox('flg_market[]', '2', $fm2)
 												)); ?>
 												<?php echo form_label('市販', 'flg_market2', array('class' => 'font-weight-normal')); ?>
 											</div>
@@ -88,13 +93,19 @@
 
 										<div class="col-4">
 											<div class="form-group">
+												<?php
+													$fs1 = !empty($CONDITION['flg_sales']) && !in_array('1', $CONDITION['flg_sales']) ? FALSE : TRUE;
+													$fs2 = !empty($CONDITION['flg_sales']) && !in_array('2', $CONDITION['flg_sales']) ? FALSE : TRUE;
+													$fs3 = !empty($CONDITION['flg_sales']) && !in_array('3', $CONDITION['flg_sales']) ? FALSE : TRUE;
+												?>
+
 												<?php echo form_label('発刊状況', '', array('class' => 'd-block')); ?>
 
 												<?php echo form_checkbox(array(
 													'name'	=> 'flg_sales[]',
 													'id'	=> 'flg_sales1',
 													'value'	=> '1',
-													'checked'	=> set_checkbox('flg_sales[]', '1', TRUE)
+													'checked'	=> set_checkbox('flg_sales[]', '1', $fs1)
 												)); ?>
 												<?php echo form_label('通常', 'flg_sales1', array('class' => 'font-weight-normal')); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
@@ -102,7 +113,7 @@
 													'name'	=> 'flg_sales[]',
 													'id'	=> 'flg_sales2',
 													'value'	=> '2',
-													'checked'	=> set_checkbox('flg_sales[]', '2', TRUE)
+													'checked'	=> set_checkbox('flg_sales[]', '2', $fs2)
 												)); ?>
 												<?php echo form_label('売切', 'flg_sales2', array('class' => 'font-weight-normal')); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
@@ -110,7 +121,7 @@
 													'name'	=> 'flg_sales[]',
 													'id'	=> 'flg_sales3',
 													'value'	=> '3',
-													'checked'	=> set_checkbox('flg_sales[]', '3', TRUE)
+													'checked'	=> set_checkbox('flg_sales[]', '3', $fs3)
 												)); ?>
 												<?php echo form_label('未発刊', 'flg_sales3', array('class' => 'font-weight-normal')); ?>
 											</div>

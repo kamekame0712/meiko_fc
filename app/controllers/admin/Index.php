@@ -8,6 +8,9 @@ class Index extends MY_Controller
 
 		// モデルロード
 		$this->load->model('m_admin');
+
+		// cookieの削除
+		$this->delete_conditions('');
 	}
 
 	public function index()

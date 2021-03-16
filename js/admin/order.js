@@ -36,6 +36,8 @@ function clear_conditions()
 	$('#payment_method3').prop('checked', true);
 	$('#regist_time_from').val('');
 	$('#regist_time_to').val('');
+
+	do_search();
 }
 
 function do_search()

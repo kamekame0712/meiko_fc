@@ -31,7 +31,7 @@
 												<?php echo form_input(array(
 													'name'	=> 'classroom_name',
 													'id'	=> 'classroom_name',
-													'value'	=> set_value('classroom_name', ''),
+													'value'	=> set_value('classroom_name', ( isset($CONDITION['classroom_name']) ? $CONDITION['classroom_name'] : '' )),
 													'class'	=> 'form-control'
 												)); ?>
 											</div>
@@ -43,7 +43,7 @@
 												<?php echo form_input(array(
 													'name'	=> 'owner_name',
 													'id'	=> 'owner_name',
-													'value'	=> set_value('owner_name', ''),
+													'value'	=> set_value('owner_name', ( isset($CONDITION['owner_name']) ? $CONDITION['owner_name'] : '' )),
 													'class'	=> 'form-control'
 												)); ?>
 											</div>
@@ -55,7 +55,7 @@
 												<?php echo form_input(array(
 													'name'	=> 'corpo_name',
 													'id'	=> 'corpo_name',
-													'value'	=> set_value('corpo_name', ''),
+													'value'	=> set_value('corpo_name', ( isset($CONDITION['corpo_name']) ? $CONDITION['corpo_name'] : '' )),
 													'class'	=> 'form-control'
 												)); ?>
 											</div>
@@ -69,7 +69,7 @@
 												<?php echo form_input(array(
 													'name'	=> 'smile_code',
 													'id'	=> 'smile_code',
-													'value'	=> set_value('smile_code', ''),
+													'value'	=> set_value('smile_code', ( isset($CONDITION['smile_code']) ? $CONDITION['smile_code'] : '' )),
 													'class'	=> 'form-control'
 												)); ?>
 											</div>
@@ -78,7 +78,7 @@
 										<div class="col-4">
 											<div class="form-group">
 												<?php echo form_label('都道府県'); ?>
-												<?php echo form_dropdown('pref', $CONF['pref'], set_value('pref', '0'), 'class="form-control" id="pref"'); ?>
+												<?php echo form_dropdown('pref', $CONF['pref'], set_value('pref', ( isset($CONDITION['pref']) ? $CONDITION['pref'] : '' )), 'class="form-control" id="pref"'); ?>
 											</div>
 										</div>
 
@@ -88,7 +88,7 @@
 												<?php echo form_input(array(
 													'name'	=> 'tel',
 													'id'	=> 'tel',
-													'value'	=> set_value('tel', ''),
+													'value'	=> set_value('tel', ( isset($CONDITION['tel']) ? $CONDITION['tel'] : '' )),
 													'class'	=> 'form-control'
 												)); ?>
 											</div>

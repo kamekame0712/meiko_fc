@@ -16,6 +16,9 @@ class Order extends MY_Controller
 
 		// バリデーションエラー設定
 		$this->form_validation->set_error_delimiters('<p class="error-msg">', '</p>');
+
+		// cookieの削除
+		$this->delete_conditions('order');
 	}
 
 	public function index($result = '')
@@ -26,9 +29,16 @@ class Order extends MY_Controller
 			return;
 		}
 
+		$conditions = array();
+		$wk_conditions = $this->input->cookie('conditions_order');
+		if( !empty($wk_conditions) ) {
+			$conditions = unserialize(base64_decode(str_rot13($wk_conditions)));
+		}
+
 		$view_data = array(
-			'CONF'	=> $this->conf,
-			'RESULT'	=> $result
+			'CONF'		=> $this->conf,
+			'RESULT'	=> $result,
+			'CONDITION'	=> $conditions
 		);
 
 		$this->load->view('admin/order/index', $view_data);
@@ -615,6 +625,15 @@ class Order extends MY_Controller
 			'regist_time_from'	=> isset($post_data['regist_time_from']) ? $post_data['regist_time_from'] : '',
 			'regist_time_to'	=> isset($post_data['regist_time_to']) ? $post_data['regist_time_to'] : '',
 		);
+
+		// 検索条件をクッキー登録
+		$encoded_post_data = str_rot13(base64_encode(serialize($conditions)));
+		$cookie_data = array(
+			'name'	=> 'conditions_order',
+			'value'	=> $encoded_post_data,
+			'expire'=> '3600'
+		);
+		$this->input->set_cookie($cookie_data);
 
 		$sort_str = '';
 		foreach( $sort as $sort_key => $sort_val ) {

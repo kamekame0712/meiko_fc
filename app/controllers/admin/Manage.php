@@ -9,6 +9,9 @@ class Manage extends MY_Controller
 		// モデルロード
 		$this->load->model('m_admin');
 		$this->load->model('m_mail');
+
+		// cookieの削除
+		$this->delete_conditions('');
 	}
 
 	public function index()

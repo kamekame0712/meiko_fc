@@ -31,13 +31,13 @@
 												<?php echo form_input(array(
 													'name'	=> 'order_id_from',
 													'id'	=> 'order_id_from',
-													'value'	=> set_value('order_id_from', ''),
+													'value'	=> set_value('order_id_from', ( isset($CONDITION['order_id_from']) ? $CONDITION['order_id_from'] : '' )),
 													'class'	=> 'form-control d-inline-block mw-200'
 												)); ?>～
 												<?php echo form_input(array(
 													'name'	=> 'order_id_to',
 													'id'	=> 'order_id_to',
-													'value'	=> set_value('order_id_to', ''),
+													'value'	=> set_value('order_id_to', ( isset($CONDITION['order_id_to']) ? $CONDITION['order_id_to'] : '' )),
 													'class'	=> 'form-control d-inline-block mw-200'
 												)); ?>
 											</div>
@@ -49,7 +49,7 @@
 												<?php echo form_input(array(
 													'name'	=> 'classroom_name',
 													'id'	=> 'classroom_name',
-													'value'	=> set_value('classroom_name', ''),
+													'value'	=> set_value('classroom_name', ( isset($CONDITION['classroom_name']) ? $CONDITION['classroom_name'] : '' )),
 													'class'	=> 'form-control'
 												)); ?>
 											</div>
@@ -61,7 +61,7 @@
 												<?php echo form_input(array(
 													'name'	=> 'smile_code',
 													'id'	=> 'smile_code',
-													'value'	=> set_value('smile_code', ''),
+													'value'	=> set_value('smile_code', ( isset($CONDITION['smile_code']) ? $CONDITION['smile_code'] : '' )),
 													'class'	=> 'form-control'
 												)); ?>
 											</div>
@@ -72,19 +72,25 @@
 										<div class="col-4">
 											<div class="form-group">
 												<?php echo form_label('対応状況'); ?>
-												<?php echo form_dropdown('order_status', $CONF['order_status'], set_value('order_status', '0'), 'class="form-control" id="order_status"'); ?>
+												<?php echo form_dropdown('order_status', $CONF['order_status'], set_value('order_status', ( isset($CONDITION['order_status']) ? $CONDITION['order_status'] : '' )), 'class="form-control" id="order_status"'); ?>
 											</div>
 										</div>
 
 										<div class="col-4">
 											<div class="form-group">
+												<?php
+													$pm1 = !isset($CONDITION['payment_method1']) ? TRUE : ( $CONDITION['payment_method1'] == '1' ? TRUE : FALSE );
+													$pm2 = !isset($CONDITION['payment_method2']) ? TRUE : ( $CONDITION['payment_method2'] == '1' ? TRUE : FALSE );
+													$pm3 = !isset($CONDITION['payment_method3']) ? TRUE : ( $CONDITION['payment_method3'] == '1' ? TRUE : FALSE );
+												?>
+
 												<?php echo form_label('支払方法', '', array('class' => 'd-block')); ?>
 
 												<?php echo form_checkbox(array(
 													'name'	=> 'payment_method1',
 													'id'	=> 'payment_method1',
 													'value'	=> '1',
-													'checked'	=> set_checkbox('payment_method1', '1', TRUE)
+													'checked'	=> set_checkbox('payment_method1', '1', $pm1)
 												)); ?>
 												<?php echo form_label('買掛', 'payment_method1', array('class' => 'font-weight-normal')); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
@@ -92,7 +98,7 @@
 													'name'	=> 'payment_method2',
 													'id'	=> 'payment_method2',
 													'value'	=> '1',
-													'checked'	=> set_checkbox('payment_method2', '1', TRUE)
+													'checked'	=> set_checkbox('payment_method2', '1', $pm2)
 												)); ?>
 												<?php echo form_label('クレジットカード', 'payment_method2', array('class' => 'font-weight-normal')); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
@@ -100,7 +106,7 @@
 													'name'	=> 'payment_method3',
 													'id'	=> 'payment_method3',
 													'value'	=> '1',
-													'checked'	=> set_checkbox('payment_method3', '1', TRUE)
+													'checked'	=> set_checkbox('payment_method3', '1', $pm3)
 												)); ?>
 												<?php echo form_label('代金引換', 'payment_method3', array('class' => 'font-weight-normal')); ?>
 											</div>
@@ -112,13 +118,13 @@
 												<?php echo form_input(array(
 													'name'	=> 'regist_time_from',
 													'id'	=> 'regist_time_from',
-													'value'	=> set_value('regist_time_from', ( !empty($COND['regist_time_from']) ? $COND['regist_time_from'] : '' )),
+													'value'	=> set_value('regist_time_from', ( isset($CONDITION['regist_time_from']) ? $CONDITION['regist_time_from'] : '' )),
 													'class'	=> 'form-control d-inline-block mw-200'
 												)); ?>～
 												<?php echo form_input(array(
 													'name'	=> 'regist_time_to',
 													'id'	=> 'regist_time_to',
-													'value'	=> set_value('regist_time_to', ( !empty($COND['regist_time_to']) ? $COND['regist_time_to'] : '' )),
+													'value'	=> set_value('regist_time_to', ( isset($CONDITION['regist_time_to']) ? $CONDITION['regist_time_to'] : '' )),
 													'class'	=> 'form-control d-inline-block mw-200'
 												)); ?>
 											</div>

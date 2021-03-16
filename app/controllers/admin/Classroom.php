@@ -16,6 +16,9 @@ class Classroom extends MY_Controller
 
 		// バリデーションエラー設定
 		$this->form_validation->set_error_delimiters('<p class="error-msg">', '</p>');
+
+		// cookieの削除
+		$this->delete_conditions('classroom');
 	}
 
 	public function index($result = '')
@@ -26,9 +29,16 @@ class Classroom extends MY_Controller
 			return;
 		}
 
+		$conditions = array();
+		$wk_conditions = $this->input->cookie('conditions_classroom');
+		if( !empty($wk_conditions) ) {
+			$conditions = unserialize(base64_decode(str_rot13($wk_conditions)));
+		}
+
 		$view_data = array(
 			'CONF'		=> $this->conf,
-			'RESULT'	=> $result
+			'RESULT'	=> $result,
+			'CONDITION'	=> $conditions
 		);
 
 		$this->load->view('admin/classroom/index', $view_data);
@@ -278,6 +288,15 @@ class Classroom extends MY_Controller
 			'pref'				=> isset($post_data['pref']) ? $post_data['pref'] : '',
 			'tel'				=> isset($post_data['tel']) ? $post_data['tel'] : '',
 		);
+
+		// 検索条件をクッキー登録
+		$encoded_post_data = str_rot13(base64_encode(serialize($conditions)));
+		$cookie_data = array(
+			'name'	=> 'conditions_classroom',
+			'value'	=> $encoded_post_data,
+			'expire'=> '3600'
+		);
+		$this->input->set_cookie($cookie_data);
 
 		$sort_str = '';
 		foreach( $sort as $sort_key => $sort_val ) {

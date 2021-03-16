@@ -26,6 +26,8 @@ function clear_conditions()
 	$('#smile_code').val('');
 	$('#pref').val('');
 	$('#tel').val('');
+
+	do_search();
 }
 
 function do_search()

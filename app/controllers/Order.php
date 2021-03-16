@@ -294,6 +294,13 @@ class Order extends MY_Controller
 			}
 		}
 
+		// IEからのアクセスをチェック
+		$flg_ie = FALSE;
+		$ua = $_SERVER['HTTP_USER_AGENT'];
+		if (strstr($ua, 'Trident') || strstr($ua, 'MSIE')) {
+			$flg_ie = TRUE;
+		}
+
 		$view_data = array(
 			'ERROR_MESSAGE'	=> $error_message,
 			'CONF'			=> $this->conf,
@@ -311,7 +318,8 @@ class Order extends MY_Controller
 			'NOTE'			=> $note,
 			'CARD'			=> $card,
 			'YY'			=> $yy,
-			'MM'			=> $mm
+			'MM'			=> $mm,
+			'IE'			=> $flg_ie
 		);
 
 		$this->load->view('front/order/index', $view_data);

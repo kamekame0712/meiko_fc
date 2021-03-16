@@ -20,6 +20,16 @@
 				</div>
 			<?php endif; ?>
 
+			<?php if( $IE ): ?>
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					IE（インターネットエクスプローラー）ではご注文いただけない場合があります。<br>
+					Microsoft Edge、Google Chrome、Firefox、OperaなどIE以外のブラウザでのアクセスをお願いします。
+					<button type="button" class="close" data-dismiss="alert" aria-label="閉じる">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<?php endif; ?>
+
 			<?php if( empty($PAYMENT_LIST) ): ?>
 				<div class="alert alert-danger alert-dismissible fade show" role="alert">
 					オーナー様がお支払方法を選択されていません。<br>
